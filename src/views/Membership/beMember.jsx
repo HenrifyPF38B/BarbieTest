@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 
 import style from "./beMember.module.css";
 import test from "../../components/assets/signup8.svg";
@@ -7,21 +7,52 @@ import test2 from "../../components/assets/signup7.svg";
 import test3 from "../../components/assets/signup12.svg";
 import { useDispatch, useSelector } from "react-redux";
 import { getMemberships } from "../../redux/Actions/MembershipsActions";
-
+import MembershipModal from "./buyMembership";
+import { PlaylistContext } from "../../contexts/playlistContext";
+import { Toast } from 'primereact/toast';
+import 'primereact/resources/themes/lara-light-indigo/theme.css';
+import "primereact/resources/primereact.min.css";                  //core css
+import "primeicons/primeicons.css";    
 
 const BeMember = () => {
+
+  const refToast = useRef();
   const dispatch = useDispatch();
-  const memberships = useSelector((state) => state.memberships.data);
+  const dataContext = useContext(PlaylistContext);
+  const { setLoginOpen } = dataContext;
+  const state = useSelector(state => state);
+  const { memberships, usersId } = state;
 
   const membershipList = memberships || [];
 
-  console.log(membershipList)
-  useEffect(() => {
-    dispatch(getMemberships());
-  }, [dispatch]);
+  const [membershipModal, setMembershipModal] = useState(false);
+
+  const handleOpenModal = (membership) =>{
+    if(!usersId.id){
+      // User not logged in
+      return setLoginOpen(true);
+    }else if(usersId.member){
+      // User already is member
+      return refToast.current.show({sticky: true, severity: 'info', summary: `Hey ${usersId.userName}!`, detail: "It looks like you are already a member"});
+
+    }else if(usersId.id){
+      // Activate payment modal
+      setMembershipModal(membership);
+    }
+  };
+
+  // useEffect(() => {
+  //   dispatch(getMemberships());
+  // }, [dispatch]);
 
   return (
     <div className={style.container}>
+      <Toast ref={refToast} position='top-left'></Toast>
+      
+      {
+        membershipModal && 
+        <MembershipModal membershipModal={membershipModal} setMembershipModal={setMembershipModal} />
+      }
       <div className="content">        
         <div className="tittle">
           <h1>Welcome! Be a member!</h1>
@@ -43,7 +74,6 @@ const BeMember = () => {
         Play any song, download your favorites and listen offline. Listen to
         content on all your devices and enjoy high fidelity sound.
       </p>
-
       <div className={style.boxMember}>
         {membershipList.map((membership) => (
           <div className="card" key={membership.id}>
@@ -55,7 +85,7 @@ const BeMember = () => {
                 <p className="date">{membership.duration}</p>
                 <p className="price">$ {membership.price}</p>
               </div>
-              <button className="buttonMember">
+              <button className="buttonMember" onClick={() => handleOpenModal(membership)}>
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 24">
               <path d="m18 0 8 12 10-8-4 20H4L0 4l10 8 8-12z"></path>
             </svg>

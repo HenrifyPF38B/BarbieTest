@@ -205,52 +205,52 @@ const Home = () => {
               explicit={songs[0]?.explicit}
             />
             <SongCard
-              artist={songs[60]?.artists.map((artist, index) => {
-                if(index === songs[60]?.artists.length - 1){
+              artist={songs[330]?.artists.map((artist, index) => {
+                if(index === songs[330]?.artists.length - 1){
                   return artist.name
                 }else{
                   return artist.name + " • "
                 }
               })}
-              song={songs[60]?.name}
-              id={songs[60]?.id}
-              img={songs[60]?.image}
-              audio={songs[60]?.audioPreview}
-              audioFull={songs[60]?.audioFull}
-              songId={songs[60]?.songId}
-              explicit={songs[60]?.explicit}
+              song={songs[330]?.name}
+              id={songs[330]?.id}
+              img={songs[330]?.image}
+              audio={songs[330]?.audioPreview}
+              audioFull={songs[330]?.audioFull}
+              songId={songs[330]?.songId}
+              explicit={songs[330]?.explicit}
             />
             <SongCard
-              artist={songs[150]?.artists.map((artist, index) => {
-                if(index === songs[150]?.artists.length - 1){
+              artist={songs[375]?.artists.map((artist, index) => {
+                if(index === songs[375]?.artists.length - 1){
                   return artist.name
                 }else{
                   return artist.name + " • "
                 }
               })}
-              song={songs[150]?.name}
-              id={songs[150]?.id}
-              img={songs[150]?.image}
-              audio={songs[150]?.audioPreview}
-              audioFull={songs[150]?.audioFull}
-              songId={songs[150]?.songId}
-              explicit={songs[150]?.explicit}
+              song={songs[375]?.name}
+              id={songs[375]?.id}
+              img={songs[375]?.image}
+              audio={songs[375]?.audioPreview}
+              audioFull={songs[375]?.audioFull}
+              songId={songs[375]?.songId}
+              explicit={songs[375]?.explicit}
             />
             <SongCard
-              artist={songs[15]?.artists.map((artist, index) => {
-                if(index === songs[15]?.artists.length - 1){
+              artist={songs[324]?.artists.map((artist, index) => {
+                if(index === songs[324]?.artists.length - 1){
                   return artist.name
                 }else{
                   return artist.name + " • "
                 }
               })}
-              song={songs[15]?.name}
-              id={songs[15]?.id}
-              img={songs[15]?.image}
-              audio={songs[15]?.audioPreview}
-              audioFull={songs[15]?.audioFull}
-              songId={songs[15]?.songId}
-              explicit={songs[15]?.explicit}
+              song={songs[324]?.name}
+              id={songs[324]?.id}
+              img={songs[324]?.image}
+              audio={songs[324]?.audioPreview}
+              audioFull={songs[324]?.audioFull}
+              songId={songs[324]?.songId}
+              explicit={songs[324]?.explicit}
             />
             
             
@@ -273,12 +273,12 @@ const Home = () => {
                     <img src="/images/prize1.svg" alt="abc" />
                   </div>
                   <div className={styles.cardImg}>
-                    <img src={songs[72]?.image} alt="abc" />
+                    <img src={songs[20]?.image} alt="abc" />
                   </div>
                   
                   <div className={styles.span}>
-                    <span>{songs[72]?.artists[0].name}</span>
-                    <span>{songs[72]?.name.length > 27 ? songs[72]?.name.slice(0, 26) + "…" : songs[72]?.name}</span>
+                    <span>{songs[20]?.artists[0].name}</span>
+                    <span>{songs[20]?.name.length > 27 ? songs[20]?.name.slice(0, 26) + "…" : songs[20]?.name}</span>
                   </div>
                 </div>
                 
@@ -301,12 +301,12 @@ const Home = () => {
                     <img src="/images/prize3.svg" alt="abc" />
                   </div>
                   <div className={styles.cardImg}>
-                    <img src={songs[400]?.image} alt="abc" />
+                    <img src={songs[341]?.image} alt="abc" />
                   </div>
                   
                   <div className={styles.span}>
-                    <span>{songs[400]?.artists[0].name}</span>
-                    <span>{songs[400]?.name.length > 27 ? songs[400]?.name.slice(0, 26) + "…" : songs[400]?.name}</span>
+                    <span>{songs[341]?.artists[0].name}</span>
+                    <span>{songs[341]?.name.length > 27 ? songs[341]?.name.slice(0, 26) + "…" : songs[341]?.name}</span>
                   </div>
                 </div>
                 
@@ -342,16 +342,16 @@ const Home = () => {
               id={albums[0]?.id}
               albumId={albums[0]?.albumId}
               price={albums[0]?.price}
-              el={albums[3] && albums[0]}
+              el={albums[0] && albums[0]}
             />
             <AlbumCard
-              artist={albums[1]?.artists}
-              album={albums[1]?.name}
-              image={albums[1]?.image}
-              id={albums[1]?.id}
-              albumId={albums[1]?.albumId}
-              price={albums[1]?.price}
-              el={albums[3] && albums[1]}
+              artist={albums[5]?.artists}
+              album={albums[5]?.name}
+              image={albums[5]?.image}
+              id={albums[5]?.id}
+              albumId={albums[5]?.albumId}
+              price={albums[5]?.price}
+              el={albums[5] && albums[5]}
             />
             <AlbumCard
               artist={albums[2]?.artists}
@@ -360,7 +360,7 @@ const Home = () => {
               id={albums[2]?.id}
               albumId={albums[2]?.albumId}
               price={albums[2]?.price}
-              el={albums[3] && albums[2]}
+              el={albums[2] && albums[2]}
             />
             <AlbumCard
               artist={albums[3]?.artists}

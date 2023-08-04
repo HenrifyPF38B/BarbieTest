@@ -17,7 +17,7 @@ const PlayModal = () => {
   const dispatch = useDispatch();
   const dataContext = useContext(PlaylistContext);
   const { playerOpen, setPlayerOpen, playerHidden, setPlayerHidden } = dataContext;
-  const { originalData, data, originalIndex, index, audio, img, song, artist, type, id } = playerOpen;
+  const { originalData, data, originalIndex, index, audio, audioFull, img, song, artist, type, albumType, id } = playerOpen;
   const refAudio = useRef();
 
   const [isPlaying, setIsPlaying] = useState(false);
@@ -25,7 +25,7 @@ const PlayModal = () => {
   const [shuffleActive, setShuffleActive] = useState(false);
   const [volume, setVolume] = useState(0.8);
   const [muted, setMuted] = useState(false);
-  const [memberSongDetails, setMemberSongDetails] = useState({originalIndex, audio, img, song, artist});
+  const [memberSongDetails, setMemberSongDetails] = useState({index: originalIndex, audioFull, img, song, artist});
   const [songDetails, setSongDetails] = useState({index, audio, img, song, artist, id});
   // Lo pongo en songDetails, para poder cambiar el audio cuando termine de reproducirse una cancion
   
@@ -88,6 +88,9 @@ const PlayModal = () => {
     setSongDetails({
       index, audio, img, song, artist, id
     });
+    setMemberSongDetails({
+      index: originalIndex, audioFull, img, song, artist, id
+    })
     setTimeout(()=>{
       refAudio.current.play();
     },200)
@@ -146,6 +149,7 @@ const PlayModal = () => {
     if(!loopActive && !shuffleActive && !type){
       if(data[songDetails.index + 1]){
         // Significa que existe una cancion despues de la actual
+        console.log(data[songDetails.index + 1]);
         setSongDetails({
           index: songDetails.index + 1,
           id: data[songDetails.index + 1].id,
@@ -193,65 +197,17 @@ const PlayModal = () => {
   // ENDED FOR MEMBERS
   const handleOnEndedMember = () =>{
 
-    if(originalData[memberSongDetails].originalIndex + 1){
-      // SI HAY UNA CANCION DESPUES DE LA ACTUAL REPRODUCE LA SIGUIENTE
-       
-      // Si no esta el loop activado y el modo aleatorio tambien:
-      if(!loopActive && !shuffleActive){
-        setMemberSongDetails({
-          index: memberSongDetails.index + 1,
-          audio: originalData[songDetails.index + 1].trackFull,
-          img: originalData[songDetails.index + 1].image.url,
-          song: originalData[songDetails.index + 1].trackName,
-          artist: originalData[songDetails.index + 1].artists.map((artist, index) => {
-            if(index === originalData[songDetails.index + 1].artists.length - 1){
-              return artist.name
-            }else{
-              return artist.name + " • "
-            }
-          })
-        });
-  
-        setTimeout(()=> {
-          refAudio.current.play();
-        }, 200)
-      };
+    if(!loopActive && shuffleActive && !type){
+      let randomNumber = Math.floor(Math.random() * originalData.length);
 
-      // Si el loop esta desactivado y el aleatorio activado
-      if(!loopActive && shuffleActive){
-        let randomNumber = Math.floor(Math.random() * originalData.length);
-
-        setMemberSongDetails({
-          index: originalData[randomNumber].index,
-          audio: originalData[randomNumber].trackFull,
-          img: originalData[randomNumber].image.url,
-          song: originalData[randomNumber].trackName,
-          artist: originalData[randomNumber].artists.map((artist, index) => {
-            if(index === originalData[randomNumber].artists.length - 1){
-              return artist.name
-            }else{
-              return artist.name + " • "
-            }
-          })
-        });
-  
-        setTimeout(()=> {
-          refAudio.current.play();
-        }, 200)
-      };
-
-      // Por defecto, si el loop esta activado ignora cualquier codigo y reinicia la cancion
-
-
-    }else{
-      // SI NO HAY UNA CANCION DESPUES, VUELVE AL PRINCIPIO
-      setSongDetails({
-        index: originalData[0].index,
-        audio: originalData[0].trackPreview,
-        img: originalData[0].image.url,
-        song: originalData[0].trackName,
-        artist: originalData[0].artists.map((artist, index) => {
-          if(index === originalData[0].artists.length - 1){
+      setMemberSongDetails({
+        index: originalData[randomNumber].index,
+        id: originalData[randomNumber].id,
+        audioFull: originalData[randomNumber].trackFull,
+        img: originalData[randomNumber].image.url,
+        song: originalData[randomNumber].trackName,
+        artist: originalData[randomNumber].artists.map((artist, index) => {
+          if(index === originalData[randomNumber].artists.length - 1){
             return artist.name
           }else{
             return artist.name + " • "
@@ -262,7 +218,54 @@ const PlayModal = () => {
       setTimeout(()=> {
         refAudio.current.play();
       }, 200)
-    }
+    };
+
+    // Si no esta el loop activado y el modo aleatorio tampoco:
+    if(!loopActive && !shuffleActive && !type){
+      if(originalData[memberSongDetails.index + 1]){
+        // Significa que existe una cancion despues de la actual
+        setMemberSongDetails({
+          index: memberSongDetails.index + 1,
+          id: originalData[memberSongDetails.index + 1].id,
+          audioFull: originalData[memberSongDetails.index + 1].trackFull,
+          img: originalData[memberSongDetails.index + 1].image.url,
+          song: originalData[memberSongDetails.index + 1].trackName,
+          artist: originalData[songDetails.index + 1].artists.map((artist, index) => {
+            if(index === originalData[memberSongDetails.index + 1].artists.length - 1){
+              return artist.name
+            }else{
+              return artist.name + " • "
+            }
+          })
+        });
+
+        setTimeout(()=> {
+          refAudio.current.play();
+        }, 200)
+      
+      }else{
+        // Significa que no existe una cancion despues de la actual
+        setMemberSongDetails({
+          index: 0,
+          audioFull: originalData[0].trackFull,
+          img: originalData[0].image.url,
+          song: originalData[0].trackName,
+          artist: originalData[0].artists.map((artist, index) => {
+            if(index === originalData[0].artists.length - 1){
+              return artist.name
+            }else{
+              return artist.name + " • "
+            }
+          })
+        });
+  
+        setTimeout(()=> {
+          refAudio.current.play();
+        }, 200)
+        
+      };
+    };
+      
   };
 
   // NEXT & PREV FOR NON MEMBERS
@@ -424,6 +427,166 @@ const PlayModal = () => {
     }
   };
 
+  // NEXT & PREV FOR MEMBERS
+
+  const handleNextSongMembers = () =>{
+    console.log(originalData);
+    // Si esta en modo aleatorio al clickear el boton:
+    if(!loopActive && shuffleActive && !type){
+      let Y = Math.floor(Math.random() * originalData.length);
+      
+      setMemberSongDetails({
+        index: Y,
+        audioFull: originalData[Y].trackFull,
+        img: albumType ? img : originalData[Y].image.url,
+        song: originalData[Y].trackName,
+        id: originalData[Y].id,
+        artist: originalData[Y].artists.map((artist, index) => {
+          if(index === originalData[Y].artists.length - 1){
+            return artist.name
+          }else{
+            return artist.name + " • "
+          }
+        })
+      });
+
+      setTimeout(()=>{
+        refAudio.current.play();
+      }, 200);
+    };
+
+    // Si ni el loop ni el aleatorio estan activos:
+    if(!loopActive && !shuffleActive && !type){
+      if(originalData[memberSongDetails.index + 1]){
+        // Si hay una cancion despues de la actual:
+        let Y = memberSongDetails.index + 1;
+        setMemberSongDetails({
+          index: Y,
+          audioFull: originalData[Y].trackFull,
+          img: albumType ? img : originalData[Y].image.url,
+          id: originalData[Y].id,
+          song: originalData[Y].trackName,
+          artist: originalData[Y].artists.map((artist, index) => {
+            if(index === originalData[Y].artists.length - 1){
+              return artist.name
+            }else{
+              return artist.name + " • "
+            }
+          })
+        });
+
+        setTimeout(()=>{
+          refAudio.current.play();
+        }, 200);
+    
+      }else{
+        // Si no hay una cancion despues de la actual:
+        setMemberSongDetails({
+          index: 0,
+          audioFull: originalData[0].trackFull,
+          img: albumType ? img : originalData[0].image.url,
+          id: originalData[0].id,
+          song: originalData[0].trackName,
+          artist: originalData[0].artists.map((artist, index) => {
+            if(index === originalData[0].artists.length - 1){
+              return artist.name
+            }else{
+              return artist.name + " • "
+            }
+          })
+        });
+  
+        setTimeout(()=>{
+          refAudio.current.play();
+        }, 200);
+      };
+      
+    };
+
+    if(type){
+      refToast.current.show({sticky: true, severity: 'info', summary: "Hi there!", detail: "This functionality is available only for Playlists"});
+    }
+  
+  };
+
+  const handlePrevSongMembers = () =>{
+    console.log(originalData);
+
+    if(!loopActive && shuffleActive && !type){
+      let Y = Math.floor(Math.random() * originalData.length);
+      
+      setMemberSongDetails({
+        index: Y,
+        audioFull: originalData[Y].trackFull,
+        img: albumType ? img : originalData[Y].image.url,
+        id: originalData[Y].id,
+        song: originalData[Y].trackName,
+        artist: originalData[Y].artists.map((artist, index) => {
+          if(index === originalData[Y].artists.length - 1){
+            return artist.name
+          }else{
+            return artist.name + " • "
+          }
+        })
+      });
+
+      setTimeout(()=>{
+        refAudio.current.play();
+      }, 200);
+    };
+
+    if(!loopActive && !shuffleActive && !type){
+      if(originalData[memberSongDetails.index - 1]){
+        // Si hay una cancion en la posicion anterior a la actual:
+        let Y = memberSongDetails.index - 1;
+        setMemberSongDetails({
+          index: Y,
+          audioFull: originalData[Y].trackFull,
+          img: albumType ? img : originalData[Y].image.url,
+          song: originalData[Y].trackName,
+          id: originalData[Y].id,
+          artist: originalData[Y].artists.map((artist, index) => {
+            if(index === originalData[Y].artists.length - 1){
+              return artist.name
+            }else{
+              return artist.name + " • "
+            }
+          })
+        });
+
+        setTimeout(()=>{
+          refAudio.current.play();
+        }, 200);
+      }else{
+        // Si no hay una cancion antes, reproduce la ultima del array "data":
+       
+        setMemberSongDetails({
+          index: originalData.length - 1,
+          audioFull: originalData[originalData.length-1].trackFull,
+          img: albumType ? img : originalData[originalData.length-1].image.url,
+          song: originalData[originalData.length-1].trackName,
+          id: originalData[originalData.length-1].id,
+          artist: originalData[originalData.length-1].artists.map((artist, index) => {
+            if(index === originalData[originalData.length-1].artists.length - 1){
+              return artist.name
+            }else{
+              return artist.name + " • "
+            }
+          })
+        });
+
+        setTimeout(()=>{
+          refAudio.current.play();
+        }, 200);
+      }
+    }
+
+
+    if(type){
+      refToast.current.show({sticky: true, severity: 'info', summary: "Hi there!", detail: "This functionality is available only for Playlists"});
+    }
+  };
+
   const handleAddFav = (e) =>{
     // setInFavs(!inFavs);
     dispatch(favsUser(usersId?.id, songDetails.id));
@@ -438,31 +601,57 @@ const PlayModal = () => {
       <article className={`playerArticle ${playerHidden ? "hide"  : ""}`}>
         <Toast ref={refToast} position='top-left'></Toast>
 
-        
-        {/* Renderizar una etiqueta audio para members, y otra para no members. */}
-        <audio 
-          ref={refAudio} 
-          src={songDetails.audio} 
-          // Esto viene desde playlist.jsx, es el audio
-
-          onEnded={handleOnEnded}
-          preload='metadata'
-          onDurationChange={(e)=> {setDuration(formatTime(e.currentTarget.duration)) ; setTotalTime(e.currentTarget.duration)}}
-          // Con esto obtenes cuanto dura la cancion, la duracion.
-
-          onPlay={()=> setIsPlaying(true)}
-          // Cuando la cancion esta en play hace eso ˆ
-
-
-          onPause={()=> setIsPlaying(false)}
-          // En pausa hace eso ˆ
-
-
-          loop={loopActive}
-          // Esto es paara activar el loop mediante el boton de loop que tiene el player
-
-          onTimeUpdate={timeUpdate}
-        />
+        {
+          usersId.member ? (
+            <audio 
+              ref={refAudio} 
+              src={memberSongDetails.audioFull} 
+              // Esto viene desde playlist.jsx, es el audio
+    
+              onEnded={handleOnEndedMember}
+              preload='metadata'
+              onDurationChange={(e)=> {setDuration(formatTime(e.currentTarget.duration)) ; setTotalTime(e.currentTarget.duration)}}
+              // Con esto obtenes cuanto dura la cancion, la duracion.
+    
+              onPlay={()=> setIsPlaying(true)}
+              // Cuando la cancion esta en play hace eso ˆ
+    
+    
+              onPause={()=> setIsPlaying(false)}
+              // En pausa hace eso ˆ
+    
+    
+              loop={loopActive}
+              // Esto es paara activar el loop mediante el boton de loop que tiene el player
+    
+              onTimeUpdate={timeUpdate}
+            />
+          ):(
+            <audio 
+              ref={refAudio} 
+              src={songDetails.audio} 
+              // Esto viene desde playlist.jsx, es el audio
+    
+              onEnded={handleOnEnded}
+              preload='metadata'
+              onDurationChange={(e)=> {setDuration(formatTime(e.currentTarget.duration)) ; setTotalTime(e.currentTarget.duration)}}
+              // Con esto obtenes cuanto dura la cancion, la duracion.
+    
+              onPlay={()=> setIsPlaying(true)}
+              // Cuando la cancion esta en play hace eso ˆ
+    
+    
+              onPause={()=> setIsPlaying(false)}
+              // En pausa hace eso ˆ
+    
+    
+              loop={loopActive}
+              // Esto es paara activar el loop mediante el boton de loop que tiene el player
+    
+              onTimeUpdate={timeUpdate}
+            />
+          )
+        }        
         <div className={styles.div}>
         <div className={`whenPlayerHide ${playerHidden && "active"}`} onClick={()=> setPlayerHidden(false)}>
           <i className="fa-solid fa-headphones fa-2xl"></i>
@@ -470,15 +659,30 @@ const PlayModal = () => {
         <div className='w-30'>
           <div className={styles.left}>
             <div className='position-relative'>
-              <img src={songDetails.img} alt="abc" />
+              {
+                usersId.member ? (
+                  <img src={memberSongDetails.img} alt="abc" />
+                  ):(
+                  <img src={songDetails.img} alt="abc" />
+                )
+              }
               <div className={styles.close} onClick={()=> setPlayerOpen(false)}>
                 <i className="fa-solid fa-xmark fa-lg"></i>
               </div>
             </div>
-            <div className='d-flex flex-column align-items-start mx-3 flex-grow-1' style={{gap:"3px"}}>
-              <span style={{color:"whitesmoke", fontSize:"14px"}}>{songDetails.song?.length > 29 ? songDetails.song.slice(0, 28) + "…" : songDetails.song}</span>
-              <span style={{color:"#777777", fontSize:"12px"}}>{songDetails.artist?.toString().replaceAll(",", "").length > 37 ? songDetails.artist.toString().replaceAll(",", "").slice(0, 36) + "…" : songDetails.artist}</span>
-            </div>
+              {
+                usersId.member ? (
+                  <div className='d-flex flex-column align-items-start mx-3 flex-grow-1' style={{gap:"3px"}}>
+                    <span style={{color:"whitesmoke", fontSize:"14px"}}>{memberSongDetails.song?.length > 29 ? memberSongDetails.song.slice(0, 28) + "…" : memberSongDetails.song}</span>
+                    <span style={{color:"#777777", fontSize:"12px"}}>{memberSongDetails.artist?.toString().replaceAll(",", "").length > 37 ? memberSongDetails.artist.toString().replaceAll(",", "").slice(0, 36) + "…" : memberSongDetails.artist}</span>  
+                  </div>
+                ):(
+                  <div className='d-flex flex-column align-items-start mx-3 flex-grow-1' style={{gap:"3px"}}>
+                    <span style={{color:"whitesmoke", fontSize:"14px"}}>{songDetails.song?.length > 29 ? songDetails.song.slice(0, 28) + "…" : songDetails.song}</span>
+                    <span style={{color:"#777777", fontSize:"12px"}}>{songDetails.artist?.toString().replaceAll(",", "").length > 37 ? songDetails.artist.toString().replaceAll(",", "").slice(0, 36) + "…" : songDetails.artist}</span>  
+                  </div>
+                )
+              }
             <div className='d-flex align-items-center'>
               {
                   userFavs.includes(songDetails.id) ? (
@@ -494,11 +698,23 @@ const PlayModal = () => {
           <div className={styles.middle}>
             <div className={styles.middleTop}>
               <i className="fa-solid fa-shuffle fa-lg" style={{color: shuffleActive ? "white" : "#777777"}} onClick={()=> setShuffleActive(!shuffleActive)}></i>
-              <i className="fa-solid fa-backward-step fa-lg" onClick={handlePrevSong}></i>
+              {
+                usersId.member ? (
+                  <i className="fa-solid fa-backward-step fa-lg" onClick={handlePrevSongMembers}></i>
+                ):(
+                  <i className="fa-solid fa-backward-step fa-lg" onClick={handlePrevSong}></i>
+                )
+              }
               <div className={styles.play}>
                 <i className={`fa-solid ${isPlaying ? "fa-pause" : "fa-play ms-1"}`} onClick={tooglePlayPause}></i>
               </div>
-              <i className="fa-solid fa-forward-step fa-lg" onClick={handleNextSong}></i>
+              {
+                usersId.member ? (
+                  <i className="fa-solid fa-forward-step fa-lg" onClick={handleNextSongMembers}></i>
+                ):(
+                  <i className="fa-solid fa-forward-step fa-lg" onClick={handleNextSong}></i>
+                )
+              }
               <i className="fa-solid fa-rotate-right fa-lg" style={{color: loopActive ? "white" : "#777777"}} onClick={()=> setLoopActive(!loopActive)}></i>
             </div>
             <div className={styles.middleBottom}>

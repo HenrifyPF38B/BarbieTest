@@ -12,7 +12,7 @@ const Header = () => {
   const dispatch = useDispatch();
 
   const data = useContext(PlaylistContext);
-  const { login, setLogin, setCartModal, setLoginOpen } = data;
+  const { login, setLogin, setCartModal, setLoginOpen, setPlayerOpen } = data;
 
   const handleFavs = () =>{
     if(login){
@@ -62,7 +62,7 @@ const Header = () => {
                 </div>
               ):(
                 <div>
-                  <i className="fa-solid fa-user fa-2xl" style={{color:"whitesmoke"}} onClick={()=> navigate("/login")}/>
+                  <i className="fa-solid fa-user fa-2xl" style={{color:"whitesmoke"}} onClick={()=> {setPlayerOpen(false) ; navigate("/login")}}/>
                 </div>
               )
             }

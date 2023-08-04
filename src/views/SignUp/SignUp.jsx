@@ -104,7 +104,7 @@ const SignUp = () => {
 
 
     let newUser = {
-      ...form1, password: form2.password1, avatar: imageSelected, userName: username, googleUser: false
+      ...form1, password: form2.password1, avatar: imageSelected, userName: username, googleUser: false, member:false
     };
     console.log(newUser);
     

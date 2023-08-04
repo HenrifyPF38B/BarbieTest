@@ -48,27 +48,15 @@ const Login = () => {
     dispatch(loginUser(logForm));
   };
 
-  const googleLogin = useGoogleLogin({
-    onSuccess: credentialResponse => {
-      let data = jwt_decode(credentialResponse.credential);
-      let newUser = {
-        firstName: data.given_name,
-        lastName: data.family_name,
-        email: data.email,
-        userName: data.name,
-        password: uniqid(),
-        avatar: "/images/google.svg",
-        googleUser: true
-      };
-      dispatch(googleAuthSoul(newUser));
-    },
-    onError: () => {
-      console.log('Login Failed');
-    }})
 
   useEffect(() => {
     if(message === "Email or Username incorrect"){
       refToast.current.show({sticky: true, severity: "error", summary: "Ups!", detail: message});
+      setTimeout(()=>{
+        dispatch(resetMessageState());
+      },1000);
+    }else if(message === "We already have an account registered with that email"){
+      refToast.current.show({sticky: true, severity: "error", summary: "Error!", detail: message});
       setTimeout(()=>{
         dispatch(resetMessageState());
       },1000);
@@ -135,6 +123,7 @@ const Login = () => {
                             email: data.email,
                             userName: data.name,
                             password: uniqid(),
+                            member: false,
                             avatar: "/images/google.svg",
                             googleUser: true
                           };

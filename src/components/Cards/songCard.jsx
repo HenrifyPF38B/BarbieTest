@@ -15,7 +15,7 @@ const SongCard = ({artist, song, id, img, audio, audioFull, songId, explicit}) =
     const navigate = useNavigate();
     const [eyeActive, setEyeActive] = useState(false);
     const data = useContext(PlaylistContext);
-    const { modalOpen, setModalOpen, setPlayerOpen, refPreviewNotAvailableAppJS } = data;
+    const { modalOpen, setModalOpen, setPlayerOpen, refPreviewNotAvailableAppJS, setLoginOpen } = data;
     const [playShow, setPlayShow] = useState(true);
     const [inFavs, setInFavs] = useState(null);
  
@@ -25,7 +25,7 @@ const SongCard = ({artist, song, id, img, audio, audioFull, songId, explicit}) =
         if(!audio){
             refPreviewNotAvailableAppJS.current.show({lifeTime: 5000, severity: 'info', summary: "We're sorry!", detail: "This song's preview is not available!"});
         }else{
-            setPlayerOpen({audio, img, song, artist, type: "song", id: songId})
+            setPlayerOpen({audio, audioFull, img, song, artist, type: "song", id: songId})
         }
     };
 
@@ -54,7 +54,7 @@ const SongCard = ({artist, song, id, img, audio, audioFull, songId, explicit}) =
                 }
                 {
                     !usersId.length && !usersId?.id && 
-                        <i className="fa-regular fa-heart p-1 fa-sm"></i>
+                        <i className="fa-regular fa-heart p-1 fa-sm" onClick={()=> setLoginOpen(true)}></i>
                 }
                 <div className='dropdown songCard'>
                     <i className="fa-solid fa-list-ul fa-sm p-1" id="dLabel" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i>

@@ -15,6 +15,8 @@ import {
   CREATE_ORDER,
   GET_ORDER,
   GOOGLE_AUTH,
+  MAKE_MEMBER,
+  FORGOT_PASSWORD,
 } from "../Action-types";
 import { base_url } from "../baseURL";
 
@@ -205,6 +207,48 @@ export const getUserOrder = (userId) =>{
   }
 };
 
+
+export const makeMember = (info) => {
+  
+  return async function (dispatch) {
+    const res = await fetch(
+      `${base_url}/users/member`,
+      {
+          method: 'PUT',
+          headers:{
+              "Content-type":"application/json; charset=UTF-8"
+          },
+          body: JSON.stringify(info)
+      }
+    );
+    const data = await res.json();
+    console.log(data);
+
+    dispatch({ type: MAKE_MEMBER, payload: data });
+    
+  };
+};
+
+export const forgotPasswordUser = (body) => {
+  
+  return async function (dispatch) {
+    const res = await fetch(
+      `${base_url}/users/forgot-password`,
+      {
+          method: 'PUT',
+          headers:{
+              "Content-type":"application/json; charset=UTF-8"
+          },
+          body: JSON.stringify(body)
+      }
+    );
+    const data = await res.json();
+    console.log(data);
+
+    dispatch({ type: FORGOT_PASSWORD, payload: data });
+    
+  };
+};
 
 export const putUsers = (userId, newData) => {
   return async function (dispatch) {

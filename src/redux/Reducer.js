@@ -47,6 +47,8 @@ import {
   CREATE_ORDER,
   GET_ORDER,
   GOOGLE_AUTH,
+  MAKE_MEMBER,
+  FORGOT_PASSWORD,
 } from "./Action-types";
 
 const initialState = {
@@ -178,11 +180,23 @@ const Reducer = (state = initialState, { type, payload }) => {
         message: payload,
       };
 
+    case MAKE_MEMBER:
+      return {
+        ...state,
+        message: payload,
+      };
+
+    case FORGOT_PASSWORD:
+      return {
+        ...state,
+        message: payload,
+      };
+
     // SONGS ----------------------------------------------------------------------------------
     case GET_SONGS:
       return {
         ...state,
-        songs: payload,
+        songs: payload.data,
       }
 
     case FILTER_SONGS:
@@ -306,10 +320,9 @@ const Reducer = (state = initialState, { type, payload }) => {
 
     //MEMBERSHIPS -----------------------------------------------------------------------------
     case GET_MEMBERSHIPS:
-      console.log(payload)
       return {
         ...state,
-        memberships: payload,
+        memberships: payload.data,
       };
 
     case GET_MEMBERSHIPS_ID:

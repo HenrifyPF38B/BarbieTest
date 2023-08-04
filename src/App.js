@@ -6,7 +6,7 @@ import { PlaylistContext } from './contexts/playlistContext';
 import BuyModal from './modals/buyModal';
 import CartModal from './modals/cartModal';
 import { initMercadoPago } from '@mercadopago/sdk-react'
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { getAlbums } from './redux/Actions/AlbumsActions';
 import { getPlaylists } from './redux/Actions/PlaylistsActions';
 import PlaylistModal from './modals/playlistModal';
@@ -17,6 +17,7 @@ import "primereact/resources/primereact.min.css";                  //core css
 import "primeicons/primeicons.css"; 
 import { getUserOrder, getUsersById } from './redux/Actions/UsersActions';
 import LoginModal from './modals/loginModal';
+import { getMemberships } from './redux/Actions/MembershipsActions';
 
 
 
@@ -26,7 +27,8 @@ function App() {
   const { playerOpen, buyOpen, setBuyOpen, modalOpen, setModalOpen, refPreviewNotAvailableAppJS, loginOpen, setLoginOpen } = data;
   const dispatch = useDispatch();
   const [playerModalAaudio, setPlayerModalAaudio] = useState("");
-
+  const state = useSelector(state => state);
+  const { message, usersId } = state;
   
 
   useEffect(() => {
@@ -35,6 +37,7 @@ function App() {
     dispatch(getAlbums());
     dispatch(getPlaylists());
     dispatch(getSongs());
+    dispatch(getMemberships());
     let userExist = localStorage.getItem("userSoulLife");
 
     if(userExist){
@@ -46,6 +49,11 @@ function App() {
   }, []);
 
 
+  useEffect(() => {
+    if(message === "User now is member"){
+      dispatch(getUsersById(usersId.id));
+    }
+  }, [message]);
 
   return (
     <>

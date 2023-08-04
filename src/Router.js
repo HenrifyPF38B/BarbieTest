@@ -1,7 +1,7 @@
 import React from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
 import Layout from "./components/Layout";
-import { Home, About, Album } from "./views";
+import { Home, About } from "./views";
 import NavBar from "./components/NavBar/NavBar";
 import Login from "./views/Login/Login";
 import ResetP from "./views/ResetP/ResetP";
@@ -45,7 +45,7 @@ const Router = () => {
         <Route index element={<LandingPage />} />
         <Route path="login" element={<Login />} />
         <Route path="sign-up" element={<SignUp />} />
-        <Route path="reset-password" element={<ResetP />} />
+        <Route path="reset-password/:token" element={<ResetP />} />
         <Route path="account" element={<Account/>}/>
         <Route path="forgot-password" element={<ForgotP />} />
         <Route path="checkout" element={<Checkout />} />

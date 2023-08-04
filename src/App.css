@@ -771,11 +771,10 @@ body{
   width: 260px;
   height: 340px;
   background: linear-gradient(to right, #7c108a8a, #c3143193);
-  transform: rotate(20deg) skew(-10deg, -5deg);
   transition: .6s linear;
   display: flex;
   border-radius: 10px;
-  border: 2px solid rgba(255, 255, 255, 0.479);
+  border: none;
   justify-content: center;
   align-items: center;
   text-align: center; 
@@ -783,12 +782,151 @@ body{
 }
 
 .card:hover {
-  box-shadow: rgba(0, 0, 0, 0.5) 5px 3px,
-  rgba(0, 0, 0, 0.4) 10px 6px,
-  rgba(255, 253, 253, 0.3) 15px 9px;
+  box-shadow: rgba(0,0,0,0.5) 5px 3px,
+  rgba(0,0,0,0.4) 10px 6px,
+  rgba(0,0,0,0.3) 15px 9px;
   background: linear-gradient(to right, #7d20c0, #ff2f52);
   color: #ffddee;
   font-size: 1.1rem;
+}
+
+.boxMember {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 400px;
+  gap: 150px;
+}
+
+.boxMember .card:first-child span {
+  position: absolute;
+  overflow: hidden;
+  width: 130px;
+  height: 130px;
+  top: -10px;
+  left: -10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.boxMember .card:first-child span::before {
+  content: 'Basic';
+  position: absolute;
+  width: 150%;
+  height: 40px;
+  background: #DA4453;  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, #89216B, #DA4453);  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to right, #89216B, #DA4453); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */  transform: rotate(-45deg) translateY(-20px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  box-shadow: 0 5px 10px rgba(0,0,0,0.23);
+}
+
+.boxMember .card:first-child span::after {
+  content: '';
+  position: absolute;
+  width: 10px;
+  bottom: 0;
+  left: 0;
+  height: 10px;
+  z-index: -1;
+  box-shadow: 140px -140px #cc3f47;
+  background-image: linear-gradient(45deg, #FF512F 0%, #F09819  51%, #FF512F  100%);
+}
+
+
+/* MIDDLE CHILD */
+
+.boxMember .card span {
+  position: absolute;
+  overflow: hidden;
+  width: 130px;
+  height: 130px;
+  top: -10px;
+  left: -10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.boxMember .card span::before {
+  content: 'Premium';
+  position: absolute;
+  width: 150%;
+  height: 40px;
+  background: #DA4453;  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, #89216B, #DA4453);  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to right, #89216B, #DA4453); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */  transform: rotate(-45deg) translateY(-20px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  box-shadow: 0 5px 10px rgba(0,0,0,0.23);
+}
+
+.boxMember .card span::after {
+  content: '';
+  position: absolute;
+  width: 10px;
+  bottom: 0;
+  left: 0;
+  height: 10px;
+  z-index: -1;
+  box-shadow: 140px -140px #cc3f47;
+  background-image: linear-gradient(45deg, #FF512F 0%, #F09819  51%, #FF512F  100%);
+}
+
+
+/* LAST CHILD */
+.boxMember .card:last-child span {
+  position: absolute;
+  overflow: hidden;
+  width: 130px;
+  height: 130px;
+  top: -10px;
+  left: -10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.boxMember .card:last-child span::before {
+  content: 'Vip';
+  position: absolute;
+  width: 150%;
+  height: 40px;
+  background: #DA4453;  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, #89216B, #DA4453);  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to right, #89216B, #DA4453); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */  transform: rotate(-45deg) translateY(-20px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  box-shadow: 0 5px 10px rgba(0,0,0,0.23);
+}
+
+.boxMember .card:last-child span::after {
+  content: '';
+  position: absolute;
+  width: 10px;
+  bottom: 0;
+  left: 0;
+  height: 10px;
+  z-index: -1;
+  box-shadow: 140px -140px #cc3f47;
+  background-image: linear-gradient(45deg, #FF512F 0%, #F09819  51%, #FF512F  100%);
 }
 .buttonMember {
   width: fit-content;
@@ -800,9 +938,9 @@ body{
   width: 200px;
   margin-bottom: 10px;
   font-size: 15px;
-  border-radius: 30px;
+  border-radius: 7px;
   border: none;
-  box-shadow: 5px 5px 6px black;
+  box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
   text-shadow: 2px 2px 3px rgb(136 0 136 / 50%);
   background: linear-gradient(15deg, #880088, #aa2068, #cc3f47, #de6f3d, #f09f33, #de6f3d, #cc3f47, #aa2068, #880088) no-repeat;
   background-size: 300%;
@@ -861,25 +999,22 @@ body{
 .tittle {
     padding: 2rem 1.2rem;
     border-radius: 10px;
-    margin-top: 25px;
-    background: linear-gradient(to right, #550291a8, #f7183db2);
+    margin-top: 10px;
   }
   .tittle h1 { 
     position: relative;
     font-size: 2.7em;
     letter-spacing: 7px;
     font-family: 'Raleway dots';
-    color: #ff8b07;
-    font-weight: 600;
+    color: #ffebd5be;
+    font-weight: 300;
     text-transform: uppercase;
     width: 100%;    
     text-align: center;
     -webkit-box-reflect: below 0.5px linear-gradient(transparent, rgba(0, 0, 0, 0.377));
     /* El webkit reflect hace el efecto de reflejo de las letras */
     /* Le podeemos poner un fondo naranja o violeta para que pegue con el fondo, tipo asi mira */
-    line-height: 0.84em;
-    outline: none;
-    animation: neonPink 5s linear infinite;
+   
   }
   
   @keyframes neonPink{
@@ -947,8 +1082,8 @@ body{
 }
 
 .pyramid-loader .wrapper .side {
-  width: 90px;
-  height: 90px;
+  width: 70px;
+  height: 70px;
   position: absolute;
   top: 0;
   left: 0;
@@ -982,7 +1117,7 @@ body{
 .pyramid-loader .wrapper .shadow {
   width: 60px;
   height: 60px;
-  background: #efff14;
+  background: #f8fadc6e;
   position: absolute;
   top: 0;
   left: 0;
@@ -1060,13 +1195,13 @@ body{
 }
 
 .ourMember {
-  width: 100%;
+  width: 50%;
   display: flex;
   flex-direction: column;
   align-items: center;
   margin-top: 100px;
   margin-bottom: 60px;
-  background: rgba(199, 199, 199, 0.384);
+  background: rgba(0, 0, 0, 0.452);
   padding: 20px;
   border-radius: 10px;
 }

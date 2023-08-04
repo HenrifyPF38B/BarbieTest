@@ -238,14 +238,14 @@ const Account = () => {
       <div className={styles.delete} onClick={()=> setDelModal({user: `${usersId.userName}`, userId:`${usersId.id}`})}>
         <span>Delete Account</span>
       </div>
-      {/* {
-        openPromo &&
+      {
+        openPromo && !usersId.member &&
         <div className={styles.banner}>
           <div className={styles.bannerTop}>
             <div>
               <h2>Get Premium for free for 1 month</h2>
               <p>After that it's only $15*** per month. Cancel whenever you want!</p>
-              <button>Begin</button>
+              <button onClick={()=> navigate("/memberships")}>Begin</button>
             </div>
             <div className={styles.bannerImg}>
               <img src="/images/promo.jpg" alt="abc" />
@@ -257,7 +257,7 @@ const Account = () => {
             </p>
           </div>
         </div>
-      } */}
+      }
       <div className={styles.subContainer}>
         
         <div className={styles.panel}>
@@ -293,7 +293,10 @@ const Account = () => {
                     <span>{usersId?.firstName + " " + usersId?.lastName}</span>
                   </div>
                   <div className={styles.buttons}>
-                    <button>Upgrade</button>
+                    {
+                      !usersId.member &&
+                      <button onClick={()=> navigate("/memberships")}>Upgrade</button>
+                    }
                     <button onClick={()=> {setViewDetails(true) ; setProfile(false)}}>View Details</button>
                   </div>
                 </div>

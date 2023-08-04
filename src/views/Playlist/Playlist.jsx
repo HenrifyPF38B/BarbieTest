@@ -62,19 +62,32 @@ const Playlist = () => {
   };
 
   const handleOpenPlayer = (el, index, findTrack) =>{
-    if(el.trackPreview){
-      console.log(el);
-      setPlayerOpen({id: el.id, originalData: playlistData[0].tracks, data: dataWithPreview, originalIndex: index, index: findTrack[0].location, audio: el.trackPreview, img: el.image.url, song: el.trackName, artist: el.artists.map((artist, index) => {
-        if(index === el.artists.length - 1){
-          return artist.name
-        }else{
-          return artist.name + " • "
-        }
-      }) })
+    if(usersId.member){
+      if(el.trackFull){
+        setPlayerOpen({id: el.id, originalData: playlistData[0].tracks, data: dataWithPreview, originalIndex: index, audio: el.trackPreview, audioFull: el.trackFull, img: el.image.url, song: el.trackName, artist: el.artists.map((artist, index) => {
+          if(index === el.artists.length - 1){
+            return artist.name
+          }else{
+            return artist.name + " • "
+          }
+        }) })
+      }else{
+        refToast.current.show({sticky: true, severity: 'info', summary: "We're sorry!", detail: "This song is not currently available!"});
+      }
     }else{
-      // Si no tiene preview la cancion, sale la alerta
-      refToast.current.show({sticky: true, severity: 'info', summary: "We're sorry!", detail: "This song's preview is not available!"});
-
+      if(el.trackPreview){
+        setPlayerOpen({id: el.id, originalData: playlistData[0].tracks, data: dataWithPreview, originalIndex: index, index: findTrack[0].location, audio: el.trackPreview, audioFull: el.trackFull, img: el.image.url, song: el.trackName, artist: el.artists.map((artist, index) => {
+          if(index === el.artists.length - 1){
+            return artist.name
+          }else{
+            return artist.name + " • "
+          }
+        }) })
+      }else{
+        // Si no tiene preview la cancion, sale la alerta
+        refToast.current.show({sticky: true, severity: 'info', summary: "We're sorry!", detail: "This song's preview is not available!"});
+  
+      }
     }
   }
 

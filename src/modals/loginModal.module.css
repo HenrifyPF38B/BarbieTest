@@ -22,6 +22,7 @@
   display: flex;
   align-items: start;
   border: 4px solid #7a2828;
+  position: relative;
 }
 
 .left{
@@ -75,7 +76,7 @@
   flex-direction: column;
   gap: 20px;
   width: 70%;
-  height: 350px;
+  height: 430px;
   justify-content: center;
   position: relative;
   border: 4px solid #7a2828;
@@ -106,7 +107,16 @@
   border-radius: 0.2rem;
 }
 
-.right form button{
+
+
+.buttons{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.buttons button:first-child{
   border: none;
   padding: 0.3rem 1rem;
   background: #a73737;  /* fallback for old browsers */
@@ -116,11 +126,64 @@
   letter-spacing: 2px;
   font-family: "raleway";
   border-radius: 0.2rem;
-  margin-top: 2rem;
+  width: 100%;
+  margin-top: 0rem;
   transition: all 0.3s ease;
 }
 
-
-.right form button:hover{
+.buttons button:first-child:hover{
   filter: brightness(120%);
+}
+
+.signUpLink{
+  font-size: 13px;
+  letter-spacing: 0.3px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 0.6rem;
+}
+
+.signUpLink span:last-child{
+  font-weight: 600;
+  text-decoration: underline;
+  font-size: 12.5px;
+  transition: color 0.3s ease;
+  cursor: default;
+}
+
+.signUpLink span:last-child:hover{
+  color: #a73737;
+}
+
+
+.showPassword{
+  position: absolute;
+  right: 8px;
+  top: 27%;
+  color: #1f1f1f;
+  font-size: 13px;
+}
+
+.forgotPassword{
+  font-size: 12px;
+  letter-spacing: 0.5px;
+  margin-left: 4px;
+  margin-top: -4px;
+  transition: color 0.3s ease;
+  cursor: default;
+}
+
+.forgotPassword:hover{
+  color: #7a2828;
+}
+
+.googleAuth{
+  margin-top: 2rem;
+}
+
+.close{
+  position: absolute;
+  top: 5px;
+  left: 4px;
 }
