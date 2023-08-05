@@ -17,7 +17,7 @@ const About = ({ refPanel, panelUp }) => {
       name: "Barbara",
       description:
         "Barbara, from Argentina. 28 Years Old, Full Stack Developer",
-      linkGit: "https://github.com/HenrifyPF38B/Henrify-Front",
+      linkGit: "https://github.com/barbilusenra",
       linkIg: "https://github.com/HenrifyPF38B/Henrify-Front",
       linkLn: "https://linkedin.com/in/bárbara-lucía-senra",
       linkUrl: "https://github.com/HenrifyPF38B/Henrify-Front",
@@ -43,10 +43,10 @@ const About = ({ refPanel, panelUp }) => {
       name: "Ignacio",
       description:
         "Ignacio, from Argentina. 23 Years Old, Full Stack Developer",
-      linkGit: "https://github.com/HenrifyPF38B/Henrify-Front",
+      linkGit: "https://github.com/3003mgf",
       linkIg: "https://github.com/HenrifyPF38B/Henrify-Front",
       linkLn: "https://www.linkedin.com/in/marcelo-cruz-ignacio-gramajo-feijoo-03932b257/",
-      linkUrl: "https://github.com/HenrifyPF38B/Henrify-Front",
+      linkUrl: "https://mgf-world.netlify.app/",
     },
     {
       name: "Jaider",

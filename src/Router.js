@@ -21,6 +21,7 @@ import LandingPage from "./components/LandingPage";
 import Checkout from "./views/Checkout/Checkout";
 import BeMember from "./views/Membership/beMember";
 import SuccessPurchase from "./views/SuccessPurchase/SuccessPurchase";
+import ErrorPurchase from "./views/errorPurchase/errorPurchase";
 
 
 const Router = () => {
@@ -50,6 +51,7 @@ const Router = () => {
         <Route path="forgot-password" element={<ForgotP />} />
         <Route path="checkout" element={<Checkout />} />
         <Route path="success" element={<SuccessPurchase />} />
+        <Route path="error" element={<ErrorPurchase />} />
       </Routes>
     </div>
   );

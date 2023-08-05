@@ -82,6 +82,13 @@
   text-align: center;
 }
 
+.favTitle span{
+  font-family: "Raleway dots";
+  color: white;
+  font-size: 30px;
+  letter-spacing: 8px;
+}
+
 
 @keyframes gradient {
 	0% {

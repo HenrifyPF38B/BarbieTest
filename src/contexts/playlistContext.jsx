@@ -16,7 +16,13 @@ export const PlaylistProvider = ({children}) =>{
     const [loginOpen, setLoginOpen] = useState(false);
     const [login, setLogin] = useState(null);
     const [totalGetter, setTotalGetter] = useState([]);
-    
+    const [filteredResults, setFilteredResults] = useState([]);
+
+    const [alphabet, setAlphabet] = useState(null);
+    const [letter, setLetter] = useState(null);
+    const [artists, setArtists] = useState(null);
+    const [popularity, setPopularity] = useState(null);
+    const [explicit, setExplicit] = useState(null);
 
     useEffect(() => {
         const getUserFromLocalStorage = JSON.parse(localStorage.getItem("userSoulLife"));
@@ -55,7 +61,19 @@ export const PlaylistProvider = ({children}) =>{
         loginOpen,
         setLoginOpen,
         totalGetter,
-        setTotalGetter
+        setTotalGetter,
+        filteredResults,
+        setFilteredResults,
+        alphabet,
+        setAlphabet,
+        letter,
+        setLetter,
+        artists,
+        setArtists,
+        popularity,
+        setPopularity,
+        explicit,
+        setExplicit
     } 
 
     return <PlaylistContext.Provider value={data}>{children}</PlaylistContext.Provider>

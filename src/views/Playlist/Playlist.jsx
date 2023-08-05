@@ -28,37 +28,40 @@ const Playlist = () => {
 
 
   const handlePlayRandom = () =>{
-    // SI NO ES MEMBER
-    let songsWithPreview = [];
-    playlistData[0].tracks.map(el => {
-      if(el.trackPreview){
-        songsWithPreview.push(el);
-      }
-    });
-    let randomNumber = Math.floor(Math.random() * songsWithPreview.length);
-  
-    if(songsWithPreview.length > 0){
-      setPlayerOpen({data: songsWithPreview, index: randomNumber, audio: songsWithPreview[randomNumber].trackPreview, img: songsWithPreview[randomNumber].image.url, song: songsWithPreview[randomNumber].trackName, artist: songsWithPreview[randomNumber].artists.map((artist, index) => {
-        if(index === songsWithPreview[randomNumber].artists.length - 1){
+    if(usersId.member){
+      // IF MEMBER
+      let randomNumber = Math.floor(Math.random() * playlistData[0].tracks.length);
+      
+      setPlayerOpen({id: playlistData[0].tracks[randomNumber].id ,originalIndex: playlistData[0].tracks[randomNumber].location ,originalData: playlistData[0].tracks, audioFull: playlistData[0].tracks[randomNumber].trackFull, img: playlistData[0].tracks[randomNumber].image.url, song: playlistData[0].tracks[randomNumber].trackName, artist: playlistData[0].tracks[randomNumber].artists.map((artist, index) => {
+        if(index === playlistData[0].tracks[randomNumber].artists.length - 1){
           return artist.name
         }else{
           return artist.name + " • "
         }
       })});
     }else{
-      refToast.current.show({sticky: true, severity: 'info', summary: "We're sorry!", detail: "This album is only available for Members!"});
+      let songsWithPreview = [];
+      playlistData[0].tracks.map(el => {
+        if(el.trackPreview){
+          songsWithPreview.push(el);
+        }
+      });
+      let randomNumber = Math.floor(Math.random() * songsWithPreview.length);
+    
+      if(songsWithPreview.length > 0){
+        setPlayerOpen({data: songsWithPreview, index: randomNumber, audio: songsWithPreview[randomNumber].trackPreview, img: songsWithPreview[randomNumber].image.url, song: songsWithPreview[randomNumber].trackName, artist: songsWithPreview[randomNumber].artists.map((artist, index) => {
+          if(index === songsWithPreview[randomNumber].artists.length - 1){
+            return artist.name
+          }else{
+            return artist.name + " • "
+          }
+        })});
+      }else{
+        refToast.current.show({sticky: true, severity: 'info', summary: "We're sorry!", detail: "This album is only available for Members!"});
+      }
     }
 
-    // IF MEMBER
-    /*
-    setPlayerOpen({data: playlistData[0].tracks, audio: playlistData[0].tracks[randomNumber].trackFull, img: playlistData[0].tracks[randomNumber].image.url, song: playlistData[0].tracks[randomNumber].trackName, artist: playlistData[0].tracks[randomNumber].artists.map((artist, index) => {
-      if(index === playlistData[0].tracks[randomNumber].artists.length - 1){
-        return artist.name
-      }else{
-        return artist.name + " • "
-      }
-    })});
-    */
+    
   };
 
   const handleOpenPlayer = (el, index, findTrack) =>{
@@ -93,21 +96,29 @@ const Playlist = () => {
 
   const handleAddFav = (e) =>{
     // setInFavs(!inFavs);
-    dispatch(favsUser(usersId?.id, playlistData[0]?.playlistId));
-    if(e.target.dataset.id === "add"){
-        dispatch(addToFav(playlistData[0]?.playlistId));
+    if(usersId.id){
+      dispatch(favsUser(usersId?.id, playlistData[0]?.playlistId));
+      if(e.target.dataset.id === "add"){
+          dispatch(addToFav(playlistData[0]?.playlistId));
+      }else{
+          dispatch(removeFromFav(playlistData[0]?.playlistId))
+      }
     }else{
-        dispatch(removeFromFav(playlistData[0]?.playlistId))
+      return refToast.current.show({sticky: true, severity: 'info', summary: "We're sorry!", detail: "Please login to access this functionality!"});
     }
 };
 
   const handleAddFavRows = (e, id) =>{
     // setInFavs(!inFavs);
-    dispatch(favsUser(usersId?.id, id));
-    if(e.target.dataset.id === "add"){
-        dispatch(addToFav(id));
+    if(usersId.id){
+      dispatch(favsUser(usersId?.id, id));
+      if(e.target.dataset.id === "add"){
+          dispatch(addToFav(id));
+      }else{
+          dispatch(removeFromFav(id))
+      }
     }else{
-        dispatch(removeFromFav(id))
+      return refToast.current.show({sticky: true, severity: 'info', summary: "We're sorry!", detail: "Please login to access this functionality!"});
     }
 };
 

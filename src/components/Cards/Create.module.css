@@ -4,10 +4,8 @@
   justify-content: center;
   align-items: center;
   padding: 30px;
-  background-image: url("../assets/abstract.png");
-  background-size: cover;
+  background: #1f1f1f;
   height: 100%;
-  margin-top: 20px;
 }
 .container {
   background: rgb(0, 0, 0);
@@ -23,7 +21,7 @@
   text-transform: uppercase;
   width: 100%;
   text-align: center;
-  -webkit-box-reflect: below 0.5px linear-gradient(transparent, #0004);
+  -webkit-box-reflect: below 0.4px linear-gradient(transparent, #0004);
   line-height: 0.84em;
   text-shadow: 0 0 10px rgb(116, 0, 96), 0 0 20px rgb(116, 0, 96),
     0 0 40px rgb(116, 0, 96), 0 0 80px rgb(116, 0, 96),
@@ -156,72 +154,23 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  color: #ffffffd0;
-  font-weight: 400;
+  color: whitesmoke;
+  font-weight: 200;
+  text-transform: uppercase;
   letter-spacing: 2px;
   margin-top: 30px;
 }
 
-.container2 {
-  padding: 10px;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 30px;
-}
-
-.songContainer {
-  cursor: pointer;
-  background: linear-gradient(to right, #32133a, #000000);
-  border-radius: 8px;
-  margin-top: 20px;
-  padding: 5px 15px 5px 0;
-  transition: all 0.6s ease;
-}
-.songContainer:hover {
-  scale: 1.1;
-  box-shadow: 3px 3px 10px black;
-}
-
-.image {
-  border-radius: 8px;
-  width: 80px;
-  border: none;
-}
-.search {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  margin-top: 20px;
-}
-.imageAdd {
-  width: 30px;
-  margin: 0 10px 0 5px;
-  opacity: 0;
-  visibility: hidden;
-  transition: all 0.6s ease;
-}
-
-.songContainer:hover .imageAdd {
-  opacity: 1;
-  visibility: visible;
-}
-
-.imageAdd:hover {
-  scale: 1.1;
-}
-
-.seeAll {
+.selectname {
   display: flex;
   justify-content: center;
-  margin: 0 0 0 500px;
-  text-decoration: none;
-  font-size: 16px;
-  color: #fff1f5c2;
-}
-
-.seeAll:hover {
-  color: wheat;
+  align-items: center;
+  color: whitesmoke;
+  text-transform: uppercase;  
+  letter-spacing: 2px;
+  font-size: 30px;
+  font-weight: 200;
+  margin-top: 30px;
 }
 
 
@@ -236,20 +185,7 @@
   margin-bottom: 40px;
 }
 
-.cardsContainer {
-  padding: 7px 7px 0 7px;
-  background-image: url("../assets/caddds.png");
-  border-radius: 10px;
-  display: flex;
-  position: relative;
-  flex-direction: column;
-  width: fit-content;
-  transition: all 0.6s ease;
-  box-shadow: 3px 3px 5px black;
-}
-.cardsContainer:hover {
-    scale: 1.1;
-}
+
 .titulo {
   position: relative;
   font-size: 2.5em;
@@ -258,10 +194,8 @@
   margin-bottom: 60px;
   color: whitesmoke;
   text-transform: uppercase;
-  width: 100%;
-  text-align: center;
-  -webkit-box-reflect: below 0.5px linear-gradient(transparent, #0004);
-  line-height: 0.84em;
+  text-align: center; 
+  line-height: 0.44em;
   text-shadow: 0 0 10px rgb(116, 0, 96), 0 0 20px rgb(116, 0, 96),
     0 0 40px rgb(116, 0, 96), 0 0 80px rgb(116, 0, 96),
     0 0 160px rgb(116, 0, 96);
@@ -298,9 +232,19 @@
 }
 
 .selectedSong {
-  margin-top: 20px; 
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 20px;
+  gap: 20px; 
+  margin-top: 30px; 
+  margin-bottom: 40px;
 }
-
+.addSongs { 
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+}
 .imageSelected {
   width: 83px;
   border-radius: 5px;
@@ -308,14 +252,11 @@
   z-index: 2;
   position: relative;
 }
-
-.songs {
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   position: relative;
-  background-image: url('../assets/caddds.png');
-  background-size: cover;
-  border-radius: 5px;
-  padding: 7px 7px 0 7px;
-  transition: all 0.6s ease;
 }
 .songs:hover {
   scale: 1.1;
@@ -340,8 +281,8 @@
   z-index: 2;
   position: relative;
 }
-.songart {
-  color: rgba(255, 255, 255, 0.795);
+.songCard {
+  color: rgba(0, 0, 0, 0.795);
   font-size: 15px;
   font-weight: 100;
   letter-spacing: 1.5px;
@@ -349,26 +290,95 @@
   position: relative;
 }
 
-.removeButton {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: wheat;
-  background: black; 
-  border: none;
-  margin: 5px;
-  width: 20px;
-  height: 20px;
-  border-radius: 5px;
-  position: relative; 
-  z-index: 2; 
-}
-.removeButton:hover {
-  scale: 1.1;
-}
+
 .notfound {
   color: red;
   font-weight: 200;
   margin-top: 30px;
   letter-spacing: 1.5px;
+}
+
+.searchSong{
+  margin-top: 1rem;
+  width: 50%;
+ }
+
+ .searchSong input{
+  font-size: 14px;
+  padding: 0.7rem 1rem;
+ }
+
+ .searchSong a{
+  font-size: 14px;
+  color: #828080;
+  letter-spacing: 1.3px;
+ }
+
+
+ .searchSong a:hover{
+  color: whitesmoke;
+  background-color: #1f1f1f !important;
+ }
+
+ .searchSong input{
+  border: none !important;
+ }
+
+ .searchSong input:focus{
+  box-shadow: none !important;
+}
+
+.searchSong input::placeholder{
+  color: #777777;
+  font-size: 13px;
+  letter-spacing: 0.2px;
+}
+
+.favorites {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 20px;
+  gap: 20px;
+  padding: 20px;
+}
+
+.favTit{
+  margin-top: 70px;
+}
+
+.pagFavs {
+  margin-bottom: 30px;
+}
+
+.typewriterText1, .typewriterText2, .typewriterText3 {
+  font-family: 'Courier New', Courier, monospace;
+  white-space: nowrap;
+  overflow: hidden;
+  border-right: .15em solid orange;
+}
+
+.typewriterText1 {
+  animation: typing 3.5s steps(30, end) 1s forwards, 
+             blink-caret .75s step-end infinite;
+}
+
+.typewriterText2 {
+  animation: typing 3.5s steps(30, end) 4.5s forwards, 
+             blink-caret .75s step-end infinite;
+}
+
+.typewriterText3 {
+  animation: typing 3.5s steps(30, end) 8s forwards, 
+             blink-caret .75s step-end infinite;
+}
+
+@keyframes typing {
+  from { width: 0 }
+  to { width: 100% }
+}
+
+@keyframes blink-caret {
+  from, to { border-color: transparent }
+  50% { border-color: orange }
 }

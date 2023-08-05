@@ -231,77 +231,87 @@ const Checkout = () => {
   const [preferenceId, setPreferenceId] = useState(null);
   
   const getPreferenceId = () => {
-    let itemsMp = [];
-    userCart.map(el => {
-      itemsMp.push({
-        title: el.name,
-        unit_price: el.price,
-        quantity: el.quantity,
-        picture_url: el.image,
-        currency_id: "ARS"
+    if((newBillAdd.firstName && newBillAdd.lastName && newBillAdd.state && newBillAdd.zipCode && newBillAdd.email && newBillAdd.city && newBillAdd.address) || sameBillingAddress){
+      let itemsMp = [];
+      userCart.map(el => {
+        itemsMp.push({
+          title: el.name,
+          unit_price: el.price,
+          quantity: el.quantity,
+          picture_url: el.image,
+          currency_id: "ARS"
+        });
       });
-    });
-
-    fetch("https://mp-get-preference-id.up.railway.app/create_preference", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({items: [...itemsMp, {
-        title: `Shipping Fee - ${shipSelected}`,
-        unit_price: Number(shippingFee),
-        quantity: 1,
-        currency_id: "ARS"
-      }]}),
-    })
-      .then((response) => {
-        console.log(response);
-        return response.json();
+  
+      fetch("http://localhost:3001/api/create_preference", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({items: [...itemsMp, {
+          title: `Shipping Fee - ${shipSelected}`,
+          unit_price: Number(shippingFee),
+          quantity: 1,
+          currency_id: "ARS"
+        }]}),
       })
-      .then((preference) => {
-        setPreferenceId(preference.id);
-      })
-      .catch((error) => {
-        console.error(error);
-      })
+        .then((response) => {
+          console.log(response);
+          return response.json();
+        })
+        .then((preference) => {
+          setPreferenceId(preference.id);
+        })
+        .catch((error) => {
+          console.error(error);
+        })
+    }else{
+      // ALERT
+      refToast.current.show({sticky: true, severity: 'warn', summary: `Hey ${usersId?.userName}!`, detail: "Please complete all fields"});
+    }
   };
 
   // en el body le pasamos los itemms
   const handleMp = () => {
-    let itemsMp = [];
-    userCart.map(el => {
-      itemsMp.push({
-        title: el.name,
-        unit_price: el.price,
-        quantity: el.quantity,
-        picture_url: el.image,
-        currency_id: "ARS"
+    if((newBillAdd.firstName && newBillAdd.lastName && newBillAdd.state && newBillAdd.zipCode && newBillAdd.email && newBillAdd.city && newBillAdd.address) || sameBillingAddress){
+      let itemsMp = [];
+      userCart.map(el => {
+        itemsMp.push({
+          title: el.name,
+          unit_price: el.price,
+          quantity: el.quantity,
+          picture_url: el.image,
+          currency_id: "ARS"
+        })
+      });
+  
+      fetch("http://localhost:3001/api/create_preference", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({items: [...itemsMp, {
+          title: `Shipping Fee - ${shipSelected}`,
+          unit_price: Number(shippingFee),
+          quantity: 1,
+          currency_id: "ARS"
+        }]}),
       })
-    });
-
-    fetch("https://mp-get-preference-id.up.railway.app/create_preference", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({items: [...itemsMp, {
-        title: `Shipping Fee - ${shipSelected}`,
-        unit_price: Number(shippingFee),
-        quantity: 1,
-        currency_id: "ARS"
-      }]}),
-    })
-      .then((response) => {
-        return response.json();
-      })
-      .then((preference) => {
-        setPreferenceId(preference.id);
-        // este es el id que nos trae el back te acordas?
-        // y listo
-      })
-      .catch((error) => {
-        console.error(error);
-      })
+        .then((response) => {
+          return response.json();
+        })
+        .then((preference) => {
+          setPreferenceId(preference.id);
+          // este es el id que nos trae el back te acordas?
+          // y listo
+        })
+        .catch((error) => {
+          console.error(error);
+        })
+    }else{
+      // ALERT
+      refToast.current.show({sticky: true, severity: 'warn', summary: `Hey ${usersId?.userName}!`, detail: "Please complete all fields"});
+    }
   };
 
   useEffect(() => {
@@ -650,7 +660,7 @@ const Checkout = () => {
                           }}
 
                           onError={(data, actions)=>{
-                            console.log(data);
+                            navigate("/error");
                           }}
 
                           onCancel={(data, actions)=> {
@@ -666,7 +676,10 @@ const Checkout = () => {
                   <div className='d-flex justify-content-center align-items-center mt-4'>
                     <div className={styles.mp}>
                       <img src="/images/mp2.svg" alt="abc" width={50} />
-                      <button onClick={getPreferenceId}>Mercado Pago</button>
+                      <button 
+                        onClick={getPreferenceId}>
+                          Mercado Pago
+                    </button>
                     </div>
                   </div>
                 }

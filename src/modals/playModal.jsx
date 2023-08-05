@@ -223,6 +223,7 @@ const PlayModal = () => {
     // Si no esta el loop activado y el modo aleatorio tampoco:
     if(!loopActive && !shuffleActive && !type){
       if(originalData[memberSongDetails.index + 1]){
+        console.log(originalData[memberSongDetails.index + 1]);
         // Significa que existe una cancion despues de la actual
         setMemberSongDetails({
           index: memberSongDetails.index + 1,
@@ -230,7 +231,7 @@ const PlayModal = () => {
           audioFull: originalData[memberSongDetails.index + 1].trackFull,
           img: originalData[memberSongDetails.index + 1].image.url,
           song: originalData[memberSongDetails.index + 1].trackName,
-          artist: originalData[songDetails.index + 1].artists.map((artist, index) => {
+          artist: originalData[memberSongDetails.index + 1].artists.map((artist, index) => {
             if(index === originalData[memberSongDetails.index + 1].artists.length - 1){
               return artist.name
             }else{
@@ -589,12 +590,26 @@ const PlayModal = () => {
 
   const handleAddFav = (e) =>{
     // setInFavs(!inFavs);
-    dispatch(favsUser(usersId?.id, songDetails.id));
-    if(e.target.dataset.id === "add"){
-        dispatch(addToFav(songDetails.id));
+    if(usersId.id){
+      if(usersId.member){
+        dispatch(favsUser(usersId?.id, memberSongDetails.id));
+        if(e.target.dataset.id === "add"){
+            dispatch(addToFav(memberSongDetails.id));
+        }else{
+            dispatch(removeFromFav(memberSongDetails.id))
+        }
+      }else if(!usersId.member){
+        dispatch(favsUser(usersId?.id, songDetails.id));
+        if(e.target.dataset.id === "add"){
+            dispatch(addToFav(songDetails.id));
+        }else{
+            dispatch(removeFromFav(songDetails.id))
+        }
+      }
     }else{
-        dispatch(removeFromFav(songDetails.id))
+      refToast.current.show({sticky: true, severity: 'info', summary: "We're sorry!", detail: "Please login to access this functionality!"});
     }
+    
 };
 
   return ( 
@@ -685,10 +700,22 @@ const PlayModal = () => {
               }
             <div className='d-flex align-items-center'>
               {
-                  userFavs.includes(songDetails.id) ? (
-                      <i className="fa-solid fa-heart me-2" data-id="remove" style={{color: "#E1402E"}} onClick={handleAddFav}></i>
+                  usersId.member ? (
+                    <div>
+                      {userFavs.includes(memberSongDetails.id) ? (
+                        <i className="fa-solid fa-heart me-2" data-id="remove" style={{color: "#E1402E"}} onClick={handleAddFav}></i>
+                      ):(
+                          <i className="fa-regular fa-heart me-2" data-id="add" style={{color: "whitesmoke"}} onClick={handleAddFav}></i>
+                      )}
+                    </div>
                   ):(
-                      <i className="fa-regular fa-heart me-2" data-id="add" style={{color: "whitesmoke"}} onClick={handleAddFav}></i>
+                    <div>
+                      {userFavs.includes(songDetails.id) ? (
+                        <i className="fa-solid fa-heart me-2" data-id="remove" style={{color: "#E1402E"}} onClick={handleAddFav}></i>
+                      ):(
+                          <i className="fa-regular fa-heart me-2" data-id="add" style={{color: "whitesmoke"}} onClick={handleAddFav}></i>
+                      )}
+                    </div>
                   )
               }
               <i className="fa-solid fa-minimize fa-sm" style={{color:"whitesmoke"}} onClick={()=> setPlayerHidden(true)}></i>

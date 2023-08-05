@@ -12,7 +12,7 @@ export const getPlaylists = () => {
   
   return async function (dispatch) {
     
-    const res = await fetch(`http://localhost:3001/api/playlists`);
+    const res = await fetch(`${base_url}/playlists`);
     const data = await res.json();
     
     return dispatch({ type: GET_PLAYLISTS, payload: data });

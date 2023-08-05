@@ -2,9 +2,34 @@ import style from "./dropdownMenu.module.css";
 //import dash from "../assets/dashboard.svg";
 import not from "../assets/notamusica.svg";
 import arrow from "../assets/arrow.svg";
+import { useDispatch, useSelector } from "react-redux";
+import { useContext, useEffect, useState } from "react";
+import { filterSongs } from "../../redux/Actions/SongsActions";
+import { PlaylistContext } from "../../contexts/playlistContext";
 
+
+
+const compare = (a, b) => {
+  return ('' + a.name).localeCompare(b.name);
+}
+
+const compareDesc = (a, b) => {
+  return ('' + b.name).localeCompare(a.name);
+}
 
 const DropdownMenu = () => {
+
+  const dispatch = useDispatch();
+  const state = useSelector(state => state);
+  const { songs, filteredSongs } = state;
+
+  const dataContext = useContext(PlaylistContext);
+  const { filteredResults, setFilteredResults, alphabet, setAlphabet, letter, setLetter, artists, setArtists, popularity, setPopularity, explicit, setExplicit } = dataContext;
+
+
+
+
+
   const genderHandleClick = () => {
     const genderList = document.getElementById("genderList");
     const isListShown = genderList.style.height !== "0px";
@@ -56,6 +81,49 @@ const DropdownMenu = () => {
     }
   };
 
+
+
+
+  const handleAlphabet = (e) =>{
+    // if(alphabet === e.target.dataset.id){
+    //   setAlphabet(null);
+    // }else{
+    //   setAlphabet(e.target.dataset.id);
+    // }
+  };
+
+  const handleArtist = (e) =>{
+    // if(artists === e.target.dataset.id){
+    //   setArtists(null);
+    // }else{
+    //   setArtists(e.target.dataset.id)
+    // }
+  };
+  
+  const handleLetter = (e) =>{
+    // if(letter === e.target.dataset.id){
+    //   setLetter(null);
+    // }else{
+    //   setLetter(e.target.dataset.id)
+    // }
+  };
+  
+  const handlePopularity = (e) =>{
+    // if(popularity === e.target.dataset.id){
+    //   setPopularity(null);
+    // }else{
+    //   setPopularity(e.target.dataset.id)
+    // }
+  };
+  
+  const handleExplicit = (e) =>{
+    // if(explicit === e.target.dataset.id){
+    //   setExplicit(null);
+    // }else{
+    //   setExplicit(e.target.dataset.id)
+    // }
+  };
+
   return (
     <div className={style.nav}>
       <ul className={style.list}>
@@ -65,6 +133,8 @@ const DropdownMenu = () => {
           </h4> */}
         </li>
 
+
+          {/* ALPHABET */}
         <li className={style.list_item}>
           <div
             className={`${style.list_button} 
@@ -72,96 +142,290 @@ const DropdownMenu = () => {
             onClick={genderHandleClick}
           >
             <img src={not} className={style.list__img} alt="icon" />
-            <a href="#" className={style.nav_link}>
-              Genders
-            </a>
+            <span className={style.nav_link}>
+              Alphabetically
+            </span>
             <img src={arrow} className={style.list__arrow} alt="arrow icon" />
           </div>
 
           <ul className={style.list__show} id="genderList">
             <li className={style.list__inside}>
-              <a
-                href="#"
-                className={`${style.nav__link} ${style.nav__linkinside}`}
+              <span
+                data-id="asc"
+                
+                onClick={handleAlphabet}
+                className={`${style.nav__link} ${style.nav__linkinside} ${alphabet === "asc" && "filterSelected"}`}
               >
-                Electrónica
-              </a>
+                A - Z
+              </span>
             </li>
             <li className={style.list__inside}>
-              <a
-                href="#"
-                className={`${style.nav__link} ${style.nav__linkinside}`}
+              <span
+                data-id="desc"
+                onClick={handleAlphabet}
+                className={`${style.nav__link} ${style.nav__linkinside} ${alphabet === "desc" && "filterSelected"}`}
               >
-                Rock
-              </a>
+                Z - A
+              </span>
+            </li>
+            
+          </ul>
+        </li>
+        {/* BY LETTER */}
+        <li className={style.list_item}>
+          <div
+            className={`${style.list_button} 
+            ${style.list_buttonClick}`}
+            onClick={specialHandleClick}
+          >
+            <img src={not} className={style.list__img} alt="icon" />
+            <span className={style.nav_link}>
+              By Letter
+            </span>
+            <img src={arrow} className={style.list__arrow} alt="arrow icon" />
+          </div>
+
+          <ul className={style.list__show} id="specialList">
+            <li className={style.list__inside}>
+              <span
+                data-id="A"
+                
+                onClick={handleLetter}
+                className={`${style.nav__link} ${style.nav__linkinside} ${letter === "A" && "filterSelected"}`}
+              >
+                A
+              </span>
             </li>
             <li className={style.list__inside}>
-              <a
-                href="#"
-                className={`${style.nav__link} ${style.nav__linkinside}`}
+              <span
+                data-id="B"
+                onClick={handleLetter}
+                className={`${style.nav__link} ${style.nav__linkinside} ${letter === "B" && "filterSelected"}`}
               >
-                Hiphop
-              </a>
+               B
+              </span>
             </li>
             <li className={style.list__inside}>
-              <a
-                href="#"
-                className={`${style.nav__link} ${style.nav__linkinside}`}
+              <span
+                data-id="C"
+                onClick={handleLetter}
+                className={`${style.nav__link} ${style.nav__linkinside} ${letter === "C" && "filterSelected"}`}
               >
-                Country
-              </a>
+               C
+              </span>
             </li>
             <li className={style.list__inside}>
-              <a
-                href="#"
-                className={`${style.nav__link} ${style.nav__linkinside}`}
+              <span
+                data-id="D"
+                onClick={handleLetter}
+                className={`${style.nav__link} ${style.nav__linkinside} ${letter === "D" && "filterSelected"}`}
               >
-                Indie
-              </a>
+               D
+              </span>
             </li>
             <li className={style.list__inside}>
-              <a
-                href="#"
-                className={`${style.nav__link} ${style.nav__linkinside}`}
+              <span
+                data-id="E"
+                onClick={handleLetter}
+                className={`${style.nav__link} ${style.nav__linkinside} ${letter === "E" && "filterSelected"}`}
               >
-                Cumbia
-              </a>
+                E
+              </span>
             </li>
             <li className={style.list__inside}>
-              <a
-                href="#"
-                className={`${style.nav__link} ${style.nav__linkinside}`}
+              <span
+                data-id="F"
+                onClick={handleLetter}
+                className={`${style.nav__link} ${style.nav__linkinside} ${letter === "F" && "filterSelected"}`}
               >
-                Reggaeton
-              </a>
+               F
+              </span>
             </li>
             <li className={style.list__inside}>
-              <a
-                href="#"
-                className={`${style.nav__link} ${style.nav__linkinside}`}
+              <span
+                data-id="G"
+                onClick={handleLetter}
+                className={`${style.nav__link} ${style.nav__linkinside} ${letter === "G" && "filterSelected"}`}
               >
-                Pop
-              </a>
+               G
+              </span>
             </li>
             <li className={style.list__inside}>
-              <a
-                href="#"
-                className={`${style.nav__link} ${style.nav__linkinside}`}
+              <span
+                data-id="H"
+                onClick={handleLetter}
+                className={`${style.nav__link} ${style.nav__linkinside} ${letter === "H" && "filterSelected"}`}
               >
-                R&B
-              </a>
+               H
+              </span>
             </li>
             <li className={style.list__inside}>
-              <a
-                href="#"
-                className={`${style.nav__link} ${style.nav__linkinside}`}
+              <span
+                data-id="I"
+                onClick={handleLetter}
+                className={`${style.nav__link} ${style.nav__linkinside} ${letter === "I" && "filterSelected"}`}
               >
-                Soul
-              </a>
+               I
+              </span>
             </li>
+            <li className={style.list__inside}>
+              <span
+                data-id="J"
+                onClick={handleLetter}
+                className={`${style.nav__link} ${style.nav__linkinside} ${letter === "J" && "filterSelected"}`}
+              >
+               J
+              </span>
+            </li>
+            <li className={style.list__inside}>
+              <span
+                data-id="K"
+                onClick={handleLetter}
+                className={`${style.nav__link} ${style.nav__linkinside} ${letter === "K" && "filterSelected"}`}
+              >
+               K
+              </span>
+            </li>
+            <li className={style.list__inside}>
+              <span
+                data-id="L"
+                onClick={handleLetter}
+                className={`${style.nav__link} ${style.nav__linkinside} ${letter === "L" && "filterSelected"}`}
+              >
+               L
+              </span>
+            </li>
+            <li className={style.list__inside}>
+              <span
+                data-id="N"
+                onClick={handleLetter}
+                className={`${style.nav__link} ${style.nav__linkinside} ${letter === "M" && "filterSelected"}`}
+              >
+               M
+              </span>
+            </li>
+            <li className={style.list__inside}>
+              <span
+                data-id="N"
+                onClick={handleLetter}
+                className={`${style.nav__link} ${style.nav__linkinside} ${letter === "N" && "filterSelected"}`}
+              >
+               N
+              </span>
+            </li>
+            <li className={style.list__inside}>
+              <span
+                data-id="O"
+                onClick={handleLetter}
+                className={`${style.nav__link} ${style.nav__linkinside} ${letter === "O" && "filterSelected"}`}
+              >
+               O
+              </span>
+            </li>
+            <li className={style.list__inside}>
+              <span
+                data-id="P"
+                onClick={handleLetter}
+                className={`${style.nav__link} ${style.nav__linkinside} ${letter === "desc" && "filterSelected"}`}
+              >
+               P
+              </span>
+            </li>
+            <li className={style.list__inside}>
+              <span
+                data-id="Q"
+                onClick={handleLetter}
+                className={`${style.nav__link} ${style.nav__linkinside} ${letter === "Q" && "filterSelected"}`}
+              >
+                Q
+              </span>
+            </li>
+            <li className={style.list__inside}>
+              <span
+                data-id="R"
+                onClick={handleLetter}
+                className={`${style.nav__link} ${style.nav__linkinside} ${letter === "R" && "filterSelected"}`}
+              >
+               R
+              </span>
+            </li>
+            <li className={style.list__inside}>
+              <span
+                data-id="S"
+                onClick={handleLetter}
+                className={`${style.nav__link} ${style.nav__linkinside} ${letter === "S" && "filterSelected"}`}
+              >
+               S
+              </span>
+            </li>
+            <li className={style.list__inside}>
+              <span
+                data-id="T"
+                onClick={handleLetter}
+                className={`${style.nav__link} ${style.nav__linkinside} ${letter === "T" && "filterSelected"}`}
+              >
+               T
+              </span>
+            </li>
+            <li className={style.list__inside}>
+              <span
+                data-id="U"
+                onClick={handleLetter}
+                className={`${style.nav__link} ${style.nav__linkinside} ${letter === "U" && "filterSelected"}`}
+              >
+               U
+              </span>
+            </li>
+            <li className={style.list__inside}>
+              <span
+                data-id="V"
+                onClick={handleLetter}
+                className={`${style.nav__link} ${style.nav__linkinside} ${letter === "V" && "filterSelected"}`}
+              >
+               V
+              </span>
+            </li>
+            <li className={style.list__inside}>
+              <span
+                data-id="W"
+                onClick={handleLetter}
+                className={`${style.nav__link} ${style.nav__linkinside} ${letter === "W" && "filterSelected"}`}
+              >
+               W
+              </span>
+            </li>
+            <li className={style.list__inside}>
+              <span
+                data-id="X"
+                onClick={handleLetter}
+                className={`${style.nav__link} ${style.nav__linkinside} ${letter === "X" && "filterSelected"}`}
+              >
+               X
+              </span>
+            </li>
+            <li className={style.list__inside}>
+              <span
+                data-id="Y"
+                onClick={handleLetter}
+                className={`${style.nav__link} ${style.nav__linkinside} ${letter === "Y" && "filterSelected"}`}
+              >
+               Y
+              </span>
+            </li>
+            <li className={style.list__inside}>
+              <span
+                data-id="Z"
+                onClick={handleLetter}
+                className={`${style.nav__link} ${style.nav__linkinside} ${letter === "Z" && "filterSelected"}`}
+              >
+               Z
+              </span>
+            </li>
+            
           </ul>
         </li>
 
+          {/* OUR SELECTION */}
         <li className={style.list_item}>
           <div
             className={`${style.list_button} 
@@ -169,49 +433,98 @@ const DropdownMenu = () => {
             onClick={modHandleClick}
           >
             <img src={not} className={style.list__img} alt="icon" />
-            <a href="#" className={style.nav_link}>
-              Feelings
-            </a>
+            <span  className={style.nav_link}>
+              Our Selection
+            </span>
             <img src={arrow} className={style.list__arrow} alt="arrow icon" />
           </div>
 
           <ul className={style.list__show} id="modList">
             <li className={style.list__inside}>
-              <a
-                href="#"
-                className={`${style.nav__link} ${style.nav__linkinside}`}
-              >
-                Alegre
-              </a>
+                <span
+                  data-id="Mau y Ricky"
+                  onClick={handleArtist}
+                  className={`${style.nav__link} ${style.nav__linkinside} ${artists === "Mau y Ricky" && "filterSelected"}`}
+                >
+                  Mau y Ricky
+                </span>
             </li>
             <li className={style.list__inside}>
-              <a
-                href="#"
-                className={`${style.nav__link} ${style.nav__linkinside}`}
-              >
-                Sentimental
-              </a>
+                <span
+                  data-id="Duki"
+                  onClick={handleArtist}
+                  className={`${style.nav__link} ${style.nav__linkinside} ${artists === "Duki" && "filterSelected"}`}
+                >
+                  Duki
+                </span>
             </li>
             <li className={style.list__inside}>
-              <a
-                href="#"
-                className={`${style.nav__link} ${style.nav__linkinside}`}
-              >
-                Ensueño
-              </a>
+                <span
+                  data-id="Bad Bunny"
+                  onClick={handleArtist}
+                  className={`${style.nav__link} ${style.nav__linkinside} ${artists === "Bad Bunny" && "filterSelected"}`}
+                >
+                  Bad Bunny
+                </span>
             </li>
             <li className={style.list__inside}>
-              <a
-                href="#"
-                className={`${style.nav__link} ${style.nav__linkinside}`}
-              >
-                Animada
-              </a>
+                <span
+                  data-id="Ice Spice"
+                  onClick={handleArtist}
+                  className={`${style.nav__link} ${style.nav__linkinside} ${artists === "Ice Spice" && "filterSelected"}`}
+                >
+                  Ice Spice
+                </span>
             </li>
-           
+            <li className={style.list__inside}>
+                <span
+                  data-id="Rels B"
+                  onClick={handleArtist}
+                  className={`${style.nav__link} ${style.nav__linkinside} ${artists === "Rels B" && "filterSelected"}`}
+                >
+                  Rels B
+                </span>
+            </li>
+            <li className={style.list__inside}>
+                <span
+                  data-id="Dua Lipa"
+                  onClick={handleArtist}
+                  className={`${style.nav__link} ${style.nav__linkinside} ${artists === "Dua Lipa" && "filterSelected"}`}
+                >
+                  Dua Lipa
+                </span>
+            </li>
+            <li className={style.list__inside}>
+                <span
+                  data-id="Nicki Minaj"
+                  onClick={handleArtist}
+                  className={`${style.nav__link} ${style.nav__linkinside} ${artists === "Nicki Minaj" && "filterSelected"}`}
+                >
+                  Nicki Minaj
+                </span>
+            </li>
+            <li className={style.list__inside}>
+                <span
+                  data-id="Peso Pluma"
+                  onClick={handleArtist}
+                  className={`${style.nav__link} ${style.nav__linkinside} ${artists === "Peso Pluma" && "filterSelected"}`}
+                >
+                  Peso Pluma
+                </span>
+            </li>
+            <li className={style.list__inside}>
+                <span
+                  data-id="KAROL G"
+                  onClick={handleArtist}
+                  className={`${style.nav__link} ${style.nav__linkinside} ${artists === "KAROL G" && "filterSelected"}`}
+                >
+                  KAROL G
+                </span>
+            </li>
           </ul>
         </li>
 
+          {/* POPULARITY */}
         <li className={style.list_item}>
           <div
             className={`${style.list_button} 
@@ -219,64 +532,63 @@ const DropdownMenu = () => {
             onClick={decadeHandleClick}
           >
             <img src={not} className={style.list__img} alt="icon" />
-            <a href="#" className={style.nav_link}>
-              Decade
-            </a>
+            <span  className={style.nav_link}>
+              Popularity
+            </span>
             <img src={arrow} className={style.list__arrow} alt="arrow icon" />
           </div>
 
           <ul className={style.list__show} id="decadeList">
             <li className={style.list__inside}>
-              <a
-                href="#"
-                className={`${style.nav__link} ${style.nav__linkinside}`}
+              <span
+                data-id="verylow"
+                onClick={handlePopularity}
+                className={`${style.nav__link} ${style.nav__linkinside} ${popularity === "verylow" && "filterSelected"}`}
               >
-                60s
-              </a>
+                Very Low
+              </span>
             </li>
             <li className={style.list__inside}>
-              <a
-                href="#"
-                className={`${style.nav__link} ${style.nav__linkinside}`}
+              <span
+                data-id="low"
+                onClick={handlePopularity}
+                className={`${style.nav__link} ${style.nav__linkinside} ${popularity === "low" && "filterSelected"}`}
               >
-               70s
-              </a>
+               Low
+              </span>
             </li>
             <li className={style.list__inside}>
-              <a
-                href="#"
-                className={`${style.nav__link} ${style.nav__linkinside}`}
+              <span
+                data-id="regular"
+                onClick={handlePopularity}
+                className={`${style.nav__link} ${style.nav__linkinside} ${popularity === "regular" && "filterSelected"}`}
               >
-               80s
-              </a>
+               Regular
+              </span>
             </li>
             <li className={style.list__inside}>
-              <a
-                href="#"
-                className={`${style.nav__link} ${style.nav__linkinside}`}
+              <span
+                data-id="high"
+                onClick={handlePopularity}
+                className={`${style.nav__link} ${style.nav__linkinside} ${popularity === "high" && "filterSelected"}`}
               >
-                90s
-              </a>
+                High
+              </span>
             </li>
             <li className={style.list__inside}>
-              <a
-                href="#"
-                className={`${style.nav__link} ${style.nav__linkinside}`}
+              <span
+                data-id="veryhigh"
+                onClick={handlePopularity}
+                className={`${style.nav__link} ${style.nav__linkinside} ${popularity === "veryhigh" && "filterSelected"}`}
               >
-                2000-2010
-              </a>
-            </li>
-            <li className={style.list__inside}>
-              <a
-                href="#"
-                className={`${style.nav__link} ${style.nav__linkinside}`}
-              >
-                2020 +
-              </a>
+              Very High
+              </span>
             </li>
             
           </ul>
         </li>
+
+        {/* EXPLICIT */}
         <li className={style.list_item}>
           <div
             className={`${style.list_button}
@@ -284,176 +596,36 @@ const DropdownMenu = () => {
             onClick={themesHandleClick}
           >
             <img src={not} className={style.list__img} alt="icon" />
-            <a href="#" className={style.nav_link}>
-              Themes
-            </a>
+            <span  className={style.nav_link}>
+              Explicit
+            </span>
             <img src={arrow} className={style.list__arrow} alt="arrow icon" />
           </div>
 
           <ul className={style.list__show} id="themesList">
             <li className={style.list__inside}>
-              <a
-                href="#"
-                className={`${style.nav__link} ${style.nav__linkinside}`}
+              <span
+                data-id="explicit"
+                onClick={handleExplicit}
+                className={`${style.nav__link} ${style.nav__linkinside} ${explicit === "explicit" && "filterSelected"}`}
               >
-                Tema:
-              </a>
+                Explicit (20)
+              </span>
             </li>
             <li className={style.list__inside}>
-              <a
-                href="#"
-                className={`${style.nav__link} ${style.nav__linkinside}`}
+              <span
+                data-id="nonexplicit"
+                onClick={handleExplicit}
+                className={`${style.nav__link} ${style.nav__linkinside} ${explicit === "nonexplicit" && "filterSelected"}`}
               >
-                 Tema:
-              </a>
+                Non-Explicit (100)
+              </span>
             </li>
-            <li className={style.list__inside}>
-              <a
-                href="#"
-                className={`${style.nav__link} ${style.nav__linkinside}`}
-              >
-                 Tema:
-              </a>
-            </li>
-            <li className={style.list__inside}>
-              <a
-                href="#"
-                className={`${style.nav__link} ${style.nav__linkinside}`}
-              >
-                 Tema:
-              </a>
-            </li>
-            <li className={style.list__inside}>
-              <a
-                href="#"
-                className={`${style.nav__link} ${style.nav__linkinside}`}
-              >
-                 Tema:
-              </a>
-            </li>
-            <li className={style.list__inside}>
-              <a
-                href="#"
-                className={`${style.nav__link} ${style.nav__linkinside}`}
-              >
-                 Tema:
-              </a>
-            </li>
-            <li className={style.list__inside}>
-              <a
-                href="#"
-                className={`${style.nav__link} ${style.nav__linkinside}`}
-              >
-                 Tema:
-              </a>
-            </li>
-            <li className={style.list__inside}>
-              <a
-                href="#"
-                className={`${style.nav__link} ${style.nav__linkinside}`}
-              >
-                 Tema:
-              </a>
-            </li>
-            <li className={style.list__inside}>
-              <a
-                href="#"
-                className={`${style.nav__link} ${style.nav__linkinside}`}
-              >
-                Tema:
-              </a>
-            </li>
+            
           </ul>
         </li>
 
-        <li className={style.list_item}>
-          <div
-            className={`${style.list_button}
-             ${style.list_buttonClick}`}
-            onClick={specialHandleClick}
-          >
-            <img src={not} className={style.list__img} alt="icon" />
-            <a href="#" className={style.nav_link}>
-             Our selection
-            </a>
-            <img src={arrow} className={style.list__arrow} alt="arrow icon" />
-          </div>
-
-          <ul className={style.list__show} id="specialList">
-            <li className={style.list__inside}>
-              <a
-                href="#"
-                className={`${style.nav__link} ${style.nav__linkinside}`}
-              >
-                Concentration
-              </a>
-            </li>
-            <li className={style.list__inside}>
-              <a
-                href="#"
-                className={`${style.nav__link} ${style.nav__linkinside}`}
-              >
-                More Soul
-              </a>
-            </li>
-            <li className={style.list__inside}>
-              <a
-                href="#"
-                className={`${style.nav__link} ${style.nav__linkinside}`}
-              >
-                Hard Work
-              </a>
-            </li>
-            <li className={style.list__inside}>
-              <a
-                href="#"
-                className={`${style.nav__link} ${style.nav__linkinside}`}
-              >
-                Party night
-              </a>
-            </li>
-            <li className={style.list__inside}>
-              <a
-                href="#"
-                className={`${style.nav__link} ${style.nav__linkinside}`}
-              >
-                Mates y music
-              </a>
-            </li>
-            <li className={style.list__inside}>
-              <a
-                href="#"
-                className={`${style.nav__link} ${style.nav__linkinside}`}
-              >
-                Feelings chill
-              </a>
-            </li>
-            <li className={style.list__inside}>
-              <a
-                href="#"
-                className={`${style.nav__link} ${style.nav__linkinside}`}
-              >
-                Training
-              </a>
-            </li>
-            <li className={style.list__inside}>
-              <a
-                href="#"
-                className={`${style.nav__link} ${style.nav__linkinside}`}
-              >
-                Vacations
-              </a>
-            </li>
-            <li className={style.list__inside}>
-              <a
-                href="#"
-                className={`${style.nav__link} ${style.nav__linkinside}`}
-              >
-                In the morning
-              </a>
-            </li>
-          </ul>
-        </li>
+        
       </ul>
     </div>
   );

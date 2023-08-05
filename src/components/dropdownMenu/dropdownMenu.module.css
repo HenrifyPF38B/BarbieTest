@@ -38,15 +38,20 @@
   line-height: 1.8 !important;
   color: rgba(255, 246, 238, 0.836);
   text-decoration: none;
+  transition: all 0.3s ease;
+  padding: 2px 4px 2px 4px;
+
+  cursor: default;
 }
 
-.nav__linkinside:hover {
+.nav__linkinside:hover{
   background: rgba(15, 14, 14, 0.274);
-  padding: 2px 4px 2px 4px;
+  /* padding: 2px 4px 2px 4px; */
   color: #ff79d7;
   font-weight: 500;
   box-shadow: 1px 2px 3px rgba(0, 0, 0, 0.575);
 }
+
 
 .tit {
   display: flex;
@@ -113,3 +118,4 @@
   margin-left: auto;
   transition: transform 0.3s;
 }
+

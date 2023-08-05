@@ -52,7 +52,9 @@ const Favorites = () => {
         </div>
       </div>
       <div className='d-flex align-items-center w-100 flex-column justify-content-center'>
-        <div className={styles.favTitle}></div>
+        <div className={styles.favTitle}>
+          <span>My Favorites</span>
+        </div>
         <div className={styles.right}>
           {
             userFavs.length === 0 &&

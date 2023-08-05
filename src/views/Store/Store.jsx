@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import DropdownMenu from '../../components/dropdownMenu/dropdownMenu';
 import styles from "./Store.module.css"
 import SongCard from '../../components/Cards/songCard';
@@ -8,6 +8,7 @@ import { Typeahead } from 'react-bootstrap-typeahead'; // ES2015
 import { useDispatch, useSelector } from "react-redux";
 import { filterSongs, getSongs } from '../../redux/Actions/SongsActions';
 import Pagination from "../../components/Pagination/Pagination";
+import { PlaylistContext } from '../../contexts/playlistContext';
 
 
 const Store = () => {
@@ -16,6 +17,9 @@ const Store = () => {
   const dispatch = useDispatch();
   const state = useSelector(state => state);
   const { songs, filteredSongs } = state;
+
+  const dataContext = useContext(PlaylistContext);
+  const { alphabet, letter, explicit, popularity, artists } = dataContext;
 
   const [optionsSearch, setOptionsSearch] = useState([]);
   
@@ -88,54 +92,63 @@ const Store = () => {
       <div className={styles.pag}>
           {!filteredSongs.length && (
              <Pagination
-            currentPage={currentPage}
-            lastPage={lastPage}
-            prevPage={prevPage}
-            nextPage={nextPage}
-          />
-          )}         
+              currentPage={currentPage}
+              lastPage={lastPage}
+              prevPage={prevPage}
+              nextPage={nextPage}
+            />
+          )}
+                 
       </div>
       <div className={styles.cards}>
         {
           filteredSongs?.length ? (
-                <SongCard
-                  artist={filteredSongs[0].artists.map((artist, index) => {
-                    if(index === filteredSongs[0].artists.length - 1){
-                      return artist.name
-                    }else{
-                      return artist.name + " • "
-                    }
-                  })}
-                  song={filteredSongs[0].name}
-                  songId={filteredSongs[0].songId}
-                  id={filteredSongs[0].id}
-                  img={filteredSongs[0].image && filteredSongs[0].image}
-                  audio={filteredSongs[0].audioPreview}
-                  audioFull={filteredSongs[0].audioFull}
-                />
+            filteredSongs.map(el =>{
+              return <SongCard
+                artist={el.artists.map((artist, index) => {
+                  if(index === el.artists.length - 1){
+                    return artist.name
+                  }else{
+                    return artist.name + " • "
+                  }
+                })}
+                song={el.name}
+                songId={el.songId}
+                id={el.id}
+                img={el.image && el.image}
+                audio={el.audioPreview}
+                audioFull={el.audioFull}
+              />
+            })
               
           ):(
-            currentSongs?.map((el, index) => {
-                return(
-                  <SongCard
-                    key={index}
-                    artist={el.artists.map((artist, index) => {
-                      if(index === el.artists.length - 1){
-                        return artist.name
-                      }else{
-                        return artist.name + " • "
-                      }
-                    })}
-                    song={el.name}
-                    id={el.id}
-                    img={el.image}
-                    audio={el.audioPreview}
-                    audioFull={el.audioFull}
-                    songId={el.songId}
-                    explicit={el.explicit}
-                  />
-                )
-              })
+            (!filteredSongs.length && (alphabet || explicit || popularity || artists || letter)) ? (
+              <div>
+                
+              </div>
+            ):(
+              currentSongs?.map((el, index) => {
+                  return(
+                    <SongCard
+                      key={index}
+                      artist={el.artists.map((artist, index) => {
+                        if(index === el.artists.length - 1){
+                          return artist.name
+                        }else{
+                          return artist.name + " • "
+                        }
+                      })}
+                      song={el.name}
+                      id={el.id}
+                      img={el.image}
+                      audio={el.audioPreview}
+                      audioFull={el.audioFull}
+                      songId={el.songId}
+                      explicit={el.explicit}
+                    />
+                  )
+                })
+            )
           )
         }
         

@@ -13,3 +13,10 @@ export const resetUserStates = () =>{
     dispatch({ type: RESET_USERSID_USERFAVS });
   };
 }
+
+
+
+export const resetFilteredSongs = () =>{
+  
+
+};

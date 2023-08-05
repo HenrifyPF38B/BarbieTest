@@ -9,160 +9,66 @@ import song from "../assets/ari.jpeg";
 import add from "../assets/add.svg";
 import playlist from "../assets/about2.png";
 import Pagination from "../Pagination/Pagination";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  deleteSongs,
+  filterSongs,
+  getSongs,
+} from "../../redux/Actions/SongsActions";
+import { Typeahead } from "react-bootstrap-typeahead";
+import SongsPlaylist from "./UserPlaylist/songsPlaylist";
+import { favsUser } from "../../redux/Actions/UsersActions";
+import SongCard from "./songCard";
 
 
 const Create = () => {
   const navigate = useNavigate();
-  const location = useLocation();
-  const queryParams = new URLSearchParams(location.search);
-  const songId = queryParams.get("songId");
+  const dispatch = useDispatch();
+  const state = useSelector((state) => state);
+  const { songs, filteredSongs, userFavs } = state;
 
-  const playlistData = [
-    {
-      id: 1,
-      songName: "Song 1",
-      artist: "Artist 1",
-    },
-    {
-      id: 2,
-      songName: "Song 2",
-      artist: "Artist 2",
-    },
-    {
-      id: 3,
-      songName: "Song 3",
-      artist: "Artist 3",
-    },
-    {
-      id: 4,
-      songName: "Song 4",
-      artist: "Artist 4",
-    },
-    {
-      id: 5,
-      songName: "Song 5",
-      artist: "Artist 5",
-    },
-    {
-      id: 6,
-      songName: "Song 6",
-      artist: "Artist 6",
-    },
-    {
-      id: 7,
-      songName: "Song 7",
-      artist: "Artist 7",
-    },
-    {
-      id: 8,
-      songName: "Song 8",
-      artist: "Artist 8",
-    },
-    {
-      id: 9,
-      songName: "Song 9",
-      artist: "Artist 9",
-    },
-    {
-      id: 10,
-      songName: "Song 10",
-      artist: "Artist 10",
-    },
-    {
-      id: 11,
-      songName: "Song 11",
-      artist: "Artist 11",
-    },
-    {
-      id: 12,
-      songName: "Song 12",
-      artist: "Artist 12",
-    },
-    {
-      id: 13,
-      songName: "Song 13",
-      artist: "Artist 13",
-    },
-    {
-      id: 14,
-      songName: "Song 14",
-      artist: "Artist 14",
-    },
-    {
-      id: 15,
-      songName: "Song 15",
-      artist: "Artist 15",
-    },
-    {
-      id: 16,
-      songName: "Song 16",
-      artist: "Artist 16",
-    },
-    {
-      id: 17,
-      songName: "Song 17",
-      artist: "Artist 17",
-    },
-    {
-      id: 18,
-      songName: "Song 18",
-      artist: "Artist 18",
-    },
-    {
-      id: 19,
-      songName: "Song 19",
-      artist: "Artist 19",
-    },
-    {
-      id: 20,
-      songName: "Song 20",
-      artist: "Artist 20",
-    },
-  ];
-
+  const [optionsSearch, setOptionsSearch] = useState([]);
   const [selectedSongs, setSelectedSongs] = useState([]);
+  const [randomSongs, setRandomSongs] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
-    setSelectedSongs([]);
-  }, [songId]);
+    const userId = "your_user_id_here";
+    dispatch(favsUser(userId));
+  }, []);
 
-  const handleAddToPlaylist = (id) => {
-    const selectedSong = playlistData.find((item) => item.id === id);
-    if (selectedSong) {
-      setSelectedSongs((prevSelectedSongs) => [
-        ...prevSelectedSongs,
-        selectedSong,
-      ]);
+  //**************SONGS - RANDOM **********/
+
+  useEffect(() => {
+    if (songs.length > 0) {
+      let shuffledSongs = songs.sort(() => 0.5 - Math.random());
+      let selectedRandomSongs = shuffledSongs.slice(0, 4);
+      setRandomSongs(selectedRandomSongs);
     }
-  };
+  }, [songs]);
 
-  const handleRemoveFromPlaylist = (id) => {
-    console.log("Trying to remove song with ID:", id);
-    setSelectedSongs((prevSelectedSongs) =>
-      prevSelectedSongs.filter((song) => song.id !== id)
-    );
-  };
-  // PAGINADO
-  const [currentPage, setCurrentPage] = useState(1);
-  const songsPerPage = 8;
+  useEffect(() => {
+    console.log(songs);
+    let options = [];
+    songs.map((el, index) => {
+      options.push({
+        id: el.id,
+        label: el.artists[0].name + " • " + el.name,
+        name: el.name,
+        audioPreview: el.audioPreview,
+        audioFull: el.audioFull,
+        image: el.image,
+        artists: el.artists,
+        songId: el.songId,
+        popularity: el.popularity,
+        explicit: el.explicit,
+      });
+    });
+    setOptionsSearch(options);
+  }, [songs]);
 
-  const nextPage = (event) => {
-    event.preventDefault();
-    setCurrentPage((prevPage) => prevPage + 1);
-  };
+  //******************************************** */
 
-  const prevPage = (event) => {
-    event.preventDefault();
-    setCurrentPage((prevPage) => prevPage - 1);
-  };
-
-  const lastPage = Math.ceil(playlistData.length / songsPerPage);
-  const indexOfLastSong = currentPage * songsPerPage;
-  const indexOfFirstSong = indexOfLastSong - songsPerPage;
-  const currentSongs = playlistData.slice(indexOfFirstSong, indexOfLastSong);
-
-
-  // IMAGE PREVIEW FUNCIONALITY
   useEffect(() => {
     document.querySelector("#camarita").addEventListener("click", (e) => {
       document.querySelector("#hiddenInput").click();
@@ -188,35 +94,104 @@ const Create = () => {
         document
           .querySelector("#camarita")
           .insertAdjacentElement("beforeBegin", div);
-        // Aca habia insertado la variable img, entonces no se cargaba la div. Lo cambie a div para que inserte la div.
       });
     });
   }, []);
 
+  //***************************************************** */
+
+  const handleAddToPlaylist = (song) => {
+    if (selectedSongs.length < 20) {
+      if (!selectedSongs.some((selected) => selected.id === song.id)) {
+        setSelectedSongs((prevSongs) => [...prevSongs, song]);
+      }
+    } else {
+      if (!selectedSongs.some((selected) => selected.id === song.id)) {
+        setIsModalOpen(true);
+      }
+    }
+  };
+
+  const handleRemoveSong = (songId) => {
+    setSelectedSongs((prevSongs) =>
+      prevSongs.filter((selected) => selected.songId !== songId)
+    );
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+  };
+
+  //********************** PAGINATION SONGS API *********** */
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const songsPerPage = 4;
+
+  const nextPage = (event) => {
+    event.preventDefault();
+    setCurrentPage((prevPage) => prevPage + 1);
+  };
+
+  const prevPage = (event) => {
+    event.preventDefault();
+    setCurrentPage((prevPage) => prevPage - 1);
+  };
+
+  const indexOfLastSelectedSong = currentPage * songsPerPage;
+  const indexOfFirstSelectedSong = indexOfLastSelectedSong - songsPerPage;
+  const currentSelectedSongs = selectedSongs.slice(
+    indexOfFirstSelectedSong,
+    indexOfLastSelectedSong
+  );
+  const lastSelectedSongsPage = Math.ceil(selectedSongs.length / songsPerPage);
+
+  // ************ PAGINATION FAVORITES **********************//
+  const [favCurrentPage, setFavCurrentPage] = useState(1);
+  const favSongsPerPage = 4;
+
+  const indexOfLastFavSong = favCurrentPage * favSongsPerPage;
+  const indexOfFirstFavSong = indexOfLastFavSong - favSongsPerPage;
+  const currentFavSongs = userFavs.slice(
+    indexOfFirstFavSong,
+    indexOfLastFavSong
+  );
+  const lastFavSongsPage = Math.ceil(userFavs.length / favSongsPerPage);
+
+  const favNextPage = (event) => {
+    event.preventDefault();
+    setFavCurrentPage((prevPage) => prevPage + 1);
+  };
+
+  const favPrevPage = (event) => {
+    event.preventDefault();
+    setFavCurrentPage((prevPage) => prevPage - 1);
+  };
+
   return (
     <div className={style.container}>
-      <div className={style.titu}>
-        <h2 className={style.title}>Create a new playlist</h2>
-      </div>
-      <div
-        className={style.backContainer}
-        onClick={() => navigate("/myPlaylist")}
-      >
-        <img className={style.backImg} src={back} alt="back" />
-      </div>
-      <div className={style.containerCam}>
-        <div className={style.camarita} id="camarita">
-          <span className={style.textCamera}>Add photo</span>
-          <img className={style.imgCamera} src={camera} alt="abc" />
+      <form onSubmit={handleSubmit} className={style.form}>
+        <div className={style.titu}>
+          <h2 className={style.title}>Create a new playlist</h2>
+
         </div>
-        <input
-          type="file"
-          accept="images/*"
-          id="hiddenInput"
-          style={{ visibility: "hidden" }}
-        />
-      </div>
-      <form className={style.form}>
+        <div
+          className={style.backContainer}
+          onClick={() => navigate("/myPlaylist")}
+        >
+          <img className={style.backImg} src={back} alt="back" />
+        </div>
+        <div className={style.containerCam}>
+          <div className={style.camarita} id="camarita">
+            <span className={style.textCamera}>Add photo</span>
+            <img className={style.imgCamera} src={camera} alt="abc" />
+          </div>
+          <input
+            type="file"
+            accept="images/*"
+            id="hiddenInput"
+            style={{ visibility: "hidden" }}
+          />
+        </div>
         <div className={style.boxName}>
           <input
             className={style.input}
@@ -224,121 +199,173 @@ const Create = () => {
             name="name"
             placeholder=" Name..."
           ></input>
-
-          <input
-            className={style.input2}
-            type="text"
-            name="name"
-            placeholder=" Add an optional description"
-          ></input>
-          <h3 className={style.title2}>
-            What songs would you like to save in your playlist?
-          </h3>
-          <button className={style.add}>Add your favorites</button>
-          
-        <div className={style.titulo}>
-        <h2>Your favorites songs</h2>
-      </div>
-          <div className={style.container2}>
-        {currentSongs.map((item) => (
-          <div className={style.cardsContainer} key={item.id}>
-            <img className={style.image} src={playlist} alt="playlist" />
-            <img
-              className={style.imageAdd}
-              src={add}
-              alt="add"
-              onClick={() => handleAddToPlaylist(item.id)}
+          <div className={style.favTit}>
+            <h3 className={style.title2}>Your favorites songs</h3>
+          </div>
+          <div className={style.favorites}>
+            {currentFavSongs.length > 0 &&
+              songs.map((song) => {
+                if (currentFavSongs.includes(song.songId)) {
+                  return (
+                    <div>
+                      <SongCard
+                        artist={song.artists.map((artist, index) => {
+                          if (index === song.artists.length - 1) {
+                            return artist.name;
+                          } else {
+                            return artist.name + " • ";
+                          }
+                        })}
+                        song={song.name}
+                        songId={song.songId}
+                        id={song.id}
+                        img={song.image}
+                        audio={song.audioPreview}
+                        audioFull={song.audioFull}
+                        isFavoriteView={true}
+                        handleAddToPlaylist={() => handleAddToPlaylist(song)}
+                        handleRemoveSong={handleRemoveSong}
+                      />
+                    </div>
+                  );
+                }
+                return null;
+              })}
+          </div>
+          <div className={style.pagFavs}>
+            <Pagination
+              currentPage={favCurrentPage}
+              lastPage={lastFavSongsPage}
+              prevPage={favPrevPage}
+              nextPage={favNextPage}
             />
-            <div className={style.songInfo}>
-              <h4>{item.songName}</h4>
-              <p>{item.artist}</p>
+          </div>
+          <h3 className={style.title2}>Search by songs...</h3>
+          <div className={style.searchSong}>
+            <Typeahead
+              placeholder="Select songs"
+              onChange={(selected) => {
+                if (selected.length > 0) {
+                  const songSelected = optionsSearch.find(
+                    (option) => option.id === selected[0].id
+                  );
+                  handleAddToPlaylist(songSelected);
+                }
+              }}
+              options={optionsSearch}
+            />
+          </div>
+          <div className={style.boxSelect}>
+            <div className={style.selectedSong}>
+              {filteredSongs.length > 0 ? (
+                filteredSongs.map((song) => (
+                  <div className={style.songCard} key={song.id}>
+                    <SongsPlaylist
+                      key={song.id}
+                      artist={song.artists.map((artist, index) => {
+                        if (index === song.artists.length - 1) {
+                          return artist.name;
+                        } else {
+                          return artist.name + " • ";
+                        }
+                      })}
+                      song={song.name}
+                      songId={song.songId}
+                      id={song.id}
+                      img={song.image && song.image}
+                      audio={song.audioPreview}
+                      audioFull={song.audioFull}
+                      handleRemoveSong={handleRemoveSong}
+                      selectedSongs={selectedSongs}
+                      setSelectedSongs={setSelectedSongs}
+                      handleAddToPlaylist={() => handleAddToPlaylist(song)}
+                    />
+                  </div>
+                ))
+              ) : randomSongs.length > 0 ? (
+                randomSongs.map((song) => (
+                  <div className={style.songCard} key={song.id}>
+                    <SongsPlaylist
+                      artist={song.artists.map((artist, index) => {
+                        if (index === song.artists.length - 1) {
+                          return artist.name;
+                        } else {
+                          return artist.name + " • ";
+                        }
+                      })}
+                      song={song.name}
+                      songId={song.songId}
+                      id={song.id}
+                      img={song.image && song.image}
+                      audio={song.audioPreview}
+                      audioFull={song.audioFull}
+                      handleRemoveSong={handleRemoveSong}
+                      selectedSongs={selectedSongs}
+                      setSelectedSongs={setSelectedSongs}
+                      handleAddToPlaylist={() => handleAddToPlaylist(song)}
+                    />
+                  </div>
+                ))
+              ) : (
+                <p>No songs available</p>
+              )}
+            </div>
+
+            <h2 className={style.selectname}>My Playlist</h2>
+            <div className={style.selectedSong}>
+              {currentSelectedSongs.length > 0 ? (
+                currentSelectedSongs.map((song) => (
+                  <div className={style.songCard} key={song.id}>
+                    <SongsPlaylist
+                      artist={song.artists.map((artist, index) => {
+                        if (index === song.artists.length - 1) {
+                          return artist.name;
+                        } else {
+                          return artist.name + " • ";
+                        }
+                      })}
+                      song={song.name}
+                      songId={song.songId}
+                      id={song.id}
+                      img={song.image && song.image}
+                      audio={song.audioPreview}
+                      audioFull={song.audioFull}
+                      handleRemoveSong={handleRemoveSong}
+                      selectedSongs={selectedSongs}
+                      setSelectedSongs={setSelectedSongs}
+                      handleAddToPlaylist={() => handleAddToPlaylist(song)}
+                      isInPlaylist={true}
+                    />
+                  </div>
+                ))
+              ) : (
+                <p>No songs added to your playlist yet.</p>
+              )}
+            </div>
+            <div className={style.pagination}>
+              <Pagination
+                currentPage={currentPage}
+                lastPage={lastSelectedSongsPage}
+                prevPage={prevPage}
+                nextPage={nextPage}
+              />
             </div>
           </div>
-        ))}
-      </div>
-      <Pagination
-      currentPage={currentPage}
-      lastPage={lastPage}
-      prevPage={prevPage}
-      nextPage={nextPage}
-      />
-      <div className={style.boxSelect}>
-          <div className={style.selectedSong}>
-            {selectedSongs.length > 0 ? (
-              <div className={style.container2}>
-                {selectedSongs.map((song) => (
-                  <div className={style.songs} key={song.id}>
-                    <img className={style.imageSelected} src={playlist} alt="playlist" />
-                    <h4 className={style.songtit}>{song.songName}</h4>
-                    <p className={style.songart}>{song.artist}</p>
-                    <button
-                    className={style.removeButton} 
-                    onClick={() => handleRemoveFromPlaylist(song.id)}
-                  >
-                  x
-                  </button>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <p className={style.notfound}>No song selected</p>
-            )}
-          </div>
-          </div>
-          <h3 className={style.title2}>Search by name...</h3>
-          <select className={style.input} defaultValue={"default"} name="song">
-            <option value="default" disabled>
-              All
-            </option>
-            <option>Sea of problems</option>
-            <option>Daylight</option>
-            <option>Flowers</option>
-            <option>Peaches</option>
-            <option>I wanna be yours</option>
-            <option>Clouds</option>
-            <option>Calm Down</option>
-            <option>Here with me</option>
-            <option>SNAP</option>
-            <option>As it was</option>
-            <option>Sunroof</option>
-            <option>Players</option>
-            <option>Those Eyes</option>
-            <option>Sunsetz</option>
-            <option>Pieces</option>
-            <option>Atlantis</option>
-            <option>505</option>
-            <option>Memories</option>
-            <option>Love of my life</option>
-            <option>Sweet</option>
-            <option>august</option>
-            <option>Timezone</option>
-            <option>Sea of problems</option>
-            <option>Daylight</option>
-            <option>Flowers</option>
-            <option>Peaches</option>
-            <option>I wanna be yours</option>
-            <option>Clouds</option>
-            <option>Calm Down</option>
-            <option>Here with me</option>
-            <option>SNAP</option>
-            <option>As it was</option>
-            <option>Sunroof</option>
-            <option>Players</option>
-            <option>Those Eyes</option>
-            <option>Sunsetz</option>
-            <option>Pieces</option>
-            <option>Atlantis</option>
-            <option>505</option>
-            <option>Memories</option>
-            <option>Love of my life</option>
-            <option>Sweet</option>
-            <option>august</option>
-            <option>Timezone</option>
-          </select>
-          {/* 
-        <input type='file' multiple id='add-new-photo' name='images[]'></input> */}
         </div>
       </form>
+      {isModalOpen && (
+        <div className="modal" onClick={() => setIsModalOpen(false)}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <span className="modalText">You've reached the limit</span>
+            <p className="modalTextt">
+              You can't add more than 20 songs to your playlist.
+            </p>
+            <button className="btnModal" onClick={() => setIsModalOpen(false)}>
+              OK
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
