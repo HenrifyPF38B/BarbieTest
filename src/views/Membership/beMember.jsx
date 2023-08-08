@@ -13,6 +13,8 @@ import { Toast } from 'primereact/toast';
 import 'primereact/resources/themes/lara-light-indigo/theme.css';
 import "primereact/resources/primereact.min.css";                  //core css
 import "primeicons/primeicons.css";    
+import RateUsModal from "../../modals/userReviews";
+
 
 const BeMember = () => {
 
@@ -27,6 +29,7 @@ const BeMember = () => {
 
   const [membershipModal, setMembershipModal] = useState(false);
   const [sortedMemberships, setSortedMemberships] = useState([]);
+  const [showModal, setShowModal] = useState(false);
 
   const handleOpenModal = (membership) =>{
     if(!usersId.id){
@@ -144,7 +147,8 @@ const BeMember = () => {
       <div className="reviewsContent">
           <p>Your opinion is very important, you can rate us here</p>
        <div className="btnReviewsContainer">
-       <button className="btnReviews">Click Here!</button>
+       <button className="btnReviews" onClick={() => setShowModal(true)}>Click Here!</button>
+       <RateUsModal isOpen={showModal} onClose={() => setShowModal(false)} />
         </div>
         </div>
         </div>
