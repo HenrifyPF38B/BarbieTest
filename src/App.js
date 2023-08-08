@@ -18,18 +18,20 @@ import "primeicons/primeicons.css";
 import { getUserOrder, getUsersById } from './redux/Actions/UsersActions';
 import LoginModal from './modals/loginModal';
 import { getMemberships } from './redux/Actions/MembershipsActions';
+import { useNavigate } from 'react-router-dom';
+import AddToPlaylistModal from './modals/addToPlaylistModal';
 
 
 
 function App() {
 
   const data = useContext(PlaylistContext);
-  const { playerOpen, buyOpen, setBuyOpen, modalOpen, setModalOpen, refPreviewNotAvailableAppJS, loginOpen, setLoginOpen } = data;
+  const { playerOpen, buyOpen, setBuyOpen, modalOpen, setModalOpen, refPreviewNotAvailableAppJS, loginOpen, setLoginOpen, openAddToPlaylist } = data;
   const dispatch = useDispatch();
   const [playerModalAaudio, setPlayerModalAaudio] = useState("");
   const state = useSelector(state => state);
   const { message, usersId } = state;
-  
+  const navigate = useNavigate();
 
   useEffect(() => {
     setBuyOpen(false);
@@ -57,6 +59,16 @@ function App() {
 
   return (
     <>
+    {
+      window.location.href === "http://localhost:3000/myPlaylist" &&
+      <div className="createPlaylistButton" onClick={() => navigate('/create')}>
+        <i className="fa-solid fa-headphones-simple"></i>
+        <span>Create Playlist</span>
+      </div>
+    }
+    {
+      openAddToPlaylist && <AddToPlaylistModal/>
+    }
       {
         loginOpen && <LoginModal setLoginOpen={setLoginOpen}/>
       }

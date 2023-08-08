@@ -49,6 +49,12 @@ import {
   GOOGLE_AUTH,
   MAKE_MEMBER,
   FORGOT_PASSWORD,
+  CREATE_USER_PLAYLIST,
+  DELETE_USER_PLAYLIST,
+  EDIT_P_SONGS,
+  UPDATE_USER_PLAYLIST,
+  TOGGLE_PLAYLIST,
+  RESET_EDITPSONGS,
 } from "./Action-types";
 
 const initialState = {
@@ -65,6 +71,7 @@ const initialState = {
   reviewsId: {},
   playlists: [],
   playlistsId: {},
+  editPlaylistSongs: [],
   albums: [],
   albumsId: {},
   memberships: [],
@@ -192,6 +199,36 @@ const Reducer = (state = initialState, { type, payload }) => {
         message: payload,
       };
 
+    case CREATE_USER_PLAYLIST:
+      return {
+        ...state,
+        playlists: payload.msg === "User playlist created" ? payload.data : state.playlists,
+        message: payload.msg,
+      };
+
+
+    case DELETE_USER_PLAYLIST:
+      console.log(payload);
+      return {
+        ...state,
+        playlists: payload.msg === "User playlist deleted" ? state.playlists.filter(el => el.playlistId !== payload.id) : state.playlists,
+        message: payload.msg,
+      };
+
+
+    case UPDATE_USER_PLAYLIST:
+      return {
+        ...state,
+        message: payload,
+      };
+
+
+    case TOGGLE_PLAYLIST:
+      return {
+        ...state,
+        message: payload,
+      };
+
     // SONGS ----------------------------------------------------------------------------------
     case GET_SONGS:
       return {
@@ -288,6 +325,13 @@ const Reducer = (state = initialState, { type, payload }) => {
         message: payload,
       };
 
+    case EDIT_P_SONGS:
+      console.log(payload);
+      return {
+        ...state,
+        editPlaylistSongs: payload,
+      }
+
     //ALBUMS ----------------------------------------------------------------------------------
     case GET_ALBUMS:
       return {
@@ -378,6 +422,14 @@ const Reducer = (state = initialState, { type, payload }) => {
     return {
       ...state,
       message: "",
+      editPlaylistSongs: []
+    };
+
+
+    case RESET_EDITPSONGS:
+    return {
+      ...state,
+      editPlaylistSongs: [],
     };
 
     case RESET_USERSID_USERFAVS:

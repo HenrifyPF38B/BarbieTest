@@ -1,160 +1,118 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styles from "./myPlaylist.module.css";
 import img from "../assets/dddd.png";
 import arrow from "../assets/arrow.svg";
 import { useState } from "react";
 import back from "../assets/prev.svg"
+import { useDispatch, useSelector } from "react-redux";
+import PlaylistCard from "./playlistCard";
+import { Toast } from 'primereact/toast';
+import 'primereact/resources/themes/lara-light-indigo/theme.css';
+import "primereact/resources/primereact.min.css";                  //core css
+import "primeicons/primeicons.css"; 
+import { resetMessageState } from "../../redux/Actions/StateActions";
+import { getPlaylists } from "../../redux/Actions/PlaylistsActions";
 
 const MyPlaylist = () => {
-  // const [menuAbierto, setMenuAbierto] = useState(false);
+
+  const dispatch = useDispatch();
+  const refToast = useRef();
   const navigate = useNavigate();
-  // const dummy = [
-  //   1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 1, 2
-  // ];
+  const state = useSelector(state => state);
 
-  const [editMode, setEditMode] = useState(false);
-  const [editedName, setEditedName] = useState("");
-  const [editingPlaylistId, setEditingPlaylistId] = useState(null);
+  const { playlists, usersId, message } = state;
 
-  const [playlists, setPlaylists] = useState([
-    { id: 1, name: "Playlist 1" },
-    { id: 2, name: "Playlist 2" },
-    { id: 3, name: "Playlist 3" },
-    { id: 4, name: "Playlist 4" },
-    { id: 5, name: "Playlist 5" },
-    { id: 6, name: "Playlist 6" },
-    { id: 7, name: "Playlist 7" },
-    { id: 8, name: "Playlist 8" },
-    { id: 9, name: "Playlist 9" },
-    { id: 10, name: "Playlist 10" },
-    { id: 11, name: "Playlist 11" },
-    { id: 12, name: "Playlist 12" },
-  ]);
+  const [userPlaylist, setUserPlaylist] = useState([]);
 
-  const handleDeletePlaylist = (id) => {
-    setPlaylists((prevPlaylists) =>
-      prevPlaylists.filter((playlist) => playlist.id !== id)
-    );
-  };
+  
+  useEffect(() => {
+    dispatch(getPlaylists());
+    window.scrollTo(0, 0);
+  }, []);
 
-  const activateEditMode = (playlistName, playlistId) => {
-    setEditedName(playlistName);
-    setEditingPlaylistId(playlistId);
-    setEditMode(true);
-  };
+  useEffect(() => {
+    let userPlaylist = [];
+    
+    if(playlists.length){
+      playlists.map((el) => {
+        if(el.belongsTo === usersId.id){
+          console.log(el);
+          userPlaylist.push(el);      
+        }
+      })
+    };
 
-  const cancelEditMode = () => {
-    setEditMode(false);
-  };
-
-  const saveNameChanges = () => {
-    if (editedName.trim() !== "") {
-      setPlaylists((prevPlaylists) =>
-        prevPlaylists.map((prevPlaylist) =>
-          prevPlaylist.id === editingPlaylistId
-            ? { ...prevPlaylist, name: editedName }
-            : prevPlaylist
-        )
-      );
+    if(userPlaylist.length){
+      setUserPlaylist(userPlaylist);
     }
-    setEditMode(false);
-  };
+  }, [playlists]);
+
+
+  useEffect(() => {
+    if(message === "Playlist not found"){
+      refToast.current.show({sticky: true, severity: 'error', summary: "We're sorry!", detail: "Something went wrong, please try again later!"});
+      dispatch(resetMessageState());
+    }else if(message === "User playlist deleted"){
+      refToast.current.show({life: 2000, severity: 'success', summary: "Done", detail: "Your Playlist has been deleted"});
+      if(userPlaylist.length === 1){
+        setUserPlaylist([]);
+      }
+
+      dispatch(resetMessageState());
+    }
+  }, [message]);
+
+  useEffect(() => {
+    if(userPlaylist.length){
+      document.querySelector(".createPlaylistButton").classList.remove("fa-bounce");
+    }else{
+      document.querySelector(".createPlaylistButton").classList.add("fa-bounce");
+    }
+  }, [userPlaylist]);
+
 
   return (
     <div className={styles.wrapper} id="myplaylist">
-      <button className={styles.button} onClick={() => navigate('/home')}>
-        <img className={styles.backkk} src={back} alt="" />
-      </button>
-      <div className={styles.titulo}>
+      <Toast ref={refToast} position='top-left'></Toast>
+      
+      {/* <div className={styles.titulo}>
         <h2 className={styles.title}>Your gallery, your music</h2>
         <div className={styles.createContainer}>
           <Link to="/create" className={styles.create}>
             Add a new playlist
           </Link>
         </div>
-      </div>
+      </div> */}
+      <h4 className={styles.title}>Your gallery, your music <i className="fa-solid fa-face-smile"></i></h4>
       <div className={styles.container1}>
-        {playlists.map((playlist) => (
-          <div className={styles.cardsContainer} key={playlist.id}>
-            <div className={styles.image}>
-              <img src={img} alt="playlist" />
-            </div>
-            {(!editMode || editingPlaylistId !== playlist.id) && (
-              <div
-                className={styles.playForListen}
-                onClick={() => navigate("/playlist")}
-              >
-                <i
-                  class="fa-solid fa-play fa-2xl"
-                  style={{ color: "#ffffff" }}
-                ></i>
+        {
+          userPlaylist.length ? (
+            userPlaylist.map(el => {
+              return (
+                <PlaylistCard
+                  creator={usersId.userName}
+                  playlist={el.name}
+                  price={false}
+                  image={el.image}
+                  playlistId={el.playlistId}
+                  id={el.id}
+                  el={el}
+                  activeDelete={true}
+                  showUser={true}
+                />
+              )
+            })
+          ):(
+            <div className={styles.noPlaylists}>
+              <div className={styles.noData}>
+                <img src="/images/listening.png" alt="abc" />
               </div>
-            )}
-            <div className={styles.boxData}>
-              {editMode && editingPlaylistId === playlist.id ? (
-                <div>
-                  <div className={styles.setName}>
-                    <input
-                      className={styles.inputName}
-                      type="text"
-                      value={editedName}
-                      onChange={(e) => setEditedName(e.target.value)}
-                    />
-                  </div>
-                  <div className={styles.btnCont}>
-                    <button
-                      className={styles.btnName}
-                      onClick={saveNameChanges}
-                    >
-                      Save
-                    </button>
-                    <button className={styles.btnName} onClick={cancelEditMode}>
-                      Cancel
-                    </button>
-                  </div>
-                </div>
-              ) : (
-                <>
-                  <span className={styles.span}>{playlist.name}</span>
-                  <div className="dropdown">
-                    <i
-                      className="fa-solid fa-ellipsis fa-2xl myplaylist-menu"
-                      style={{ color: "#ffffff" }}
-                      id="dLabel"
-                      type="button"
-                      data-toggle="dropdown"
-                      aria-haspopup="true"
-                      aria-expanded="false"
-                    />
-                    <div
-                      class="dropdown-menu mt-2"
-                      aria-labelledby="dropdownMenuLink"
-                    >
-                      <a className="dropdown-item" href="#">
-                        Edit
-                      </a>
-                      <button
-                        className="dropdown-item"
-                        onClick={() =>
-                          activateEditMode(playlist.name, playlist.id)
-                        }
-                      >
-                        Rename
-                      </button>
-                      <button
-                        className="dropdown-item"
-                        onClick={() => handleDeletePlaylist(playlist.id)}
-                      >
-                        Delete
-                      </button>
-                    </div>
-                  </div>
-                </>
-              )}
+              <span>{`Hi ${usersId.userName}! Looks like you don't have any playlist yet...`}</span>
             </div>
-          </div>
-        ))}
+          )
+        }
+        
       </div>
     </div>
   );

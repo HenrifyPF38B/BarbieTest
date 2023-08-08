@@ -16,12 +16,13 @@ import Buy from "./views/Buy/Buy";
 import Account from "./views/Account/Account";
 import MyPlaylist from "./components/Cards/myPlaylist";
 import SignUp from "./views/SignUp/SignUp";
-import Create from "./components/Cards/Create";
 import LandingPage from "./components/LandingPage";
 import Checkout from "./views/Checkout/Checkout";
 import BeMember from "./views/Membership/beMember";
 import SuccessPurchase from "./views/SuccessPurchase/SuccessPurchase";
 import ErrorPurchase from "./views/errorPurchase/errorPurchase";
+import Create from "./views/CreatePlaylist/Create";
+import EditPlaylit from "./views/EditPlaylist/EditPlaylist";
 
 
 const Router = () => {
@@ -52,6 +53,7 @@ const Router = () => {
         <Route path="checkout" element={<Checkout />} />
         <Route path="success" element={<SuccessPurchase />} />
         <Route path="error" element={<ErrorPurchase />} />
+        <Route path="editPlaylist/:id" element={<EditPlaylit />} />
       </Routes>
     </div>
   );

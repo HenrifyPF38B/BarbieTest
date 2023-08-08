@@ -17,6 +17,10 @@ import {
   GOOGLE_AUTH,
   MAKE_MEMBER,
   FORGOT_PASSWORD,
+  CREATE_USER_PLAYLIST,
+  DELETE_USER_PLAYLIST,
+  UPDATE_USER_PLAYLIST,
+  TOGGLE_PLAYLIST,
 } from "../Action-types";
 import { base_url } from "../baseURL";
 
@@ -279,4 +283,79 @@ export const deleteUsers = (id) => {
     const data = await res.json();
     dispatch({ type: DELETE_USERS, payload: data });
   };
+};
+
+
+export const createUserPlaylist = (newPlaylist) =>{
+  return async function (dispatch){
+    const res = await fetch(
+      `${base_url}/playlists/user/create`,
+      {
+          method: 'POST',
+          headers: {
+              "Content-type":"application/json; charset=UTF-8"
+          },
+          body: JSON.stringify(newPlaylist)
+      }
+    );
+    const data = await res.json();
+    
+    dispatch({ type: CREATE_USER_PLAYLIST, payload: data });
+  }
+}
+
+
+export const deleteUserPlaylist = (playlistId) =>{
+  return async function (dispatch){
+    const res = await fetch(
+      `${base_url}/playlists/user/${playlistId}`,
+      {
+          method: 'DELETE',
+          headers: {
+              "Content-type":"application/json; charset=UTF-8"
+          }
+      }
+    );
+    const data = await res.json();
+    
+    dispatch({ type: DELETE_USER_PLAYLIST, payload: data });
+  }
+}
+
+export const updateUserPlaylist = (playlist) =>{
+ 
+  return async function (dispatch){
+    const res = await fetch(
+      `${base_url}/playlists/user/update`,
+      {
+          method: 'PUT',
+          headers: {
+              "Content-type":"application/json; charset=UTF-8"
+          },
+          body: JSON.stringify(playlist)
+      }
+    );
+    const data = await res.json();
+    
+    dispatch({ type: UPDATE_USER_PLAYLIST, payload: data });
+  }
+};
+
+export const toggleUserPlaylist = (info) =>{
+  
+  return async function (dispatch){
+    const res = await fetch(
+      `${base_url}/playlists/user/toggle`,
+      {
+          method: 'PUT',
+          headers: {
+              "Content-type":"application/json; charset=UTF-8"
+          },
+          body: JSON.stringify(info)
+      }
+    );
+    const data = await res.json();
+    
+    dispatch({ type: TOGGLE_PLAYLIST, payload: data });
+  }
 };

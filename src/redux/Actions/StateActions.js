@@ -1,4 +1,4 @@
-import { RESET_MESSAGES, RESET_USERSID_USERFAVS } from "../Action-types";
+import { RESET_EDITPSONGS, RESET_MESSAGES, RESET_USERSID_USERFAVS } from "../Action-types";
 
 export const resetMessageState = () =>{
   return async function (dispatch) {
@@ -17,6 +17,8 @@ export const resetUserStates = () =>{
 
 
 export const resetFilteredSongs = () =>{
-  
-
+  return async function (dispatch) {
+    
+    dispatch({ type: RESET_EDITPSONGS });
+  };
 };

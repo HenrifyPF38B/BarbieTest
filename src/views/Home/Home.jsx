@@ -93,6 +93,7 @@ const Home = () => {
         audioPreview: el.audioPreview,
         audioFull: el.audioFull,
         image: el.image,
+        el: el,
         artist: el.artists.map((artist, index) => {
           if(index === el.artists.length - 1){
             return artist.name
@@ -203,6 +204,7 @@ const Home = () => {
               audioFull={songs[0]?.audioFull}
               songId={songs[0]?.songId}
               explicit={songs[0]?.explicit}
+              el={songs[0]}
             />
             <SongCard
               artist={songs[330]?.artists.map((artist, index) => {
@@ -219,6 +221,7 @@ const Home = () => {
               audioFull={songs[330]?.audioFull}
               songId={songs[330]?.songId}
               explicit={songs[330]?.explicit}
+              el={songs[330]}
             />
             <SongCard
               artist={songs[375]?.artists.map((artist, index) => {
@@ -235,6 +238,7 @@ const Home = () => {
               audioFull={songs[375]?.audioFull}
               songId={songs[375]?.songId}
               explicit={songs[375]?.explicit}
+              el={songs[375]}
             />
             <SongCard
               artist={songs[324]?.artists.map((artist, index) => {
@@ -251,6 +255,7 @@ const Home = () => {
               audioFull={songs[324]?.audioFull}
               songId={songs[324]?.songId}
               explicit={songs[324]?.explicit}
+              el={songs[324]}
             />
             
             

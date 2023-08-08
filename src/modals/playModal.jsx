@@ -127,10 +127,10 @@ const PlayModal = () => {
 
       setSongDetails({
         index: data[randomNumber].index,
-        id: data[randomNumber].id,
-        audio: data[randomNumber].trackPreview,
-        img: data[randomNumber].image.url,
-        song: data[randomNumber].trackName,
+        id: typeof data[randomNumber].id === "number" ? data[randomNumber].songId : data[randomNumber].id,
+        audio: data[randomNumber].trackPreview ? data[randomNumber].trackPreview : data[randomNumber].audioPreview,
+        img: data[randomNumber].image.url ? data[randomNumber].image.url : data[randomNumber].image,
+        song: data[randomNumber].trackName ? data[randomNumber].trackName : data[randomNumber].name,
         artist: data[randomNumber].artists.map((artist, index) => {
           if(index === data[randomNumber].artists.length - 1){
             return artist.name
@@ -152,10 +152,10 @@ const PlayModal = () => {
         console.log(data[songDetails.index + 1]);
         setSongDetails({
           index: songDetails.index + 1,
-          id: data[songDetails.index + 1].id,
-          audio: data[songDetails.index + 1].trackPreview,
-          img: data[songDetails.index + 1].image.url,
-          song: data[songDetails.index + 1].trackName,
+          id: typeof data[songDetails.index + 1].id === "number" ? data[songDetails.index + 1].songId : data[songDetails.index + 1].id,
+          audio: data[songDetails.index + 1].trackPreview ? data[songDetails.index + 1].trackPreview : data[songDetails.index + 1].audioPreview,
+          img: data[songDetails.index + 1].image.url ? data[songDetails.index + 1].image.url : data[songDetails.index + 1].image,
+          song: data[songDetails.index + 1].trackName ? data[songDetails.index + 1].trackName : data[songDetails.index + 1].name,
           artist: data[songDetails.index + 1].artists.map((artist, index) => {
             if(index === data[songDetails.index + 1].artists.length - 1){
               return artist.name
@@ -173,9 +173,10 @@ const PlayModal = () => {
         // Significa que no existe una cancion despues de la actual
         setSongDetails({
           index: 0,
-          audio: data[0].trackPreview,
-          img: data[0].image.url,
-          song: data[0].trackName,
+          id: typeof data[0].id === "number" ? data[0].songId : data[0].id,
+          audio: data[0].trackPreview ? data[0].trackPreview : data[0].audioPreview,
+          img: data[0].image.url ? data[0].image.url : data[0].image,
+          song: data[0].trackName ? data[0].trackName : data[0].name,
           artist: data[0].artists.map((artist, index) => {
             if(index === data[0].artists.length - 1){
               return artist.name
@@ -227,10 +228,10 @@ const PlayModal = () => {
         // Significa que existe una cancion despues de la actual
         setMemberSongDetails({
           index: memberSongDetails.index + 1,
-          id: originalData[memberSongDetails.index + 1].id,
-          audioFull: originalData[memberSongDetails.index + 1].trackFull,
-          img: originalData[memberSongDetails.index + 1].image.url,
-          song: originalData[memberSongDetails.index + 1].trackName,
+          id: typeof originalData[memberSongDetails.index + 1].id === "number" ? originalData[memberSongDetails.index + 1].songId : originalData[memberSongDetails.index + 1].id,
+          audioFull: originalData[memberSongDetails.index + 1].trackFull ? originalData[memberSongDetails.index + 1].trackFull : originalData[memberSongDetails.index + 1].audioFull,
+          img: originalData[memberSongDetails.index + 1].image.url ? originalData[memberSongDetails.index + 1].image.url : originalData[memberSongDetails.index + 1].image,
+          song: originalData[memberSongDetails.index + 1].trackName ? originalData[memberSongDetails.index + 1].trackName : originalData[memberSongDetails.index + 1].name,
           artist: originalData[memberSongDetails.index + 1].artists.map((artist, index) => {
             if(index === originalData[memberSongDetails.index + 1].artists.length - 1){
               return artist.name
@@ -248,9 +249,10 @@ const PlayModal = () => {
         // Significa que no existe una cancion despues de la actual
         setMemberSongDetails({
           index: 0,
-          audioFull: originalData[0].trackFull,
-          img: originalData[0].image.url,
-          song: originalData[0].trackName,
+          id: typeof originalData[0].id === "number" ? originalData[0].songId : originalData[0].id,
+          audioFull: originalData[0].trackFull ? originalData[0].trackFull : originalData[0].audioFull,
+          img: originalData[0].image.url ? originalData[0].image.url : originalData[0].image,
+          song: originalData[0].trackName ? originalData[0].trackName : originalData[0].name,
           artist: originalData[0].artists.map((artist, index) => {
             if(index === originalData[0].artists.length - 1){
               return artist.name
@@ -273,14 +275,12 @@ const PlayModal = () => {
   const handleNextSong = () =>{
     // Si esta en modo aleatorio al clickear el boton:
     if(!loopActive && shuffleActive && !type){
-      let Y = Math.floor(Math.random() * data.length);
-      
-      setSongDetails({
+      let Y = Math.floor(Math.random() * data.length);      setSongDetails({
         index: Y,
-        audio: data[Y].trackPreview,
-        img: data[Y].image.url,
-        song: data[Y].trackName,
-        id: data[Y].id,
+        audio: data[Y].trackPreview ? data[Y].trackPreview : data[Y].audioPreview,
+        img: data[Y].image.url ? data[Y].image.url : data[Y].image,
+        song: data[Y].trackName ? data[Y].trackName : data[Y].name,
+        id: typeof data[Y].id === "number" ? data[Y].songId : data[Y].id,
         artist: data[Y].artists.map((artist, index) => {
           if(index === data[Y].artists.length - 1){
             return artist.name
@@ -300,12 +300,14 @@ const PlayModal = () => {
       if(data[songDetails.index + 1]){
         // Si hay una cancion despues de la actual:
         let Y = songDetails.index + 1;
+        console.log(data[Y]);
+
         setSongDetails({
           index: Y,
-          audio: data[Y].trackPreview,
-          img: data[Y].image.url,
-          id: data[Y].id,
-          song: data[Y].trackName,
+          audio: data[Y].trackPreview ? data[Y].trackPreview : data[Y].audioPreview,
+          img: data[Y].image.url ? data[Y].image.url : data[Y].image,
+          id: typeof data[Y].id === "number" ? data[Y].songId : data[Y].id,
+          song: data[Y].trackName ? data[Y].trackName : data[Y].name,
           artist: data[Y].artists.map((artist, index) => {
             if(index === data[Y].artists.length - 1){
               return artist.name
@@ -324,10 +326,10 @@ const PlayModal = () => {
         console.log(data[0]);
         setSongDetails({
           index: 0,
-          audio: data[0].trackPreview,
-          img: data[0].image.url,
-          id: data[0].id,
-          song: data[0].trackName,
+          audio: data[0].trackPreview ? data[0].trackPreview : data[0].audioPreview,
+          img: data[0].image.url ? data[0].image.url : data[0].image,
+          id: typeof data[0].id === "number" ? data[0].songId : data[0].id,
+          song: data[0].trackName ? data[0].trackName : data[0].name,
           artist: data[0].artists.map((artist, index) => {
             if(index === data[0].artists.length - 1){
               return artist.name
@@ -351,16 +353,16 @@ const PlayModal = () => {
   };
 
   const handlePrevSong = () =>{
-
+    
     if(!loopActive && shuffleActive && !type){
       let Y = Math.floor(Math.random() * data.length);
-      
+      console.log(data[Y]);
       setSongDetails({
         index: Y,
-        audio: data[Y].trackPreview,
-        img: data[Y].image.url,
-        id: data[Y].id,
-        song: data[Y].trackName,
+        audio: data[Y].trackPreview ? data[Y].trackPreview : data[Y].audioPreview,
+        img: data[Y].image.url ? data[Y].image.url : data[Y].image,
+        id: typeof data[Y].id === "number" ? data[Y].songId : data[Y].id,
+        song: data[Y].trackName ? data[Y].trackName : data[Y].name,
         artist: data[Y].artists.map((artist, index) => {
           if(index === data[Y].artists.length - 1){
             return artist.name
@@ -379,12 +381,13 @@ const PlayModal = () => {
       if(data[songDetails.index - 1]){
         // Si hay una cancion en la posicion anterior a la actual:
         let Y = songDetails.index - 1;
+        console.log(data[Y]);
         setSongDetails({
           index: Y,
-          audio: data[Y].trackPreview,
-          img: data[Y].image.url,
-          song: data[Y].trackName,
-          id: data[Y].id,
+          audio: data[Y].trackPreview ? data[Y].trackPreview : data[Y].audioPreview,
+          img: data[Y].image.url ? data[Y].image.url : data[Y].image,
+          song: data[Y].trackName ? data[Y].trackName : data[Y].name,
+          id: typeof data[Y].id === "number" ? data[Y].songId : data[Y].id,
           artist: data[Y].artists.map((artist, index) => {
             if(index === data[Y].artists.length - 1){
               return artist.name
@@ -402,10 +405,10 @@ const PlayModal = () => {
         let Y = data[data.length-1].location;
         setSongDetails({
           index: Y,
-          audio: data[Y].trackPreview,
-          img: data[Y].image.url,
-          song: data[Y].trackName,
-          id: data[Y].id,
+          audio: data[Y].trackPreview ? data[Y].trackPreview : data[Y].audioPreview,
+          img: data[Y].image.url ? data[Y].image.url : data[Y].image,
+          song: data[Y].trackName ? data[Y].trackName : data[Y].name,
+          id: typeof data[Y].id === "number" ? data[Y].songId : data[Y].id,
           artist: data[Y].artists.map((artist, index) => {
             if(index === data[Y].artists.length - 1){
               return artist.name
@@ -431,17 +434,17 @@ const PlayModal = () => {
   // NEXT & PREV FOR MEMBERS
 
   const handleNextSongMembers = () =>{
-    console.log(originalData);
+    
     // Si esta en modo aleatorio al clickear el boton:
     if(!loopActive && shuffleActive && !type){
       let Y = Math.floor(Math.random() * originalData.length);
-      
+      console.log(originalData[Y]);
       setMemberSongDetails({
         index: Y,
-        audioFull: originalData[Y].trackFull,
-        img: albumType ? img : originalData[Y].image.url,
-        song: originalData[Y].trackName,
-        id: originalData[Y].id,
+        audioFull: originalData[Y].trackFull ? originalData[Y].trackFull : originalData[Y].audioFull,
+        img: albumType ? img : originalData[Y].image.url ? originalData[Y].image.url : originalData[Y].image,
+        song: originalData[Y].trackName ? originalData[Y].trackName : originalData[Y].name,
+        id: typeof originalData[Y].id === "number" ? originalData[Y].songId : originalData[Y].id,
         artist: originalData[Y].artists.map((artist, index) => {
           if(index === originalData[Y].artists.length - 1){
             return artist.name
@@ -461,12 +464,13 @@ const PlayModal = () => {
       if(originalData[memberSongDetails.index + 1]){
         // Si hay una cancion despues de la actual:
         let Y = memberSongDetails.index + 1;
+        console.log(originalData[Y]);
         setMemberSongDetails({
           index: Y,
-          audioFull: originalData[Y].trackFull,
-          img: albumType ? img : originalData[Y].image.url,
-          id: originalData[Y].id,
-          song: originalData[Y].trackName,
+          audioFull: originalData[Y].trackFull ? originalData[Y].trackFull : originalData[Y].audioFull,
+          img: albumType ? img : originalData[Y].image.url ? originalData[Y].image.url : originalData[Y].image,
+          id: typeof originalData[Y].id === "number" ? originalData[Y].songId : originalData[Y].id,
+          song: originalData[Y].trackName ? originalData[Y].trackName : originalData[Y].name,
           artist: originalData[Y].artists.map((artist, index) => {
             if(index === originalData[Y].artists.length - 1){
               return artist.name
@@ -484,10 +488,10 @@ const PlayModal = () => {
         // Si no hay una cancion despues de la actual:
         setMemberSongDetails({
           index: 0,
-          audioFull: originalData[0].trackFull,
-          img: albumType ? img : originalData[0].image.url,
-          id: originalData[0].id,
-          song: originalData[0].trackName,
+          audioFull: originalData[0].trackFull ? originalData[0].trackFull : originalData[0].audioFull,
+          img: albumType ? img : originalData[0].image.url ? originalData[0].image.url : originalData[0].image,
+          id: typeof originalData[0].id === "number" ? originalData[0].songId : originalData[0].id,
+          song: originalData[0].trackName ? originalData[0].trackName : originalData[0].name,
           artist: originalData[0].artists.map((artist, index) => {
             if(index === originalData[0].artists.length - 1){
               return artist.name
@@ -518,10 +522,10 @@ const PlayModal = () => {
       
       setMemberSongDetails({
         index: Y,
-        audioFull: originalData[Y].trackFull,
-        img: albumType ? img : originalData[Y].image.url,
-        id: originalData[Y].id,
-        song: originalData[Y].trackName,
+        audioFull: originalData[Y].trackFull ? originalData[Y].trackFull : originalData[Y].audioFull,
+        img: albumType ? img : originalData[Y].image.url ? originalData[Y].image.url : originalData[Y].image,
+        id: typeof originalData[Y].id === "number" ? originalData[Y].songId : originalData[Y].id,
+        song: originalData[Y].trackName ? originalData[Y].trackName : originalData[Y].name,
         artist: originalData[Y].artists.map((artist, index) => {
           if(index === originalData[Y].artists.length - 1){
             return artist.name
@@ -542,10 +546,10 @@ const PlayModal = () => {
         let Y = memberSongDetails.index - 1;
         setMemberSongDetails({
           index: Y,
-          audioFull: originalData[Y].trackFull,
-          img: albumType ? img : originalData[Y].image.url,
-          song: originalData[Y].trackName,
-          id: originalData[Y].id,
+          audioFull: originalData[Y].trackFull ? originalData[Y].trackFull : originalData[Y].audioFull,
+          img: albumType ? img : originalData[Y].image.url ? originalData[Y].image.url : originalData[Y].image,
+          song: originalData[Y].trackName ? originalData[Y].trackName : originalData[Y].name,
+          id: typeof originalData[Y].id === "number" ? originalData[Y].songId : originalData[Y].id,
           artist: originalData[Y].artists.map((artist, index) => {
             if(index === originalData[Y].artists.length - 1){
               return artist.name
@@ -563,10 +567,10 @@ const PlayModal = () => {
        
         setMemberSongDetails({
           index: originalData.length - 1,
-          audioFull: originalData[originalData.length-1].trackFull,
-          img: albumType ? img : originalData[originalData.length-1].image.url,
-          song: originalData[originalData.length-1].trackName,
-          id: originalData[originalData.length-1].id,
+          audioFull: originalData[originalData.length-1].trackFull ? originalData[originalData.length-1].trackFull : originalData[originalData.length-1].audioFull,
+          img: albumType ? img : originalData[originalData.length-1].image.url ? originalData[originalData.length-1].image.url : originalData[originalData.length-1].image,
+          song: originalData[originalData.length-1].trackName ? originalData[originalData.length-1].trackName : originalData[originalData.length-1].name,
+          id: typeof originalData[originalData.length-1].id === "number" ? originalData[originalData.length-1].songId : originalData[originalData.length-1].id,
           artist: originalData[originalData.length-1].artists.map((artist, index) => {
             if(index === originalData[originalData.length-1].artists.length - 1){
               return artist.name

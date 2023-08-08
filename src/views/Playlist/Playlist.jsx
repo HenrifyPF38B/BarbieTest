@@ -8,7 +8,7 @@ import { TailSpin } from "react-loader-spinner";
 import { Toast } from 'primereact/toast';
 import 'primereact/resources/themes/lara-light-indigo/theme.css';
 import "primereact/resources/primereact.min.css";                  //core css
-import "primeicons/primeicons.css"; 
+import "primeicons/primeicons.css";
 import { addToFav, favsUser, removeFromFav } from '../../redux/Actions/UsersActions';
 
 const Playlist = () => {
@@ -67,7 +67,16 @@ const Playlist = () => {
   const handleOpenPlayer = (el, index, findTrack) =>{
     if(usersId.member){
       if(el.trackFull){
-        setPlayerOpen({id: el.id, originalData: playlistData[0].tracks, data: dataWithPreview, originalIndex: index, audio: el.trackPreview, audioFull: el.trackFull, img: el.image.url, song: el.trackName, artist: el.artists.map((artist, index) => {
+        console.log(el);
+        setPlayerOpen({id: el.songId ? el.songId : el.id, originalData: playlistData[0].tracks, data: dataWithPreview, originalIndex: index, audio: el.trackPreview, audioFull: el.trackFull, img: el.image.url, song: el.trackName, artist: el.artists.map((artist, index) => {
+          if(index === el.artists.length - 1){
+            return artist.name
+          }else{
+            return artist.name + " • "
+          }
+        }) })
+      }else if(el.audioFull){
+        setPlayerOpen({id: el.songId ? el.songId : el.id, originalData: playlistData[0].tracks, data: dataWithPreview, originalIndex: index, audio: el.audioPreview, audioFull: el.audioFull, img: el.image, song: el.name, artist: el.artists.map((artist, index) => {
           if(index === el.artists.length - 1){
             return artist.name
           }else{
@@ -77,9 +86,20 @@ const Playlist = () => {
       }else{
         refToast.current.show({sticky: true, severity: 'info', summary: "We're sorry!", detail: "This song is not currently available!"});
       }
-    }else{
+    }else if(!usersId.id || !usersId?.member){
       if(el.trackPreview){
-        setPlayerOpen({id: el.id, originalData: playlistData[0].tracks, data: dataWithPreview, originalIndex: index, index: findTrack[0].location, audio: el.trackPreview, audioFull: el.trackFull, img: el.image.url, song: el.trackName, artist: el.artists.map((artist, index) => {
+
+        console.log(findTrack[0]);
+        setPlayerOpen({id: el.songId ? el.songId : el.id, originalData: playlistData[0].tracks, data: dataWithPreview, originalIndex: index, index: findTrack[0].location, audio: el.trackPreview, audioFull: el.trackFull, img: el.image.url, song: el.trackName, artist: el.artists.map((artist, index) => {
+          if(index === el.artists.length - 1){
+            return artist.name
+          }else{
+            return artist.name + " • "
+          }
+        }) })
+      }else if(el.audioPreview){
+        console.log(findTrack[0]);
+        setPlayerOpen({id: el.songId ? el.songId : el.id, originalData: playlistData[0].tracks, data: dataWithPreview, originalIndex: index, index: findTrack[0].location, audio: el.audioPreview, audioFull: el.audioFull, img: el.image, song: el.name, artist: el.artists.map((artist, index) => {
           if(index === el.artists.length - 1){
             return artist.name
           }else{
@@ -137,11 +157,14 @@ const Playlist = () => {
       // Esto de abajo es porque hay algunas canciones sin preview, entonces filtro 
       // para pasarle al player solo las canciones con preview, para que skipee las que no tienen
       let songsWithPreview = [];
+      console.log(findPlaylist[0]);
+
       findPlaylist[0]?.tracks.map(el => {
-        if(el.trackPreview){
+        if(el.audioPreview || el.trackPreview){
           songsWithPreview.push(el);
         }
       });
+      
   
       // ESTO NOS SIRVE PARA EL REPRODUCTOR
       // PARA SKIPEAR LAS CANCIONES SIN PREVIEW TRACK
@@ -153,6 +176,8 @@ const Playlist = () => {
       setDataWithPreview(songsWithPreview);
     }
   }, [id, playlists]);
+
+
 
 
   return ( 
@@ -211,66 +236,131 @@ const Playlist = () => {
                   </thead>
                   <tbody>
                       {
-                        playlistData.length && playlistData[0].tracks.map((el, index) =>{
-                          // El modal tiene reproduccion automatica, es decir reproduce la cancion siguiente.
-                          // Pero hay canciones que no tienen previewTrack. El problema era que activamos  el modal  del player
-                          // pasandole la informacion de la track al modal mediante playerOpen al hacer click en una tr.
-                          // Pero necesitaba pasarle el mismo index que tiene el array filtradao con sololas canciones que tienen preview (dataWithPreview)
-                          // Por eso mediante findTrack, le paso a playerOpen, la posicion que el track tendria en el array con solo tracks con previewTrack.
-                          let findTrack = dataWithPreview.filter(track => track.trackName === el.trackName); 
+                        playlistData[0].owner === "Soul Life" ? (
                           
-                          return(
-                            <tr key={index}>
-                              <td style={{color:"#777777"}}>{index + 1}</td>
-                              <td className={styles.tableTitle} onClick={(e)=> handleOpenPlayer(el, index, findTrack)}>
-                                <div>
-                                  <img src={el.image.url} alt="abc" />
-                                </div>
-                                <div>
-                                  <span>{el.trackName}</span>
-                                  <span>{el.artists.map((artist, index) => {
-                                      if(index === el.artists.length - 1){
-                                        return artist.name
-                                      }else{
-                                        return artist.name + " • "
-                                      }
-                                    })}
-                                  </span>
-                                </div>
-                              </td>
-                              <td style={{color:"#777777"}}>
-                                <div className='d-flex align-items-center justify-content-end gap-20'>
-                                  {
-                                      userFavs.includes(el.id) ? (
-                                          <i className="fa-solid fa-heart p-2" data-id="remove" onClick={(e)=> handleAddFavRows(e, el.id)}></i>
-                                      ):(
-                                          <i className="fa-regular fa-heart p-2" data-id="add" onClick={(e)=> handleAddFavRows(e, el.id)}></i>
-                                      )
-                                  }
-                                
-                                  <div className="dropdown playlist">
-                                    <i className="fa-solid fa-list-ul p-2" id="dLabel" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i>
-                                    <div class="dropdown-menu mt-2 me-5" aria-labelledby="dropdownMenuButton">
-                                        <div className="dropdown-item">
-                                          <input type="checkbox" id='1'/>
-                                          <label htmlFor="1">Gym Playlist</label>
-                                        </div>
-                                        <div className="dropdown-item">
-                                          <input type="checkbox" id='2'/>
-                                          <label htmlFor="2">Party Playlist</label>
-                                        </div>
-                                        <div className="dropdown-item">
-                                          <input type="checkbox" id='2'/>
-                                          <label htmlFor="2">Study Playlist</label>
-                                        </div>
-                                    </div>
+                          playlistData.length && playlistData[0].tracks.map((el, index) =>{
+                            // El modal tiene reproduccion automatica, es decir reproduce la cancion siguiente.
+                            // Pero hay canciones que no tienen previewTrack. El problema era que activamos  el modal  del player
+                            // pasandole la informacion de la track al modal mediante playerOpen al hacer click en una tr.
+                            // Pero necesitaba pasarle el mismo index que tiene el array filtradao con sololas canciones que tienen preview (dataWithPreview)
+                            // Por eso mediante findTrack, le paso a playerOpen, la posicion que el track tendria en el array con solo tracks con previewTrack.
+                            let findTrack = dataWithPreview.filter(track => track.trackName === el.trackName); 
+                            
+                            return(
+                              <tr key={index}>
+                                <td style={{color:"#777777"}}>{index + 1}</td>
+                                <td className={styles.tableTitle} onClick={(e)=> handleOpenPlayer(el, index, findTrack)}>
+                                  <div>
+                                    <img src={el.image.url} alt="abc" />
                                   </div>
+                                  <div>
+                                    <span>{el.trackName}</span>
+                                    <span>{el.artists.map((artist, index) => {
+                                        if(index === el.artists.length - 1){
+                                          return artist.name
+                                        }else{
+                                          return artist.name + " • "
+                                        }
+                                      })}
+                                    </span>
+                                  </div>
+                                </td>
+                                <td style={{color:"#777777"}}>
+                                  <div className='d-flex align-items-center justify-content-end gap-20'>
+                                    {
+                                        userFavs.includes(el.id) ? (
+                                            <i className="fa-solid fa-heart p-2" data-id="remove" onClick={(e)=> handleAddFavRows(e, el.id)}></i>
+                                        ):(
+                                            <i className="fa-regular fa-heart p-2" data-id="add" onClick={(e)=> handleAddFavRows(e, el.id)}></i>
+                                        )
+                                    }
                                   
-                                </div>
-                              </td>
-                            </tr>
-                          )
-                        })
+                                    <div className="dropdown playlist">
+                                      <i className="fa-solid fa-list-ul p-2" id="dLabel" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i>
+                                      <div class="dropdown-menu mt-2 me-5" aria-labelledby="dropdownMenuButton">
+                                          <div className="dropdown-item">
+                                            <input type="checkbox" id='1'/>
+                                            <label htmlFor="1">Gym Playlist</label>
+                                          </div>
+                                          <div className="dropdown-item">
+                                            <input type="checkbox" id='2'/>
+                                            <label htmlFor="2">Party Playlist</label>
+                                          </div>
+                                          <div className="dropdown-item">
+                                            <input type="checkbox" id='2'/>
+                                            <label htmlFor="2">Study Playlist</label>
+                                          </div>
+                                      </div>
+                                    </div>
+                                    
+                                  </div>
+                                </td>
+                              </tr>
+                            )
+                          })
+                        
+                        ):(
+                          playlistData.length && playlistData[0].tracks.map((el, index) =>{
+                            // El modal tiene reproduccion automatica, es decir reproduce la cancion siguiente.
+                            // Pero hay canciones que no tienen previewTrack. El problema era que activamos  el modal  del player
+                            // pasandole la informacion de la track al modal mediante playerOpen al hacer click en una tr.
+                            // Pero necesitaba pasarle el mismo index que tiene el array filtradao con sololas canciones que tienen preview (dataWithPreview)
+                            // Por eso mediante findTrack, le paso a playerOpen, la posicion que el track tendria en el array con solo tracks con previewTrack.
+                            let findTrack = dataWithPreview.filter(track => track.name === el.name); 
+                            
+                            return(
+                              <tr key={index}>
+                                <td style={{color:"#777777"}}>{index + 1}</td>
+                                <td className={styles.tableTitle} onClick={(e)=> handleOpenPlayer(el, index, findTrack)}>
+                                  <div>
+                                    <img src={el.image} alt="abc" />
+                                  </div>
+                                  <div>
+                                    <span>{el.name}</span>
+                                    <span>{el.artists.map((artist, index) => {
+                                        if(index === el.artists.length - 1){
+                                          return artist.name
+                                        }else{
+                                          return artist.name + " • "
+                                        }
+                                      })}
+                                    </span>
+                                  </div>
+                                </td>
+                                <td style={{color:"#777777"}}>
+                                  <div className='d-flex align-items-center justify-content-end gap-20'>
+                                    {
+                                        userFavs.includes(el.songId) ? (
+                                            <i className="fa-solid fa-heart p-2" data-id="remove" onClick={(e)=> handleAddFavRows(e, el.songId)}></i>
+                                        ):(
+                                            <i className="fa-regular fa-heart p-2" data-id="add" onClick={(e)=> handleAddFavRows(e, el.songId)}></i>
+                                        )
+                                    }
+                                  
+                                    {/* <div className="dropdown playlist">
+                                      <i className="fa-solid fa-list-ul p-2" id="dLabel" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i>
+                                      <div class="dropdown-menu mt-2 me-5" aria-labelledby="dropdownMenuButton">
+                                          <div className="dropdown-item">
+                                            <input type="checkbox" id='1'/>
+                                            <label htmlFor="1">Gym Playlist</label>
+                                          </div>
+                                          <div className="dropdown-item">
+                                            <input type="checkbox" id='2'/>
+                                            <label htmlFor="2">Party Playlist</label>
+                                          </div>
+                                          <div className="dropdown-item">
+                                            <input type="checkbox" id='2'/>
+                                            <label htmlFor="2">Study Playlist</label>
+                                          </div>
+                                      </div>
+                                    </div> */}
+                                    
+                                  </div>
+                                </td>
+                              </tr>
+                            )
+                          })
+                        )
                       }
                   </tbody>
                 </table>

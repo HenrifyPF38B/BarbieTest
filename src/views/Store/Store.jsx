@@ -64,7 +64,8 @@ const Store = () => {
         artists: el.artists,
         songId: el.songId,
         popularity: el.popularity,
-        explicit: el.explicit
+        explicit: el.explicit,
+        el: el
       });
     });
     setOptionsSearch(options);
@@ -105,6 +106,7 @@ const Store = () => {
           filteredSongs?.length ? (
             filteredSongs.map(el =>{
               return <SongCard
+                el={el}
                 artist={el.artists.map((artist, index) => {
                   if(index === el.artists.length - 1){
                     return artist.name
@@ -145,6 +147,7 @@ const Store = () => {
                       audioFull={el.audioFull}
                       songId={el.songId}
                       explicit={el.explicit}
+                      el={el}
                     />
                   )
                 })

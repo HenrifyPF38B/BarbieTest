@@ -34,7 +34,7 @@ const Header = () => {
   return ( 
       <header className='header d-flex w-100'>
           <div className='d-flex align-items-center justify-content-center text-white'>
-            <img src={nav} alt="abc" className='me-4' />
+            <img src={nav} alt="abc" className='me-4' width={100} />
             <div className='header-links d-flex ms-5 align-items-center justify-content-center text-white'>
               <p className='me-5 mb-0 mt-0' onClick={()=> navigate("home")}>Home</p>
               <p className='me-5 mb-0 mt-0' onClick={()=> navigate("about")}>About</p>

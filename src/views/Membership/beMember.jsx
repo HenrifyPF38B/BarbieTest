@@ -26,6 +26,7 @@ const BeMember = () => {
   const membershipList = memberships || [];
 
   const [membershipModal, setMembershipModal] = useState(false);
+  const [sortedMemberships, setSortedMemberships] = useState([]);
 
   const handleOpenModal = (membership) =>{
     if(!usersId.id){
@@ -41,9 +42,15 @@ const BeMember = () => {
     }
   };
 
-  // useEffect(() => {
-  //   dispatch(getMemberships());
-  // }, [dispatch]);
+  useEffect(() => {
+    const compare = (a, b)=>{
+      return a.price.localeCompare(b.price);
+    }
+    if(membershipList.length){
+      let sortedArray = membershipList.sort(compare);
+      setSortedMemberships(sortedArray);
+    }
+  }, [membershipList]);
 
   return (
     <div className={style.container}>
@@ -74,17 +81,25 @@ const BeMember = () => {
         Play any song, download your favorites and listen offline. Listen to
         content on all your devices and enjoy high fidelity sound.
       </p>
-      <div className={style.boxMember}>
-        {membershipList.map((membership) => (
-          <div className="card" key={membership.id}>
+      <div className="boxMember">
+        {sortedMemberships.map((membership) => (
+          <div className="cardMembership" key={membership.id}>
+            <span></span>
+            <div className="content">
             <div className="type">
               <h2 className="typeh2">{membership.name}</h2>
-              </div>
-              <div className="databox">
+              </div>        
+              <div className="databoxMembership">
                 <h4 className="description">{membership.description}</h4>
                 <p className="date">{membership.duration}</p>
-                <p className="price">$ {membership.price}</p>
-              </div>
+                {
+                  membership.name === "Soul FREE" ? (
+                    <p className="price">$0</p>
+                  ):(
+                    <p className="price">${membership.price}</p>
+                  )
+                }
+                </div>         
               <button className="buttonMember" onClick={() => handleOpenModal(membership)}>
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 24">
               <path d="m18 0 8 12 10-8-4 20H4L0 4l10 8 8-12z"></path>
@@ -92,53 +107,9 @@ const BeMember = () => {
             Add membership
           </button>
           </div>
+          </div>
         ))}
-        {/* <div className="card">
-          <div className="type">
-            <h2 className="typeh2">Soul Basic</h2>
-          </div>
-          <div className="databox">
-            <p className="date">Three months</p>
-            <p className="price">$15</p>
-          </div>
-          <button className="buttonMember">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 24">
-              <path d="m18 0 8 12 10-8-4 20H4L0 4l10 8 8-12z"></path>
-            </svg>
-            Add membership
-          </button>
-        </div>
-        <div className="card">
-          <div className="type">
-            <h2 className="typeh2">Soul Premium</h2>
-          </div>
-          <div className="databox">
-            <p className="date">Six months</p>
-            <p className="price">$25</p>
-          </div>
-          <button className="buttonMember">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 24">
-              <path d="m18 0 8 12 10-8-4 20H4L0 4l10 8 8-12z"></path>
-            </svg>
-            Add membership
-          </button>
-        </div> */}
-
-        {/* <div className="card">
-          <div className="type">
-            <h2 className="typeh2">Soul Vip</h2>
-          </div>
-          <div className="databox">
-            <p className="date">One year</p>
-            <p className="price">$45</p>
-          </div>
-          <button className="buttonMember">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 24">
-              <path d="m18 0 8 12 10-8-4 20H4L0 4l10 8 8-12z"></path>
-            </svg>
-            Add membership
-          </button>
-        </div> */}
+       
       </div>
       <div className="ourMember">
         <h3 className="aboutName">Why choose us?</h3>
@@ -168,42 +139,56 @@ const BeMember = () => {
           <li>Join now and embrace a world of limitless music!</li>
         </ul>
       </div>
-      <div class="testimonials">
-        <div class="testimonial-card">
+      <div className="testimonials">
+        <div className="testimonial-card">
           <img src={test2} alt="Nombre del cliente" />
 
           <p class="testimonial-text">
             "I really like using this site, finding the most diverse songs, and
             very complete content"
           </p>
-          <p class="client-name">LUCAS</p>
-          <p class="client-role">Argentina</p>
+          <div className="testimonialDiv">
+            <p className="client-name">LUCAS</p>
+            <p className="client-role">Argentina</p>
+          </div>
         </div>
-        <div class="testimonial-card">
-          <img src={test1} alt="Nombre del cliente" />
+        <div className="testimonial-card">
+          <img src={test2} alt="Nombre del cliente" />
+
           <p class="testimonial-text">
-            "I love to take music everywhere, that's why this page is perfect
-            for me"
+            "I really like using this site, finding the most diverse songs, and
+            very complete content"
           </p>
-          <p class="client-name">ROSE</p>
-          <p class="client-role">United States</p>
+          <div className="testimonialDiv">
+            <p className="client-name">LUCAS</p>
+            <p className="client-role">Argentina</p>
+          </div>
         </div>
-        <div class="testimonial-card">
-          <img src={test} alt="Nombre del cliente" />
+        <div className="testimonial-card">
+          <img src={test2} alt="Nombre del cliente" />
+
           <p class="testimonial-text">
-            "After learning about the site, I got the membership and I don't
-            regret it, I can listen to all the songs without interruptions, and
-            it is always updating with new content, thanks soul life!"
+            "I really like using this site, finding the most diverse songs, and
+            very complete content"
           </p>
-          <p class="client-name">PABLO</p>
-          <p class="client-role">México</p>
+          <div className="testimonialDiv">
+            <p className="client-name">LUCAS</p>
+            <p className="client-role">Argentina</p>
+          </div>
         </div>
-        <div class="testimonial-card">
-          <img src={test3} alt="Nombre del cliente" />
-          <p class="testimonial-text">"The best!"</p>
-          <p class="client-name">LUZ</p>
-          <p class="client-role">Argentina</p>
+        <div className="testimonial-card">
+          <img src={test2} alt="Nombre del cliente" />
+
+          <p class="testimonial-text">
+            "I really like using this site, finding the most diverse songs, and
+            very complete content"
+          </p>
+          <div className="testimonialDiv">
+            <p className="client-name">LUCAS</p>
+            <p className="client-role">Argentina</p>
+          </div>
         </div>
+      
       </div>
     </div>
   );

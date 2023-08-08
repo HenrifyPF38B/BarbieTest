@@ -19,7 +19,9 @@
   transform: scale(1.05);
 }
 
-.topratedcardwrapper:hover .seePlaylist{
+.topratedcardwrapper:hover .seePlaylist,
+.topratedcardwrapper:hover .activeDelete,
+.topratedcardwrapper:hover .seePlaylist2{
   right: 10px;
 }
 
@@ -57,6 +59,17 @@
 }
 
 .seePlaylist{
+  position: absolute;
+  bottom: 45px;
+  right: -50px;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: white;
+}
+
+.seePlaylist2{
   position: absolute;
   bottom: 25px;
   right: -50px;
@@ -125,3 +138,29 @@
   border-radius: 50px;
   color: whitesmoke;
 }
+
+.activeDelete{
+  position: absolute;
+  bottom: 10px;
+  right: -50px;
+  transition: all 0.4s ease;
+  display: flex;
+  align-items: center;
+  gap: 12.5px;
+  transition: all 0.3s ease;
+}
+
+
+
+.showUser{
+  position: absolute;
+  width: 40px;
+  height: auto;
+  top: 4px;
+  left: 4px;
+}
+
+.showUser img{
+  border-radius: 50%;
+}
+

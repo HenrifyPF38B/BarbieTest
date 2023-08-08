@@ -13,9 +13,13 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import style from "./UserPlaylist/songsPlaylist.module.css";
-
+import { Toast } from 'primereact/toast';
+import 'primereact/resources/themes/lara-light-indigo/theme.css';
+import "primereact/resources/primereact.min.css";                  //core css
+import "primeicons/primeicons.css";
 
 const SongCard = ({
+  el,
   artist,
   song,
   id,
@@ -28,6 +32,8 @@ const SongCard = ({
   handleAddToPlaylist,
   handleRemoveSong,
 }) => {
+
+  const refToast = useRef();
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
   const { userFavs, usersId } = state;
@@ -39,6 +45,7 @@ const SongCard = ({
     setModalOpen,
     setPlayerOpen,
     refPreviewNotAvailableAppJS,
+    setOpenAddToPlaylist
   } = data;
   const [playShow, setPlayShow] = useState(true);
   const [inFavs, setInFavs] = useState(null);
@@ -66,8 +73,19 @@ const SongCard = ({
     }
   };
 
+  const handleOpenAddToPModal = () =>{
+    if(!usersId.id){
+      // Toast
+      return refToast.current.show({sticky: true, severity: 'info', summary: "We're sorry!", detail: "Please login to access this functionality!"});
+    }else{
+      // Open modal
+      setOpenAddToPlaylist(el);
+    }
+  };
+
   return (
     <div className={styles.topratedcardwrapper}>
+      <Toast ref={refToast} position='top-left'></Toast>
       <div className={styles.seePlaylist}>
         {!isFavoriteView &&
           usersId.id &&
@@ -89,33 +107,11 @@ const SongCard = ({
           <i className="fa-regular fa-heart p-1 fa-sm"></i>
         )}
         {!isFavoriteView && (
-          <div className="dropdown songCard">
+          <div onClick={handleOpenAddToPModal}>
             <i
               className="fa-solid fa-list-ul fa-sm p-1"
-              id="dLabel"
-              type="button"
-              data-toggle="dropdown"
-              aria-haspopup="true"
-              aria-expanded="false"
+            
             ></i>
-            <div
-              className="dropdown-menu mb-2"
-              aria-labelledby="dropdownMenuButton"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <div className="dropdown-item">
-                <input type="checkbox" id="1" />
-                <label htmlFor="1">Gym Playlist</label>
-              </div>
-              <div className="dropdown-item">
-                <input type="checkbox" id="2" />
-                <label htmlFor="2">Party Playlist</label>
-              </div>
-              <div className="dropdown-item">
-                <input type="checkbox" id="3" />
-                <label htmlFor="3">Study Playlist</label>
-              </div>
-            </div>
           </div>
         )}
         {/*  ISFAVORITEVIEW = TRUE  */}

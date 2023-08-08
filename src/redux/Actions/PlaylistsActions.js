@@ -4,6 +4,7 @@ import {
   POST_PLAYLISTS,
   PUT_PLAYLISTS,
   DELETE_PLAYLISTS,
+  EDIT_P_SONGS,
 } from "../Action-types";
 import { base_url } from "../baseURL";
 
@@ -71,5 +72,13 @@ export const deletePlaylists = (id) => {
     );
     const data = await res.json();
     dispatch({ type: DELETE_PLAYLISTS, payload: data });
+  };
+};
+
+
+export const editPSongsState = (data) => {
+  return async function (dispatch) {
+    
+    dispatch({ type: EDIT_P_SONGS, payload: data });
   };
 };
