@@ -38,10 +38,26 @@ const Store = () => {
     setCurrentPage((prevPage) => prevPage - 1);
   };
 
-  const lastPage = Math.ceil(songs.length / songsPerPage);
-  const indexOfLastSong = currentPage * songsPerPage;
-  const indexOfFirstSong = indexOfLastSong - songsPerPage;
-  const currentSongs = songs.slice(indexOfFirstSong, indexOfLastSong);
+  let lastPage = 0
+  let currentSongs = 0
+  let currentSongsFilter = 0
+  let { filteredSongsArtist, filteredSongsPopularity, filteredSongsExplicit } = state;
+  
+  if (!filteredSongs.length && !filteredSongsArtist.length && !filteredSongsPopularity.length && !filteredSongsExplicit.length) {
+    lastPage = Math.ceil(songs.length / songsPerPage);
+    const indexOfLastSong = currentPage * songsPerPage;
+    const indexOfFirstSong = indexOfLastSong - songsPerPage;
+    //verificar para filteredSongs
+    currentSongs = songs.slice(indexOfFirstSong, indexOfLastSong);
+    
+  } else {
+    lastPage = Math.ceil(filteredSongs.length / songsPerPage);
+    const indexOfLastSong = currentPage * songsPerPage;
+    const indexOfFirstSong = indexOfLastSong - songsPerPage;
+    //verificar para filteredSongs
+     currentSongsFilter = filteredSongs.slice(indexOfFirstSong, indexOfLastSong);
+  }
+ 
 
 
   useEffect(() => {
@@ -50,8 +66,7 @@ const Store = () => {
   }, []);
 
   useEffect(() => {
-
-    console.log(songs);
+    //console.log(songs);
     let options = [];
     songs.map((el, index) => {
       options.push({
@@ -65,100 +80,87 @@ const Store = () => {
         songId: el.songId,
         popularity: el.popularity,
         explicit: el.explicit,
-        el: el
       });
     });
     setOptionsSearch(options);
-  }, [songs]);
+  }, [songs, filteredSongs]);
 
-  return ( 
+  return (
     <div className={styles.wrapper}>
-    
       <aside className={styles.sideBar}>
         <DropdownMenu />
-      </aside>    
-       <div className={styles.panel}>
+      </aside>
+      <div className={styles.panel}>
         <h2 className={styles.title}>Our Songs</h2>
         {/* <h2 className={styles.banner}>What do you want to hear today?</h2> */}
-      <div className='d-flex align-items-center justify-content-center'>
-        <div className={styles.searchBar}>
-          <Typeahead
-
-            placeholder='What do you want to listen today?'
-            onChange={(selected) => dispatch(filterSongs(selected))}
-            options={optionsSearch}
+        <div className="d-flex align-items-center justify-content-center">
+          <div className={styles.searchBar}>
+            <Typeahead
+              placeholder="What do you want to listen today?"
+              onChange={(selected) => dispatch(filterSongs(selected))}
+              options={optionsSearch}
+            />
+          </div>
+        </div>
+        <div className={styles.pag}>
+          <Pagination
+            currentPage={currentPage}
+            lastPage={lastPage}
+            prevPage={prevPage}
+            nextPage={nextPage}
           />
         </div>
-      </div>
-      <div className={styles.pag}>
-          {!filteredSongs.length && (
-             <Pagination
-              currentPage={currentPage}
-              lastPage={lastPage}
-              prevPage={prevPage}
-              nextPage={nextPage}
-            />
-          )}
-                 
-      </div>
-      <div className={styles.cards}>
-        {
-          filteredSongs?.length ? (
-            filteredSongs.map(el =>{
-              return <SongCard
-                el={el}
-                artist={el.artists.map((artist, index) => {
-                  if(index === el.artists.length - 1){
-                    return artist.name
-                  }else{
-                    return artist.name + " • "
-                  }
-                })}
-                song={el.name}
-                songId={el.songId}
-                id={el.id}
-                img={el.image && el.image}
-                audio={el.audioPreview}
-                audioFull={el.audioFull}
-              />
+        <div className={styles.cards}>
+          {filteredSongs?.length ? (
+            currentSongsFilter.map((el) => {
+              return (
+                <SongCard
+                  artist={el.artists.map((artist, index) => {
+                    if (index === el.artists.length - 1) {
+                      return artist.name;
+                    } else {
+                      return artist.name + " • ";
+                    }
+                  })}
+                  song={el.name}
+                  songId={el.songId}
+                  id={el.id}
+                  img={el.image && el.image}
+                  audio={el.audioPreview}
+                  audioFull={el.audioFull}
+                />
+              );
             })
-              
-          ):(
-            (!filteredSongs.length && (alphabet || explicit || popularity || artists || letter)) ? (
-              <div>
-                
-              </div>
-            ):(
-              currentSongs?.map((el, index) => {
-                  return(
-                    <SongCard
-                      key={index}
-                      artist={el.artists.map((artist, index) => {
-                        if(index === el.artists.length - 1){
-                          return artist.name
-                        }else{
-                          return artist.name + " • "
-                        }
-                      })}
-                      song={el.name}
-                      id={el.id}
-                      img={el.image}
-                      audio={el.audioPreview}
-                      audioFull={el.audioFull}
-                      songId={el.songId}
-                      explicit={el.explicit}
-                      el={el}
-                    />
-                  )
-                })
-            )
-          )
-        }
-        
+          ) : !filteredSongs.length &&
+            (alphabet || explicit || popularity || artists || letter) ? (
+            <div></div>
+          ) : (
+            currentSongs?.map((el, index) => {
+              return (
+                <SongCard
+                  key={index}
+                  artist={el.artists.map((artist, index) => {
+                    if (index === el.artists.length - 1) {
+                      return artist.name;
+                    } else {
+                      return artist.name + " • ";
+                    }
+                  })}
+                  song={el.name}
+                  id={el.id}
+                  img={el.image}
+                  audio={el.audioPreview}
+                  audioFull={el.audioFull}
+                  songId={el.songId}
+                  explicit={el.explicit}
+                />
+              );
+            })
+          )}
+        </div>
       </div>
     </div>
-    </div> 
-   );
+  );
 }
  
 export default Store;

@@ -5,7 +5,11 @@ import {
   POST_SONGS,
   PUT_SONGS,
   DELETE_SONGS,
-  FILTER_SONGS
+  FILTER_SONGS,
+  FILTER_SONGS_ARTIST,
+  FILTER_SONGS_POPULARITY,
+  FILTER_SONGS_EXPLICIT,
+  FILTER_SONGS_ALPHABET,
 } from "../Action-types";
 import { base_url } from "../baseURL";
 
@@ -90,5 +94,33 @@ export const deleteSongs = (id) => {
     );
     const data = await res.json();
     dispatch({ type: DELETE_SONGS, payload: data });
+  };
+};
+
+export const filterSongsByArtist = (data) => {
+  return async function (dispatch) {
+    
+    dispatch({ type: FILTER_SONGS_ARTIST, payload: data });
+  };
+};
+
+export const filterSongsByPopularity = (data) => {
+  return async function (dispatch) {
+    
+    dispatch({ type: FILTER_SONGS_POPULARITY, payload: data });
+  };
+};
+
+export const filterSongsByExplicit = (data) => {
+  return async function (dispatch) {
+    
+    dispatch({ type: FILTER_SONGS_EXPLICIT, payload: data });
+  };
+};
+
+export const filterSongsByAlphabet = (data) => {
+  return async function (dispatch) {
+    
+    dispatch({ type: FILTER_SONGS_ALPHABET, payload: data });
   };
 };

@@ -115,6 +115,7 @@ background-image: linear-gradient(to right, #480048c7, #1f1f1f);
   font-size: 3em;
   letter-spacing: 10px;
   color: whitesmoke;
+  font-weight: 300;
   text-transform: uppercase;
   width: 100%;    
   text-align: center;
@@ -122,11 +123,11 @@ background-image: linear-gradient(to right, #480048c7, #1f1f1f);
   /* El webkit reflect hace el efecto de reflejo de las letras */
   /* Le podeemos poner un fondo naranja o violeta para que pegue con el fondo, tipo asi mira */
   line-height: 0.84em;
-  text-shadow: 0 0 10px rgb(223, 54, 24),
-                0 0 20px rgb(223, 54, 24), 
-                0 0 40px rgb(223, 54, 24), 
-                0 0 80px rgb(223, 54, 24),
-                0 0 160px rgb(223, 54, 24);
+  text-shadow: 0 0 10px rgb(252, 8, 130),
+                0 0 20px rgb(252, 8, 130), 
+                0 0 40px rgb(252, 8, 130), 
+                0 0 80px rgb(252, 8, 130),
+                0 0 160px rgb(252, 8, 130);
   outline: none;
 }
 

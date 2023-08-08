@@ -55,6 +55,10 @@ import {
   UPDATE_USER_PLAYLIST,
   TOGGLE_PLAYLIST,
   RESET_EDITPSONGS,
+  FILTER_SONGS_ARTIST,
+  FILTER_SONGS_POPULARITY,
+  FILTER_SONGS_EXPLICIT,
+  FILTER_SONGS_ALPHABET,
 } from "./Action-types";
 
 const initialState = {
@@ -78,6 +82,10 @@ const initialState = {
   membershipsId: {},
   genres: [],
   genresId: {},
+  filteredSongsArtist: [],
+  filteredSongsPopularity: [],
+  filteredSongsExplicit: [],
+  filteredSongsAlphabet:[],
 };
 
 const Reducer = (state = initialState, { type, payload }) => {
@@ -265,6 +273,26 @@ const Reducer = (state = initialState, { type, payload }) => {
         message: payload,
       };
 
+      case FILTER_SONGS_ARTIST:
+      return {
+        ...state,
+        filteredSongsArtist: payload,
+      };
+    case FILTER_SONGS_POPULARITY:
+      return {
+        ...state,
+        filteredSongsPopularity: payload,
+      };
+    case FILTER_SONGS_EXPLICIT:
+      return {
+        ...state,
+        filteredSongsExplicit: payload,
+      };
+    case FILTER_SONGS_ALPHABET:
+      return {
+        ...state,
+        filteredSongsAlphabet: payload,
+      };
     // REVIEWS --------------------------------------------------------------------------------
     case GET_REVIEWS:
       return {
