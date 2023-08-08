@@ -85,7 +85,8 @@ const initialState = {
   filteredSongsArtist: [],
   filteredSongsPopularity: [],
   filteredSongsExplicit: [],
-  filteredSongsAlphabet:[],
+  filteredSongsAlphabet: [],
+  reviewUser:[],
 };
 
 const Reducer = (state = initialState, { type, payload }) => {
@@ -309,7 +310,7 @@ const Reducer = (state = initialState, { type, payload }) => {
     case POST_REVIEWS:
       return {
         ...state,
-        message: payload,
+        reviewUser: payload,
       };
 
     case PUT_REVIEWS:

@@ -1655,14 +1655,15 @@ body{
   right: 0;
   bottom: 0;
   background-color: rgba(0, 0, 0, 0.788);
+  z-index: 9999;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
 .modalContent {
-  width: 400px;
-  height: 500px;
+  width: 800px;
+  height: 650px;
   background-color: #000000;
   padding: 20px;
   border-radius: 8px;
@@ -1670,6 +1671,7 @@ body{
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  ;
 }
 .containerbntReviews{
   display: flex;

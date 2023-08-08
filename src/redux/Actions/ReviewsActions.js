@@ -27,14 +27,14 @@ export const getReviewsById = (id) => {
 export const postReviews = (review) => {
   return async function (dispatch) {
     const res = await fetch(
-      `${base_url}/reviews`
-      // {
-      //     method: 'POST',
-      //     headers:{
-      //         "Content-type":"application/json; charset=UTF-8"
-      //     },
-      //     body: JSON.stringify(review)
-      // }
+      `${base_url}/reviews`,
+       {
+           method: 'POST',
+          headers:{
+               "Content-type":"application/json; charset=UTF-8"
+           },
+           body: JSON.stringify(review)
+       }
     );
     const data = await res.json();
     dispatch({ type: POST_REVIEWS, payload: data });
