@@ -1164,7 +1164,47 @@ body{
   padding: 20px;
   border-radius: 10px;
 }
-
+/* REVIEWES CONTAINER */
+.reviewsContent {
+  height: 200px;
+  width: 400px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  border-radius: 7px;
+  border: 1px solid #ccc;
+  padding: 10px;
+  background: linear-gradient(#ff2252c4, #ffc60c77);
+}
+.revi {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  letter-spacing: 2px;
+  font-size: 15px;
+  gap: 50px;
+  text-transform: uppercase;
+}
+.btnReviews {
+  background: black;
+  color: rgba(255, 255, 255, 0.856);
+  width: 130px;
+  padding: 5px;
+  letter-spacing: 1.5px;
+  border-radius: 5px;
+  border: none;
+  transition: all 0.6s ease;
+}
+.btnReviews:hover {
+  background: rgba(255, 255, 255, 0.548);
+  border: none;
+}
+.btnReviewsContainer {
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+}
 .filterSelected {
   background: rgba(15, 14, 14, 0.274) !important;
   /* padding: 2px 4px 2px 4px; */

@@ -111,8 +111,10 @@ const BeMember = () => {
         ))}
        
       </div>
+      <div className="revi">
       <div className="ourMember">
         <h3 className="aboutName">Why choose us?</h3>
+    
         <ul className="aboutUs">
           <li>
             Elevate your music experience with our membership! Gain unlimited
@@ -137,8 +139,15 @@ const BeMember = () => {
             opportunity to unlock the full potential of your music journey.
           </li>
           <li>Join now and embrace a world of limitless music!</li>
-        </ul>
-      </div>
+        </ul>       
+      </div> 
+      <div className="reviewsContent">
+          <p>Your opinion is very important, you can rate us here</p>
+       <div className="btnReviewsContainer">
+       <button className="btnReviews">Click Here!</button>
+        </div>
+        </div>
+        </div>
       <div className="testimonials">
         <div className="testimonial-card">
           <img src={test2} alt="Nombre del cliente" />
