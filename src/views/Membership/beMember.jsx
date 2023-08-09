@@ -14,7 +14,8 @@ import 'primereact/resources/themes/lara-light-indigo/theme.css';
 import "primereact/resources/primereact.min.css";                  //core css
 import "primeicons/primeicons.css";    
 import RateUsModal from "../../modals/userReviews";
-
+import { getReviews } from "../../redux/Actions/ReviewsActions";
+import "font-awesome/css/font-awesome.min.css";
 
 const BeMember = () => {
 
@@ -23,7 +24,7 @@ const BeMember = () => {
   const dataContext = useContext(PlaylistContext);
   const { setLoginOpen } = dataContext;
   const state = useSelector(state => state);
-  const { memberships, usersId } = state;
+  const { memberships, usersId, reviews } = state;
 
   const membershipList = memberships || [];
 
@@ -31,6 +32,19 @@ const BeMember = () => {
   const [sortedMemberships, setSortedMemberships] = useState([]);
   const [showModal, setShowModal] = useState(false);
 
+  const renderStars = (rating) => {
+    let stars = [];
+    for (let i = 1; i <= 5; i++) {
+      if (i <= rating) {
+        stars.push(<i key={i} className="fa fa-star" aria-hidden="true"></i>);
+      } else {
+        stars.push(<i key={i} className="fa fa-star-o" aria-hidden="true"></i>);
+      }
+    }
+    return stars;
+  };
+
+  
   const handleOpenModal = (membership) =>{
     if(!usersId.id){
       // User not logged in
@@ -53,7 +67,9 @@ const BeMember = () => {
       let sortedArray = membershipList.sort(compare);
       setSortedMemberships(sortedArray);
     }
-  }, [membershipList]);
+    dispatch(getReviews());
+
+  }, [membershipList, reviews]);
 
   return (
     <div className={style.container}>
@@ -159,56 +175,26 @@ const BeMember = () => {
           </div>
         </div>
       </div>
-      {/* <div className="testimonials">
-        <div className="testimonial-card">
-          <img src={test2} alt="Nombre del cliente" />
-
-          <p class="testimonial-text">
-            "I really like using this site, finding the most diverse songs, and
-            very complete content"
-          </p>
-          <div className="testimonialDiv">
-            <p className="client-name">LUCAS</p>
-            <p className="client-role">Argentina</p>
+      <div className="testimonials">
+        {reviews.data?.map((review) => (
+          <div key={review.id} className="reviewItem">
+            <div className="containerDataReview">
+              <img
+                className="avatarReview"
+                src={review.User?.avatar}
+                alt="img"
+              />{" "}
+              <h4>
+                {review.User?.firstName} {review.User?.lastName}
+              </h4>
+            </div>
+            <div className="dataReview">
+              <p>Rating: {renderStars(review.rating)}</p>
+              <p>{review.comment}</p>
+            </div>
           </div>
-        </div>
-        <div className="testimonial-card">
-          <img src={test2} alt="Nombre del cliente" />
-
-          <p class="testimonial-text">
-            "I really like using this site, finding the most diverse songs, and
-            very complete content"
-          </p>
-          <div className="testimonialDiv">
-            <p className="client-name">LUCAS</p>
-            <p className="client-role">Argentina</p>
-          </div>
-        </div>
-        <div className="testimonial-card">
-          <img src={test2} alt="Nombre del cliente" />
-
-          <p class="testimonial-text">
-            "I really like using this site, finding the most diverse songs, and
-            very complete content"
-          </p>
-          <div className="testimonialDiv">
-            <p className="client-name">LUCAS</p>
-            <p className="client-role">Argentina</p>
-          </div>
-        </div>
-        <div className="testimonial-card">
-          <img src={test2} alt="Nombre del cliente" />
-
-          <p class="testimonial-text">
-            "I really like using this site, finding the most diverse songs, and
-            very complete content"
-          </p>
-          <div className="testimonialDiv">
-            <p className="client-name">LUCAS</p>
-            <p className="client-role">Argentina</p>
-          </div>
-          </div>
-        </div> */}
+        ))}
+      </div>
     </div>
   );
 };

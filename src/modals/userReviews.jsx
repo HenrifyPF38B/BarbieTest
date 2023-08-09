@@ -42,7 +42,7 @@ const RateUsModal = ({ isOpen, onClose }) => {
       const postReview = (
         await axios.post("http://localhost:3001/api/reviews/", bodyReview)
       ).data;
-      console.log("post Review: " + postReview.data);
+      //console.log("post Review: " + postReview.data);
       if (postReview) {
         setIsReviewSubmitted(true);
         return alert("Review Created");
