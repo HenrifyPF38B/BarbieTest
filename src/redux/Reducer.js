@@ -310,7 +310,7 @@ const Reducer = (state = initialState, { type, payload }) => {
     case POST_REVIEWS:
       return {
         ...state,
-        reviewUser: payload,
+        message: payload,
       };
 
     case PUT_REVIEWS:

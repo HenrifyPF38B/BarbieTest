@@ -37,7 +37,9 @@ export const postReviews = (review) => {
        }
     );
     const data = await res.json();
+   // console.log("postReview - Action" + data.data)
     dispatch({ type: POST_REVIEWS, payload: data });
+
   };
 };
 

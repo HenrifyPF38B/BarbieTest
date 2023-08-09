@@ -1,17 +1,16 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./userReviews.module.css";
 import axios from "axios";
-import { useDispatch, useSelector } from "react-redux";
-import { postReviews } from "../redux/Actions/ReviewsActions";
+import { useSelector } from "react-redux";
+
 
 const RateUsModal = ({ isOpen, onClose }) => {
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState("");
   const [isReviewSubmitted, setIsReviewSubmitted] = useState(false);
   const state = useSelector((state) => state);
-  const { usersId, reviewUser } = state;
+  const { usersId} = state;
 
-  const dispatch = useDispatch()
 
   const handleRatingChange = (value) => {
     setRating(value);
@@ -20,28 +19,46 @@ const RateUsModal = ({ isOpen, onClose }) => {
   const handleCommentChange = (event) => {
     setComment(event.target.value);
   };
+  
+ 
 
-  const handleSubmitReview = async (usersId) => {
-    if (!usersId) return alert("Not registered");
+  const handleSubmitReview = async () => {
+    
+    if (!usersId || !usersId.firstName) {
+      return alert("User is not registered");
+    }
 
+    console.log("usuario: " + usersId.id);
     if (rating === 0) return alert("Missing rating");
 
     const bodyReview = {
       comment: comment,
       rating: rating,
-      UserId: usersId.id
+      UserId: usersId.id,
     };
-    
-    dispatch(postReviews(bodyReview));
-    console.log("bodyReview: " , bodyReview)
-    console.log("Post reduce", reviewUser)
-     
-  
-    /* if (!reviewUser.length) return alert("No se creo")
-    return reviewUser; */
-    
-  }; 
+    console.log("Usuario: " + usersId.firstName);
 
+    try {
+      const postReview = (
+        await axios.post("http://localhost:3001/api/reviews/", bodyReview)
+      ).data;
+      console.log("post Review: " + postReview.data);
+      if (postReview) {
+        setIsReviewSubmitted(true);
+        return alert("Review Created");
+      } else {
+        return alert("Error submitting review");
+      }
+    } catch (error) {
+      return alert(error.message);
+    }
+  }; 
+  
+  /* useEffect(() => {
+    if (message === "review created") alert("exito");
+
+  }, [message]); */
+  
   if (!isOpen) return null;
 
   return (
