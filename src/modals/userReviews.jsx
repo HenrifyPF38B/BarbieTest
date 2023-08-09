@@ -2,15 +2,16 @@ import React, { useEffect, useState } from "react";
 import styles from "./userReviews.module.css";
 import axios from "axios";
 import { useSelector } from "react-redux";
-
+//import { postReviews } from "../redux/Actions/ReviewsActions";
 
 const RateUsModal = ({ isOpen, onClose }) => {
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState("");
   const [isReviewSubmitted, setIsReviewSubmitted] = useState(false);
   const state = useSelector((state) => state);
-  const { usersId} = state;
+  const { usersId } = state;
 
+//const dispatch = useDispatch();
 
   const handleRatingChange = (value) => {
     setRating(value);
@@ -20,10 +21,8 @@ const RateUsModal = ({ isOpen, onClose }) => {
     setComment(event.target.value);
   };
   
- 
-
   const handleSubmitReview = async () => {
-    
+
     if (!usersId || !usersId.firstName) {
       return alert("User is not registered");
     }
@@ -36,9 +35,9 @@ const RateUsModal = ({ isOpen, onClose }) => {
       rating: rating,
       UserId: usersId.id,
     };
-    console.log("Usuario: " + usersId.firstName);
-
-    try {
+  //return console.log("usersId" + usersId.id);
+    //dispatch(postReviews(bodyReview));
+     try {
       const postReview = (
         await axios.post("http://localhost:3001/api/reviews/", bodyReview)
       ).data;
@@ -53,61 +52,76 @@ const RateUsModal = ({ isOpen, onClose }) => {
       return alert(error.message);
     }
   }; 
-  
-  /* useEffect(() => {
-    if (message === "review created") alert("exito");
+    /* console.log("Usuario: " + usersId.firstName);
+    console.log("Valor de reviewUser:", reviewUser);
+    console.log("Post reduce", reviewUser); */
+  //}
+/*    useEffect(() => {
+   if (review) {
+      if (review.includes("Review Created")) {
+        setIsReviewSubmitted(true);
+        setRating(0);
+        setComment("");
+      }
+    }
 
-  }, [message]); */
+  }, []);   */
+    
+   
+    
+    
   
   if (!isOpen) return null;
 
   return (
     <div className="modalOverlay">
       <div className="modalContent">
-        <h2>Valóranos</h2>
-
-        <h2 className={styles.review.h2}>Membership Reviews</h2>
-        <div>
-          <h3>
-            {" "}
-            {usersId.firstName + " "} {usersId.lastName}
-          </h3>
-          <img className={styles.avatarReview} src={usersId.avatar} alt="" />
-        </div>
-        <div className={styles.rating}>
-          {/* <p className={styles.rating.p}>Your rating: {rating} stars</p> */}
-          <div className={styles.starContainer}>
-            {[1, 2, 3, 4, 5].map((star) => (
-              <span
-                key={star}
-                className={star <= rating ? styles.starfilled : "star"}
-                onClick={() => handleRatingChange(star)}
-              >
-                ★
-              </span>
-            ))}
+        <div className="containerbntReviews">
+          <div className="infReview">
+            <h2 className="valoranos">Rate us!</h2>
           </div>
+          <button className="buttonModalReviews" onClick={onClose}>
+            X
+          </button>
         </div>
-        <textarea
-          className={styles.comment}
-          placeholder="Enter your comment..."
-          value={comment}
-          rows="5"
-          onChange={handleCommentChange}
-        ></textarea>
-        <button
-          className={styles.submit_btn}
-          onClick={handleSubmitReview}
-          disabled={isReviewSubmitted}
-        >
-          Submit Review
-        </button>
-      </div>
+        <div className="datUserReview">
+          <div className="dataUserModal">
+            <img className="avatarReview" src={usersId.avatar} alt="" />
 
-      <div className="containerbntReviews">
-        <button className="buttonModalReviews" onClick={onClose}>
-          Close
-        </button>
+            <h3 className="nameh2">
+              {usersId.firstName + " "} {usersId.lastName}
+            </h3>
+          </div>
+          <div className={styles.rating}>
+            <div className={styles.starContainer}>
+              {[1, 2, 3, 4, 5].map((star) => (
+                <span
+                  key={star}
+                  className={star <= rating ? styles.starfilled : "star"}
+                  onClick={() => handleRatingChange(star)}
+                >
+                  ★
+                </span>
+              ))}
+            </div>
+          </div>
+          <textarea
+            className="containerTextTarea"
+            placeholder="Enter your comment..."
+            value={comment}
+            rows="5"
+            onChange={handleCommentChange}
+          ></textarea>
+        </div>
+        <div className="btnreview">
+          <button
+            className="submit_btn"
+            onClick= {handleSubmitReview}
+            disabled={isReviewSubmitted}
+          >
+            Submit review
+          </button>
+        </div>
       </div>
     </div>
   );
