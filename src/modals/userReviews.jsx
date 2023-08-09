@@ -21,37 +21,25 @@ const RateUsModal = ({ isOpen, onClose }) => {
     setComment(event.target.value);
   };
 
-  const handleSubmitReview = async (userId) => {
+  const handleSubmitReview = async (usersId) => {
     if (!usersId) return alert("Not registered");
-    /*  const firstName = usersId.firstName
-    const lastName = usersId.lastName
-    const avatar = usersId.avatar */
 
     if (rating === 0) return alert("Missing rating");
 
     const bodyReview = {
       comment: comment,
       rating: rating,
-      userId: userId,
+      UserId: usersId.id
     };
     
     dispatch(postReviews(bodyReview));
     console.log("bodyReview: " , bodyReview)
-    console.log("Post reduce" , reviewUser)
-    /* try {
-      const postReview = (
-        await axios.post("http://localhost:3001/api/reviews/", bodyReview)
-      ).data;
-      console.log("soy Usuario: " + postReview);
-      if (postReview) {
-        setIsReviewSubmitted(true);
-        return alert("Review Created");
-      } else {
-        return alert("Error submitting review");
-      }
-    } catch (error) {
-      return alert("Error de Axios");
-    }*/
+    console.log("Post reduce", reviewUser)
+     
+  
+    /* if (!reviewUser.length) return alert("No se creo")
+    return reviewUser; */
+    
   }; 
 
   if (!isOpen) return null;
