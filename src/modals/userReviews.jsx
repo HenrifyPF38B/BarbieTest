@@ -86,7 +86,7 @@ const RateUsModal = ({ isOpen, onClose }) => {
         </div>
         <div className="datUserReview">
           <div className="dataUserModal">
-            <img className="avatarReview" src={usersId.avatar} alt="" />
+            <img className="avatarReviewModal" src={usersId.avatar} alt="" />
 
             <h3 className="nameh2">
               {usersId.firstName + " "} {usersId.lastName}

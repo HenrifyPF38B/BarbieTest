@@ -80,28 +80,16 @@ const BeMember = () => {
           membershipModal={membershipModal}
           setMembershipModal={setMembershipModal}
         />
-      )}
-      <div className="content">
-        <div className="tittle">
-          <h1>Welcome! Be a member!</h1>
-        </div>
-        <div class="pyramid-loader">
-          <div class="wrapper">
-            <span class="side side1"></span>
-            <span class="side side2"></span>
-            <span class="side side3"></span>
-            <span class="side side4"></span>
-            <span class="shadow"></span>
-          </div>
-        </div>
+      )}  
+        <div className="tittleBeMember">
+          <h1 className="beMembertit">Welcome, Be a member!</h1>  
       </div>
+      <div className="containerPlan">
       <h4 className="info">
         Select the plan you want and enjoy unlimited music!
-      </h4>
-      <p className="dat">
-        Play any song, download your favorites and listen offline. Listen to
-        content on all your devices and enjoy high fidelity sound.
-      </p>
+     </h4>
+    
+      </div>
       <div className="boxMember">
         {sortedMemberships.map((membership) => (
           <div className="cardMembership" key={membership.id}>
@@ -132,10 +120,33 @@ const BeMember = () => {
           </div>
         ))}
       </div>
-      <div className="revi">
+      <div className="revi">        
+      <div className="reviewsContent">
+      <div className="contentRevi">
+      <div class="pyramid-loader">
+          <div class="wrapper">
+            <span class="side side1"></span>
+            <span class="side side2"></span>
+            <span class="side side3"></span>
+            <span class="side side4"></span>
+            <span class="shadow"></span>
+          </div>
+        </div>
+        <h4>Thanks for joining us!</h4>          
+          </div>
+          <p className="opinionReview">Your feedback is essential in helping us improve and continue to offer top-notch service. We invite you to share your thoughts by leaving a review!</p>
+          <div className="btnReviewsContainer">
+            <button className="btnReviews" onClick={() => setShowModal(true)}>
+              Click Here!
+            </button>
+            <RateUsModal
+              isOpen={showModal}
+              onClose={() => setShowModal(false)}
+            />
+          </div>
+        </div>
         <div className="ourMember">
           <h3 className="aboutName">Why choose us?</h3>
-
           <ul className="aboutUs">
             <li>
               Elevate your music experience with our membership! Gain unlimited
@@ -161,19 +172,7 @@ const BeMember = () => {
             </li>
             <li>Join now and embrace a world of limitless music!</li>
           </ul>
-        </div>
-        <div className="reviewsContent">
-          <p>Your opinion is very important, you can rate us here</p>
-          <div className="btnReviewsContainer">
-            <button className="btnReviews" onClick={() => setShowModal(true)}>
-              Click Here!
-            </button>
-            <RateUsModal
-              isOpen={showModal}
-              onClose={() => setShowModal(false)}
-            />
-          </div>
-        </div>
+        </div>      
       </div>
       <div className="testimonials">
         {reviews.data?.map((review) => (
@@ -189,7 +188,7 @@ const BeMember = () => {
               </h4>
             </div>
             <div className="dataReview">
-              <p>Rating: {renderStars(review.rating)}</p>
+              <p className='ratingText'>{renderStars(review.rating)}</p>
               <p>{review.comment}</p>
             </div>
           </div>

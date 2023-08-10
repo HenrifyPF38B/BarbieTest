@@ -768,7 +768,7 @@ body{
 .cardMembership {
   display: flex;
   color: white;
-  width: 300px;
+  width: 350px;
   height: 400px;
   transition: 0.6s linear;
   border-radius: 1em;
@@ -778,8 +778,8 @@ body{
   text-align: center;
   box-shadow: 13px 13px 13px black;
 }
-.cardMembership:hover {
-  transform: translateY(-20px);
+.cardMembership:hover{
+  scale: 1.05;
 }
 
 .cardMembership::before {
@@ -800,8 +800,6 @@ body{
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(45deg, #ffbc00, #ff0058);
-  filter: blur(20px);
 }
 
 .cardMembership span {
@@ -898,7 +896,7 @@ body{
 }
 .type {
   width: 96%;
-  margin-top: 80px;
+  margin-top: 20px;  
   background: linear-gradient(to right, #b84402a8, #fa163cbe);
   padding: 20px;
 }
@@ -918,7 +916,7 @@ body{
   letter-spacing: 2px;
 }
 .price {
-  background: -webkit-linear-gradient(#ad0034, #ff095b);
+  background: -webkit-linear-gradient(#c9c9c9d3, #c9c9c97a);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   font-size: 45px;
@@ -926,25 +924,21 @@ body{
   letter-spacing: 1.5px;
 }
 /* ********************* */
-.tittle {
-  padding: 2rem 1.2rem;
-  border-radius: 10px;
-  margin-top: 10px;
-}
-.tittle h1 {
+
+.beMembertit {
   position: relative;
-  font-size: 2.7em;
+  font-size: 2.8em;
   letter-spacing: 7px;
-  font-family: "Raleway dots";
   color: #ffebd5be;
   font-weight: 300;
   text-transform: uppercase;
   width: 100%;
+  margin-top: 30px;
+  margin-bottom: 80px;
+  line-height: 0.9;
   text-align: center;
   -webkit-box-reflect: below 0.5px
-    linear-gradient(transparent, rgba(0, 0, 0, 0.377));
-  /* El webkit reflect hace el efecto de reflejo de las letras */
-  /* Le podeemos poner un fondo naranja o violeta para que pegue con el fondo, tipo asi mira */
+    linear-gradient(transparent, rgba(0, 0, 0, 0.301));
 }
 
 @keyframes neonPink {
@@ -978,33 +972,42 @@ body{
       0 0 160px rgb(255, 116, 24);
   }
 }
-
-.info {
-  font-size: 23px;
-  letter-spacing: 1.3px;
-  font-weight: 400;
-  color: rgba(255, 255, 255, 0.473);
+.containerPlan{
+  background: #0e0e0e;
   margin-bottom: 50px;
-  margin-top: 30px;
+  padding: 30px;
+ 
 }
-.dat {
+.info {
   font-size: 20px;
-  margin-top: -30px;
-  margin-bottom: 80px;
-  color: rgba(255, 255, 255, 0.692);
-}
-.content {
-  margin-top: -70px;
-  justify-content: center;
+  letter-spacing: 2.5px;
   display: flex;
-  flex-direction: row;
+  justify-content: center;
   align-items: center;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.651);
+}
+
+.contentRevi {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  font-size: 35px;
+  font-weight: 700;
+  margin-bottom: 40px;
+  color: rgba(245, 222, 179, 0.658);
+  letter-spacing: 2px;
+  padding: 10px;  
+  border-radius: 7px;
+  height: auto;
+
 }
 
 .pyramid-loader {
   position: relative;
-  width: 200px;
-  height: 200px;
+  width: 40px;
+  height: 50px;
   display: block;
   transform-style: preserve-3d;
   transform: rotateX(-20deg);
@@ -1012,7 +1015,7 @@ body{
 
 .wrapper {
   position: relative;
-  width: 100%;
+  width: 30%;
   height: 100%;
   transform-style: preserve-3d;
   animation: spin 5s linear infinite;
@@ -1070,135 +1073,96 @@ body{
   transform: rotateX(90deg) translateZ(-40px);
   filter: blur(12px);
 }
-
+/* ABOUT US */
 .aboutUs {
   color: wheat;
   display: flex;
   flex-direction: column;
-  gap: 20px;
-  font-size: 16px;
+  justify-content: center;
+  width: 600px;
+  gap: 10px;
+  padding: 20px;
+  font-size: 15px;
   font-family: monospace;
   letter-spacing: 1.3px;
+ 
 }
-
+.ourMember {
+  border-radius: 7px;
+  margin: auto;
+  background: #181818;
+  padding: 20px;
+  box-shadow: 3px 3px 10px rgba(0, 0, 0, 1),
+  -1px -1px 6px rgba(255, 255, 255, 0.4);
+}
 .aboutName {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-bottom: 20px;
   font-size: 35px;
   font-weight: 700;
-  background: -webkit-linear-gradient(#d8123d, #ff8b2c);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  color: rgba(245, 222, 179, 0.658);
   letter-spacing: 2px;
-}
-
-.testimonials {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
-}
-
-.testimonial-card {
-  width: 300px;
-  border: 1px solid #ccc;
-  background: linear-gradient(#ff2252c4, #ffc60c77);
-  border-radius: 10px;
   padding: 20px;
-  margin: 10px;
-  height: 350px;
-  overflow-y: auto;
-  position: relative;
+  background: #0e0e0e;
+  border-radius: 7px;
+  height: 80px;
+  box-shadow: 3px 3px 10px rgba(0, 0, 0, 1),
+  -1px -1px 6px rgba(255, 255, 255, 0.4);
 }
 
-.testimonialDiv{
-  position: absolute;
-  bottom: 10px;
-  left: 30px;
-}
 
-.testimonial-card img {
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  object-fit: cover;
-  margin-bottom: 10px;
-}
-
-.testimonial-text {
-  margin-top: 0.5rem;
-  font-size: 14px;
-  line-height: 1.5;
-  font-weight: 300;
-  margin-bottom: 10px;
-  letter-spacing: 1.2px;
-  color: white;
-  height: 150px;
-  padding: 0.5rem;
-  overflow-y: auto;
-  line-height: 25px;
-}
-
-.client-name {
-  color: rgb(78, 1, 78);
-  letter-spacing: 1.5px;
-  font-weight: bold;
-  margin-bottom: 5px;
-}
-
-.client-role {
-  font-size: 12px;
-  color: #f1a5a5;
-}
-
-.ourMember {
-  width: 50%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-top: 100px;
-  margin-bottom: 60px;
-  background: rgba(0, 0, 0, 0.452);
-  padding: 20px;
-  border-radius: 10px;
-}
 /* REVIEWES CONTAINER */
 .reviewsContent {
-  height: 200px;
-  width: 400px;
+  height: auto;
+  width: 600px;
   display: flex;
   justify-content: center;
   flex-direction: column;
+  margin: auto;
   border-radius: 7px;
-  border: 1px solid #ccc;
-  padding: 10px;
-  background: linear-gradient(#ff2252c4, #ffc60c77);
+  border: none;
+  padding: 30px;
+  background: linear-gradient(#131313c4, #22222277);
+  box-shadow: 3px 3px 10px rgba(0, 0, 0, 1),
+  -1px -1px 6px rgba(255, 255, 255, 0.4);
+}
+.opinionReview{
+  font-size: 15px;
+  text-transform:none;
+  letter-spacing: 1.5px;
+  font-weight: 700px;
+ line-height: 2;
 }
 .revi {
   display: flex;
-  justify-content: center;
+  justify-content: space-around;
   align-items: center;
   color: white;
   letter-spacing: 2px;
   font-size: 15px;
-  gap: 50px;
+  margin-top: 100px;
+  margin-bottom: 20px;  
   text-transform: uppercase;
 }
 .btnReviews {
-  background: black;
   color: rgba(255, 255, 255, 0.856);
-  width: 130px;
+  width: 230px;
+  height: 50px;
   padding: 5px;
   letter-spacing: 1.5px;
   border-radius: 5px;
+  font-weight: 700;
   border: none;
   transition: all 0.6s ease;
+  background: #0e0e0e; 
+  box-shadow: 3px 3px 10px rgba(0, 0, 0, 1),
+  -1px -1px 6px rgba(255, 255, 255, 0.4);
 }
 .btnReviews:hover {
   background: rgba(255, 255, 255, 0.548);
   border: none;
+  color: #000000;
 }
 .btnReviewsContainer {
   display: flex;
@@ -1545,9 +1509,6 @@ body{
   padding: 0.5rem;
 
 }
-
-
-
 .modal-description {
   font-weight: 200;
   margin-bottom: 10px;
@@ -1684,7 +1645,7 @@ body{
 .infReview{
   margin: auto;
 } 
-.avatarReview{
+.avatarReviewModal{
   width: 90px;
   border: 6px solid rgba(39, 39, 39, 0.603);
   border-radius: 50px;
@@ -1705,6 +1666,8 @@ body{
   padding: 0;
   color: #5f5f5f;
 }
+
+
 .buttonModalReviews:hover {
   background: #1d1d1da2;
 }
@@ -1769,9 +1732,12 @@ body{
   display: block;
   z-index: -1;
 }
-
 .submit_btn:hover::before {
   width: 13em;
+}
+.submit_btn:disabled {
+  background-color: #424242;
+  cursor: not-allowed;
 }
 .btnreview {
   display: flex;
@@ -1802,31 +1768,49 @@ body{
   inset 3px 3px 10px rgba(0,0,0,1),
   inset -1px -1px 6px rgba(255, 255, 255, 0.4);
 }
-.reviewItem{
-  background: black;
-  color: white;
-  width: 400px;
-  height: 300px;
-  font-size: 17px;
-border-radius: 10px;
- margin: 20px;
- padding: 15px;
 
+
+/*  BEMEMBER -REVIEWS  */
+
+.reviewItem{
+  width: 300px;
+  background: linear-gradient(#ff5411c4, #750045c0);
+  border-radius: 10px;
+  margin: 10px;
+  height: 280px;
+  overflow-y: auto;
+  position: relative;
+}
+
+.testimonials {
+  margin-top: 40px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
+.ratingText{
+  color: rgb(255, 196, 0);  
 }
 .containerDataReview{
+  background: rgba(102, 0, 26, 0.692);
   display: flex;
-  justify-content: center;
-  gap: 30px;
+  align-items: center;
+  justify-content: space-around;
+  padding: 10px; 
+  color: rgb(212, 212, 212);
 }
 .avatarReview{
-  width: 50px;
-  border-radius: 30px;
-
+  width: 65px;
+  border-radius: 40px;
+  border: 4px solid rgba(0, 0, 0, 0.473);
 }
 .dataReview{
-  margin-top: 30px;
-  letter-spacing: 1.5px;
-  font-size: 16px;
+  color: white;
+  padding: 15px;
+  letter-spacing: 2px;
+  font-weight: 200;
+  font-size: 15px;
   display: flex;
   justify-content: center;
   align-items: center;
