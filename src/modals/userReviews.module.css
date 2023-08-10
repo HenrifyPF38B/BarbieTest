@@ -56,12 +56,4 @@
      resize:none;
    
    }
-   
-   
-   .submit_btn:disabled {
-     background-color: #424242;
-     cursor: not-allowed;
-   }
-   .submit_btn:hover {
-     background-color: #4ad34a; 
-   }
+ 
