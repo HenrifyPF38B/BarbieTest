@@ -132,7 +132,7 @@ const BeMember = () => {
             <span class="shadow"></span>
           </div>
         </div>
-        <h4>Thanks for joining us!</h4>          
+        <h4 className="titleReviewCont">Thanks for joining us!</h4>          
           </div>
           <p className="opinionReview">Your feedback is essential in helping us improve and continue to offer top-notch service. We invite you to share your thoughts by leaving a review!</p>
           <div className="btnReviewsContainer">
